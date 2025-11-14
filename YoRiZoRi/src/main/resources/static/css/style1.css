@@ -1,0 +1,74 @@
+/* header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.header-left h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.header-center a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    padding: 5px 10px;
+    display: none;
+}
+
+.search-box.active input {
+    display: inline-block;
+}
+
+#menu-toggle {
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+/* login menu */
+.login-menu {
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 60px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 10;
+}
+
+.login-menu.show {
+    display: block;
+}
+
+.login-menu button {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+}
+
+/* footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f1f1f1;
+    border-top: 1px solid #ddd;
+}

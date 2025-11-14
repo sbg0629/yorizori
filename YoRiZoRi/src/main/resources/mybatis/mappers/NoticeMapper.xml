@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.YoRiZoRi.Notice.dao.NoticeDAO">
+    
+    <resultMap id="noticeResultMap" type="com.boot.YoRiZoRi.Notice.dto.NoticeDTO">
+        <result property="noticeId" column="notice_id"/>
+        <result property="memberId" column="member_id"/>
+        <result property="category" column="category"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="isFixed" column="is_fixed"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="memberName" column="member_name"/>
+    </resultMap>
+    
+    
+    <select id="list" resultMap="noticeResultMap">
+        SELECT 
+            n.notice_id, n.member_id, n.category, n.title, n.content,
+            n.view_count, n.is_fixed, n.created_at, n.updated_at,
+            m.name AS member_name
+        FROM notice_tb n
+        LEFT JOIN member_tb m ON n.member_id = m.member_id
+        ORDER BY n.is_fixed DESC, n.created_at DESC
+    </select>
+    
+    <select id="listByCategory" parameterType="string" resultMap="noticeResultMap">
+        SELECT 
+            n.notice_id, n.member_id, n.category, n.title, n.content,
+            n.view_count, n.is_fixed, n.created_at, n.updated_at,
+            m.name AS member_name
+        FROM notice_tb n
+        LEFT JOIN member_tb m ON n.member_id = m.member_id
+        WHERE n.category = #{category}
+        ORDER BY n.is_fixed DESC, n.created_at DESC
+    </select>
+    
+    <select id="search" parameterType="java.util.HashMap" resultMap="noticeResultMap">
+        SELECT 
+            n.notice_id, n.member_id, n.category, n.title, n.content,
+            n.view_count, n.is_fixed, n.created_at, n.updated_at,
+            m.name AS member_name
+        FROM notice_tb n
+        LEFT JOIN member_tb m ON n.member_id = m.member_id
+        WHERE n.title LIKE '%' || #{keyword} || '%'  OR n.content LIKE '%' || #{keyword} || '%'
+        ORDER BY n.is_fixed DESC, n.created_at DESC
+    </select>
+    
+    <select id="getNotice" parameterType="int" resultMap="noticeResultMap">
+        SELECT 
+            n.notice_id, n.member_id, n.category, n.title, n.content,
+            n.view_count, n.is_fixed, n.created_at, n.updated_at,
+            m.name AS member_name
+        FROM notice_tb n
+        LEFT JOIN member_tb m ON n.member_id = m.member_id
+        WHERE n.notice_id = #{noticeId}
+    </select>
+    
+    <insert id="write" parameterType="java.util.HashMap">
+        INSERT INTO notice_tb (
+            notice_id, member_id, category, title, content, is_fixed
+        ) VALUES (
+            notice_tb_seq.nextval,  #{member_id}, #{category}, #{title}, #{content}, 
+            NVL(#{is_fixed}, 0)     )
+    </insert>
+    
+    <update id="modify" parameterType="java.util.HashMap">
+        UPDATE notice_tb
+        SET 
+            category = #{category},
+            title = #{title},
+            content = #{content},
+            is_fixed = NVL(#{is_fixed}, is_fixed), updated_at = SYSDATE                     WHERE notice_id = #{notice_id}
+    </update>
+    
+    <delete id="delete" parameterType="int">
+        DELETE FROM notice_tb
+        WHERE notice_id = #{noticeId}
+    </delete>
+    
+    <update id="increaseViewCount" parameterType="int">
+        UPDATE notice_tb
+        SET view_count = view_count + 1
+        WHERE notice_id = #{noticeId}
+    </update>
+    
+  <select id="getFixedNotices" resultMap="noticeResultMap">
+        SELECT *
+        FROM (
+            SELECT 
+                n.notice_id, n.member_id, n.category, n.title, n.content,
+                n.view_count, n.is_fixed, n.created_at, n.updated_at,
+                m.name AS member_name
+            FROM notice_tb n
+            LEFT JOIN member_tb m ON n.member_id = m.member_id
+            WHERE n.is_fixed = 1
+            ORDER BY n.created_at DESC
+        )
+        WHERE ROWNUM &lt;= 5 
+    </select>
+</mapper>

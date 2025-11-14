@@ -1,0 +1,202 @@
+/* ======================================= */
+/* 1. 기본 설정 및 컨테이너 스타일 (공지사항과 통일) */
+/* ======================================= */
+body {
+    font-family: "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 0;
+    /* 배경색을 공지사항과 동일하게 유지하여 통일성 부여 */
+    background-color: #FFF5EE; 
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.board-container {
+    max-width: 1200px; /* 목록 페이지의 최대 너비 */
+    margin: 50px auto;
+    padding: 20px 15px;
+    flex-grow: 1; 
+}
+
+/* ======================================= */
+/* 2. 폼/디테일 영역 스타일 (작성/수정/상세) */
+/* ======================================= */
+.board-form, .board-detail {
+    max-width: 1000px; 
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px; 
+    padding: 40px; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+    /* 테두리 색상을 게시판 강조색 (녹색) 계열로 변경 */
+    border: 1px solid #4CAF5033; 
+}
+.board-form h2, .board-detail h2 {
+    color: #4CAF50; /* 제목 색상 게시판 강조색으로 */
+    font-weight: 700;
+}
+.form-label {
+    font-weight: 600;
+    color: #555;
+}
+.form-control, .form-select {
+    border-radius: 6px;
+    border-color: #ddd;
+    transition: border-color 0.3s;
+}
+.form-control:focus, .form-select:focus {
+    border-color: #4CAF50; /* 포커스 색상도 게시판 강조색 */
+    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+}
+
+/* 버튼 스타일 (Bootstrap Override - 테마색) */
+.btn-primary {
+    background-color: #FF7043 !important; /* 등록/작성 버튼은 요리 테마색 (오렌지) 유지 */
+    border-color: #FF7043 !important;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+.btn-primary:hover {
+    background-color: #E64A19 !important;
+    border-color: #E64A19 !important;
+}
+.btn-secondary {
+    background-color: #A1887F !important; /* 취소/검색 버튼은 차분한 브라운 톤 */
+    border-color: #A1887F !important;
+    transition: background-color 0.3s;
+}
+.btn-secondary:hover {
+    background-color: #8D6E63 !important;
+}
+.btn-warning {
+    background-color: #FFC107 !important;
+    border-color: #FFC107 !important;
+    font-weight: 600;
+}
+.btn-danger {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+/* ======================================= */
+/* 3. 목록 페이지 (board_list) 스타일 */
+/* ======================================= */
+.board-header h1 {
+    border-bottom: 3px solid #4CAF50; /* 게시판 제목 밑줄을 녹색으로 */
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    font-weight: 700;
+    color: #333;
+}
+/* '글쓰기' 버튼: 게시판 강조색인 녹색 적용 */
+.board-header .btn-board-write {
+    background-color: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+}
+.board-header .btn-board-write:hover {
+    background-color: #388E3C !important;
+    border-color: #388E3C !important;
+}
+
+
+/* 게시글 아이템 */
+.board-item {
+    background: white;
+    border-radius: 10px;
+    padding: 20px 25px; 
+    margin-bottom: 15px;
+    border-left: 6px solid transparent; /* 좌측 border를 투명하게 설정 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: all 0.3s;
+    /* 💡 목록 너비를 넓게 사용하기 위한 Flexbox 설정 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.board-item:hover {
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    transform: translateY(-3px); 
+    border-left: 6px solid #4CAF50; /* hover 시 게시판 강조색 border */
+}
+
+.board-title-area {
+    /* 💡 제목이 정보 영역을 침범하지 않도록 */
+    flex-grow: 1;
+    margin-right: 20px;
+}
+.board-title {
+    font-size: 1.15rem; 
+    font-weight: 600;
+    color: #1e1e1e;
+    line-height: 1.4;
+}
+.board-meta-info {
+    font-size: 0.9rem; 
+    color: #777;
+    /* 💡 Flexbox를 사용하여 세로 정렬 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    white-space: nowrap; 
+    text-align: right;
+}
+
+/* ======================================= */
+/* 4. 상세 페이지 (board_detail) 스타일 */
+/* ======================================= */
+.content-area {
+    min-height: 250px; 
+    padding: 30px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin: 30px 0;
+    line-height: 1.8;
+    color: #444;
+}
+
+/* 댓글 영역 */
+.comment-area {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid #4CAF50; /* 댓글 구분선도 게시판 강조색으로 */
+}
+.comment-item {
+    background: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px; /* 모서리 더 둥글게 */
+    border: 1px solid #eee;
+}
+.comment-item.reply {
+    margin-left: 40px;
+    background: #fff8f8; /* 대댓글 배경을 연한 살구색으로 */
+    border-left: 3px solid #FF7043; /* 부모 댓글과 다른 강조색 */
+}
+.comment-header strong {
+    color: #333;
+    font-weight: 600;
+}
+.comment-meta {
+    font-size: 0.8rem; /* 폰트 크기 미세 조정 */
+    color: #999;
+    margin-left: 10px;
+}
+/* 댓글 버튼 */
+.comment-area .btn-outline-warning, .comment-area .btn-outline-danger {
+    font-size: 0.75rem;
+}
+.comment-area .btn-outline-primary {
+    color: #4CAF50;
+    border-color: #4CAF50;
+}
+.comment-area .btn-outline-primary:hover {
+    background-color: #4CAF50;
+    color: white;
+}

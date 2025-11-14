@@ -1,0 +1,200 @@
+/* ======================================= */
+/* 1. 기본 설정 및 컨테이너 스타일 */
+/* ======================================= */
+body {
+    font-family: "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FFF5EE; 
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.notice-container {
+    max-width: 1200px; /* 목록 페이지의 최대 너비 */
+    margin: 50px auto;
+    padding: 20px 15px;
+    flex-grow: 1; 
+}
+
+/* ======================================= */
+/* 2. 공통 폼/디테일 영역 스타일 */
+/* (write, modify, detail 페이지) */
+/* ======================================= */
+.notice-form, .notice-detail {
+    max-width: 1000px; 
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px; 
+    padding: 40px; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #FF704333; 
+}
+.notice-form h2, .notice-detail h2 {
+    color: #FF7043; 
+    font-weight: 700;
+}
+.form-label {
+    font-weight: 600;
+    color: #555;
+}
+.form-control, .form-select {
+    border-radius: 6px;
+    border-color: #ddd;
+    transition: border-color 0.3s;
+}
+.form-control:focus, .form-select:focus {
+    border-color: #FF7043;
+    box-shadow: 0 0 0 0.25rem rgba(255, 112, 67, 0.25);
+}
+
+/* 버튼 스타일 (Bootstrap Override) */
+.btn-primary {
+    background-color: #FF7043 !important;
+    border-color: #FF7043 !important;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+.btn-primary:hover {
+    background-color: #E64A19 !important;
+    border-color: #E64A19 !important;
+}
+.btn-secondary {
+    background-color: #A1887F !important; 
+    border-color: #A1887F !important;
+    transition: background-color 0.3s;
+}
+.btn-secondary:hover {
+    background-color: #8D6E63 !important;
+}
+.btn-warning {
+    font-weight: 600;
+}
+
+/* ======================================= */
+/* 3. 목록 페이지 (notice_list) 스타일 */
+/* ======================================= */
+.notice-header h1 {
+    border-bottom: 3px solid #FF7043; 
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    font-weight: 700;
+    color: #333;
+}
+.search-box button {
+    background-color: #4CAF50; 
+    border-color: #4CAF50;
+    transition: background-color 0.3s;
+}
+.search-box button:hover {
+    background-color: #388E3C;
+}
+
+/* 공지사항 아이템 */
+.notice-item {
+    background: white;
+    border-radius: 10px;
+    padding: 20px 25px; 
+    margin-bottom: 15px;
+    border-left: 6px solid transparent; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: all 0.3s;
+    /* 💡 목록 너비를 넓게 사용하기 위한 Flexbox 설정 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.notice-item:hover {
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    transform: translateY(-3px); 
+    border-left: 6px solid #FF7043; 
+}
+
+/* 고정 공지사항 */
+.notice-item[style*="border-left: 5px solid #dc3545;"] {
+    background-color: #FFF5EE !important; 
+    border-left: 6px solid #dc3545 !important; 
+}
+
+.title-content {
+    /* 💡 제목이 정보 영역을 침범하지 않도록 */
+    flex-grow: 1;
+    margin-right: 20px;
+}
+.title_n {
+    font-weight: 600;
+    font-size: 1.15rem; 
+    color: #1e1e1e;
+    line-height: 1.4;
+}
+.notice-info {
+    font-size: 0.9rem; 
+    color: #777;
+    /* 💡 Flexbox를 사용하여 세로 정렬 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    white-space: nowrap; /* 정보는 한 줄로 유지 */
+}
+
+/* ======================================= */
+/* 4. 카테고리 뱃지 */
+/* ======================================= */
+.category-badge {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 12px;
+    min-width: 45px;
+    text-align: center;
+    text-transform: uppercase;
+}
+/* 카테고리 색상 (유지) */
+.category-운영 { background-color: #007bff; color: white; }
+.category-신규 { background-color: #28a745; color: white; }
+.category-점검 { background-color: #ffc107; color: #333; }
+.category-요금 { background-color: #dc3545; color: white; }
+.category-혜택 { background-color: #e83e8c; color: white; }
+.category-안내 { background-color: #6c757d; color: white; }
+
+/* ======================================= */
+/* 5. 상세 페이지 (notice_detail) 스타일 */
+/* ======================================= */
+.content-area {
+    min-height: 250px; 
+    padding: 30px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin: 30px 0;
+    line-height: 1.8;
+    color: #444;
+}
+
+/* ======================================= */
+/* 6. 미디어 쿼리 (공통) */
+/* ======================================= */
+@media (max-width: 767px) {
+    /* 모바일에서 목록을 세로로 정렬 */
+    .notice-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .notice-item .notice-info {
+        margin-top: 10px;
+        flex-direction: row;
+        gap: 15px;
+    }
+}
+@media (max-width: 576px) {
+    .notice-form, .notice-detail {
+        padding: 20px;
+    }
+}

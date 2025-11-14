@@ -1,0 +1,76 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.YoRiZoRi.login.dao.MemDAO">
+
+    <resultMap id="memResultMap" type="com.boot.YoRiZoRi.login.dto.MemDTO">
+        <result property="memberId"     column="MEMBER_ID"/>
+        <result property="name"         column="NAME"/>
+        <result property="password"     column="PASSWORD"/>
+        <result property="nickname"     column="NICKNAME"/>
+        <result property="email"        column="EMAIL"/>
+        <result property="profileImage" column="PROFILE_IMAGE"/>
+        <result property="phoneNumber"  column="PHONE_NUMBER"/>
+        <result property="birthdate"    column="BIRTHDATE"/>
+        <result property="gender"       column="GENDER"/>
+        <result property="joinDate"     column="JOIN_DATE"/>
+    </resultMap>
+
+    <select id="loginYn" parameterType="java.util.HashMap" resultMap="memResultMap">
+        SELECT *
+        FROM member_tb 
+        WHERE 
+            MEMBER_ID = #{MEMBER_ID} AND password = #{PASSWORD}
+    </select>
+    
+    <insert id="write" parameterType="java.util.HashMap">
+        INSERT INTO member_tb ( 
+            member_id, name, password, nickname, email, 
+            profile_image, phone_number, birthdate, gender 
+        ) VALUES ( 
+            #{MEMBER_ID}, #{NAME}, #{PASSWORD}, #{NICKNAME}, #{EMAIL}, 
+            #{PROFILE_IMAGE}, #{PHONE_NUMBER}, TO_DATE(#{BIRTHDATE}, 'YYYY-MM-DD'), #{GENDER} 
+        )
+    </insert>
+    
+    <select id="getMemberInfo" parameterType="string" resultMap="memResultMap">
+        SELECT * FROM member_tb 
+        WHERE MEMBER_ID = #{id}
+    </select>
+
+    <select id="idCheck" parameterType="string" resultType="int">
+        SELECT count(*) FROM member_tb WHERE MEMBER_ID = #{memberId}
+    </select>
+    
+    <select id="nicknameCheck" parameterType="string" resultType="int">
+        SELECT count(*) FROM member_tb WHERE NICKNAME = #{nickname}
+    </select>
+    
+    <select id="emailCheck" parameterType="string" resultType="int">
+        SELECT count(*) FROM member_tb WHERE EMAIL = #{email}
+    </select>
+    
+    <select id="phoneCheck" parameterType="string" resultType="int">
+        SELECT count(*) FROM member_tb WHERE PHONE_NUMBER = #{phoneNumber}
+    </select>
+    
+    <select id="checkIdAndEmail" parameterType="hashmap" resultType="int">
+        SELECT COUNT(*) 
+        FROM member_tb WHERE MEMBER_ID = #{MEMBER_ID} AND EMAIL = #{EMAIL}
+    </select>
+    
+    <update id="updatePassword" parameterType="hashmap">
+        UPDATE member_tb SET PASSWORD = #{PASSWORD}
+        WHERE MEMBER_ID = #{MEMBER_ID} AND EMAIL = #{EMAIL}
+    </update>
+    
+    <!-- 랜덤 멤버 5명 조회 -->
+    <select id="getRandomMembers" resultMap="memResultMap">
+        SELECT * FROM (
+            SELECT * FROM member_tb 
+            ORDER BY DBMS_RANDOM.VALUE
+        ) WHERE ROWNUM &lt;= 5
+    </select>
+    
+</mapper>

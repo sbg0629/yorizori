@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.boot.YoRiZoRi.Chat.dao.Chatdao">
+    
+    <resultMap id="ChatMessageResultMap" type="com.boot.YoRiZoRi.Chat.dto.ChatDTO">
+        <id property="chatId" column="CHAT_ID"/>
+        <result property="senderId" column="SENDER_ID"/>
+        <result property="senderNickname" column="NICKNAME"/>
+        <result property="message" column="MESSAGE"/>
+        <result property="sentAt" column="SENT_AT"/>
+    </resultMap>
+    
+    <!-- 메시지 저장 -->
+    <insert id="insertMessage" parameterType="com.boot.YoRiZoRi.Chat.dto.ChatDTO">
+        INSERT INTO chat_message (SENDER_ID, MESSAGE, SENT_AT)
+        VALUES (#{senderId}, #{message}, SYSDATE)
+    </insert>
+    
+    <!-- 최근 메시지 조회 (닉네임 포함) -->
+    <select id="selectRecentMessages" resultMap="ChatMessageResultMap">
+        SELECT * FROM (
+            SELECT 
+                c.CHAT_ID,
+                c.SENDER_ID,
+                m.NICKNAME,
+                c.MESSAGE,
+                c.SENT_AT
+            FROM chat_message c
+            JOIN member_tb m ON c.SENDER_ID = m.MEMBER_ID
+            ORDER BY c.SENT_AT DESC
+        )
+        WHERE ROWNUM &lt;= #{limit}
+    </select>
+    
+    <!-- 특정 ID 이후 메시지 조회 -->
+    <select id="selectMessagesAfter" resultMap="ChatMessageResultMap">
+        SELECT 
+            c.CHAT_ID,
+            c.SENDER_ID,
+            m.NICKNAME,
+            c.MESSAGE,
+            c.SENT_AT
+        FROM chat_message c
+        JOIN member_tb m ON c.SENDER_ID = m.MEMBER_ID
+        WHERE c.CHAT_ID > #{chatId}
+        ORDER BY c.SENT_AT ASC
+    </select>
+    
+    <!-- 전체 메시지 수 -->
+    <select id="countTotalMessages" resultType="int">
+        SELECT COUNT(*) FROM chat_message
+    </select>
+    
+</mapper>

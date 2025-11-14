@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	<mappers>
+		<mapper resource="mybatis/mappers/detailMapper.xml"/>
+		<mapper resource="mybatis/mappers/ItemMapper.xml"/>
+		<mapper resource="mybatis/mappers/MemMapper.xml"/>
+		<mapper resource="mybatis/mappers/MyPageDAO.xml"/>
+		<mapper resource="mybatis/mappers/RecipeMapper.xml"/>
+		<mapper resource="mybatis/mappers/NoticeMapper.xml"/>
+		<mapper resource="mybatis/mappers/DeleteMapper.xml"/>
+		<mapper resource="mybatis/mappers/BoardMapper.xml"/>
+		<mapper resource="mybatis/mappers/BoardCommentMapper.xml"/>
+		<mapper resource="mybatis/mappers/ChatMessageMapper.xml"/>
+	</mappers>
+	
+	
+</configuration>

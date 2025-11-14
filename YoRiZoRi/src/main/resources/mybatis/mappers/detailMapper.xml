@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.boot.YoRiZoRi.Detailed_Page.dao.detailDAO">
+
+	<resultMap id="ReviewDTOMap" type="com.boot.YoRiZoRi.Detailed_Page.dto.ReviewDTO">
+        <id     property="review_Id"   column="REVIEW_ID" />
+        <result property="recipe_Id"   column="RECIPE_ID" />
+        <result property="memberId"    column="MEMBER_ID" />
+        <result property="content"     column="CONTENT" />
+        <result property="rating"      column="RATING" />
+        <result property="image"       column="IMAGE" />
+        <result property="createdat"   column="CREATED_AT" />
+    </resultMap>
+    
+    <resultMap id="CommentDTOMap" type="com.boot.YoRiZoRi.Detailed_Page.dto.CommentDTO">
+        <id     property="comment_Id" column="COMMENT_ID" />
+        <result property="ref_id"     column="REF_ID" />
+        <result property="cmt_step"   column="CMT_STEP" />
+        <result property="cmt_depth"  column="CMT_DEPTH" />
+        <result property="recipe_Id"  column="RECIPE_ID" /> <result property="memberId"   column="MEMBER_ID" />
+        <result property="content"    column="CONTENT" />
+        <result property="createdat"  column="CREATED_AT" />
+    </resultMap>
+
+    <select id="getRecipeBaseInfo" parameterType="int" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.DetailDTO">
+        SELECT RECIPE_ID, MEMBER_ID, TITLE, DESCRIPTION, SERVING_SIZE, 
+               MAIN_IMAGE, CREATED_AT, DIFFICULTY, COOKING_TIME, HIT, COMMENT_COUNT
+        FROM RECIPE
+        WHERE RECIPE_ID = #{recipeId}
+    </select>
+
+    <select id="getIngredientList" parameterType="int" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.IngredientDTO">
+        SELECT RI.QUANTITY, I.NAME, I.INGREDIENT_ID
+        FROM RECIPE_INGREDIENT RI
+        JOIN INGREDIENT I ON RI.INGREDIENT_ID = I.INGREDIENT_ID
+        WHERE RI.RECIPE_ID = #{recipeId}
+    </select>
+
+    <select id="getStepImageList" parameterType="int" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.StepImageDTO">
+        SELECT S.RECIPE_ID, S.STEP_NUMBER, S.INSTRUCTION, I.IMAGE_URL
+        FROM RECIPE_STEP S
+        LEFT JOIN RECIPE_STEP_IMAGE I
+          ON S.RECIPE_ID = I.RECIPE_ID AND S.STEP_NUMBER = I.STEP_NUMBER
+        WHERE S.RECIPE_ID = #{recipeId}
+        ORDER BY S.STEP_NUMBER ASC
+    </select>
+    
+<!--    <select id="getCommentList" parameterType="int" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.CommentDTO">-->
+<!--        SELECT COMMENT_ID, REF_ID, CMT_STEP, CMT_DEPTH, MEMBER_ID, CONTENT, CREATED_AT-->
+<!--        FROM COMMENT_TB-->
+<!--        WHERE RECIPE_ID = #{recipeId}-->
+<!--        ORDER BY REF_ID ASC, CMT_STEP ASC-->
+<!--    </select>-->
+	<select id="getCommentList" parameterType="int" resultMap="CommentDTOMap">
+        SELECT COMMENT_ID, REF_ID, CMT_STEP, CMT_DEPTH, RECIPE_ID, MEMBER_ID, CONTENT, CREATED_AT
+        FROM COMMENT_TB
+        WHERE RECIPE_ID = #{recipeId}
+        ORDER BY REF_ID ASC, CMT_STEP ASC
+    </select>
+
+<!--    <select id="getReviewList" parameterType="int" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.ReviewDTO">-->
+<!--        SELECT REVIEW_ID, RECIPE_ID, MEMBER_ID, CONTENT, RATING, IMAGE, CREATED_AT-->
+<!--        FROM REVIEW-->
+<!--        WHERE RECIPE_ID = #{recipeId}-->
+<!--        ORDER BY CREATED_AT DESC-->
+<!--    </select>-->
+	<select id="getReviewList" parameterType="int" resultMap="ReviewDTOMap">
+        SELECT 
+            REVIEW_ID, RECIPE_ID, MEMBER_ID, CONTENT, RATING, IMAGE, CREATED_AT
+        FROM REVIEW
+        WHERE RECIPE_ID = #{recipeId}
+        ORDER BY CREATED_AT DESC
+    </select>
+
+
+    <update id="incrementHit" parameterType="int">
+        UPDATE RECIPE
+        SET HIT = HIT + 1
+        WHERE RECIPE_ID = #{recipeId}
+    </update>
+    
+    <update id="updateRecipeBase" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.DetailDTO">
+	    UPDATE RECIPE
+	    SET 
+	        TITLE = #{title},
+	        DESCRIPTION = #{description},
+	        SERVING_SIZE = #{servingSize},
+	        DIFFICULTY = #{difficulty},
+	        COOKING_TIME = #{cookingTime, jdbcType=VARCHAR} <if test="mainImage != null and mainImage != ''">
+	            , MAIN_IMAGE = #{mainImage}
+	        </if>
+	    WHERE RECIPE_ID = #{recipeId}
+	</update>
+
+    <delete id="deleteIngredientsByRecipeId" parameterType="int">
+        DELETE FROM RECIPE_INGREDIENT WHERE RECIPE_ID = #{recipeId}
+    </delete>
+    
+    <delete id="deleteStepsByRecipeId" parameterType="int">
+        DELETE FROM RECIPE_STEP WHERE RECIPE_ID = #{recipeId}
+    </delete>
+
+    <delete id="deleteRecipeCategoriesByRecipeId" parameterType="int">
+        DELETE FROM RECIPE_CATEGORY WHERE RECIPE_ID = #{recipeId}
+    </delete>
+
+    <insert id="insertIngredient" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.IngredientDTO">
+        INSERT INTO RECIPE_INGREDIENT (RECIPE_ID, INGREDIENT_ID, QUANTITY)
+        VALUES (#{recipeId}, #{ingredientId}, #{quantity})
+    </insert>
+    
+    <insert id="insertStep" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.StepImageDTO">
+        INSERT INTO RECIPE_STEP (RECIPE_ID, STEP_NUMBER, INSTRUCTION)
+        VALUES (#{recipeId}, #{stepNumber}, #{instruction})
+    </insert>
+    
+    <insert id="insertStepImage" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.StepImageDTO">
+        INSERT INTO RECIPE_STEP_IMAGE (RECIPE_ID, STEP_NUMBER, IMAGE_URL)
+        VALUES (#{recipeId}, #{stepNumber}, #{imageUrl})
+    </insert>
+
+    <insert id="insertRecipeCategory">
+        INSERT INTO RECIPE_CATEGORY (RECIPE_ID, CATEGORY_ID)
+        VALUES (#{recipeId}, #{categoryId})
+    </insert>
+    <select id="getAllCategories" resultType="com.boot.YoRiZoRi.Recipe.dto.CategoryDTO">
+	    SELECT CATEGORY_ID, NAME FROM CATEGORY ORDER BY CATEGORY_ID
+	</select>
+	
+	<select id="findIngredientByName" parameterType="String" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.IngredientDTO">
+	    SELECT INGREDIENT_ID, NAME FROM INGREDIENT WHERE NAME = #{name}
+	</select>
+	
+	<insert id="insertNewIngredient" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.IngredientDTO">
+	    <selectKey keyProperty="ingredientId" resultType="int" order="BEFORE">
+	        SELECT ingredient_ingredient_id_seq.NEXTVAL FROM DUAL
+	    </selectKey>
+	    INSERT INTO INGREDIENT (INGREDIENT_ID, NAME)
+	    VALUES (#{ingredientId}, #{name})
+	</insert>
+	<delete id="deleteRecipeById" parameterType="int">
+	    DELETE FROM RECIPE WHERE RECIPE_ID = #{recipeId}
+	</delete>
+	
+	<!-- ## 댓글 관련 쿼리 ## -->
+	
+	<!-- 댓글 작성 -->
+	<insert id="insertComment" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.CommentDTO">
+	    INSERT INTO comment_tb (
+	        ref_id, 
+	        cmt_step, 
+	        cmt_depth, 
+	        recipe_id, 
+	        member_id, 
+	        content, 
+	        created_at
+	    ) VALUES (
+	        #{ref_id}, 
+	        #{cmt_step}, 
+	        #{cmt_depth}, 
+	        #{recipe_Id}, 
+	        #{memberId}, 
+	        #{content}, 
+	        SYSDATE
+	    )
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateComment" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.CommentDTO">
+	    UPDATE comment_tb 
+	    SET content = #{content}
+	    WHERE comment_id = #{comment_Id}
+	</update>
+	
+<!--	 댓글 삭제 -->
+<!--	<delete id="deleteComment" parameterType="int">-->
+<!--	    DELETE FROM comment_tb -->
+<!--	    WHERE comment_id = #{commentId}-->
+<!--	</delete>-->
+	
+	<!-- 대댓글 작성 -->
+	<insert id="insertReply" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.CommentDTO">
+	    INSERT INTO comment_tb (
+	        ref_id, 
+	        cmt_step, 
+	        cmt_depth, 
+	        recipe_id, 
+	        member_id, 
+	        content, 
+	        created_at
+	    ) VALUES (
+	        #{ref_id}, 
+	        #{cmt_step}, 
+	        #{cmt_depth}, 
+	        #{recipe_Id}, 
+	        #{memberId}, 
+	        #{content}, 
+	        SYSDATE
+	    )
+	</insert>
+	
+	<!-- 댓글 ID로 댓글 조회 -->
+	<select id="getCommentById" parameterType="int" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.CommentDTO">
+	    SELECT 
+	        comment_id as comment_Id,
+	        ref_id,
+	        cmt_step,
+	        cmt_depth,
+	        recipe_id as recipe_Id,
+	        member_id as memberId,
+	        content,
+	        created_at as createdat
+	    FROM comment_tb 
+	    WHERE comment_id = #{commentId}
+	</select>
+	
+	<!-- ## 후기 관련 쿼리 ## -->
+	
+	<!-- 후기 작성 -->
+	<insert id="insertReview" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.ReviewDTO">
+	    INSERT INTO review (
+	        recipe_id, 
+	        member_id, 
+	        content, 
+	        rating, 
+	        image, 
+	        created_at
+	    ) VALUES (
+	        #{recipe_Id}, 
+	        #{memberId}, 
+	        #{content}, 
+	        #{rating}, 
+	        #{image}, 
+	        SYSDATE
+	    )
+	</insert>
+	
+	<!-- 후기 수정 -->
+	<update id="updateReview" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.ReviewDTO">
+	    UPDATE review 
+	    SET content = #{content}, 
+	        rating = #{rating}, 
+	        image = #{image}
+	    WHERE review_id = #{review_Id}
+	</update>
+	
+	
+	<!-- 특정 레시피의 평균 평점 조회 -->
+	<select id="getAverageRating" parameterType="int" resultType="double">
+	    SELECT NVL(AVG(rating), 0) 
+	    FROM review 
+	    WHERE recipe_id = #{recipeId}
+	</select>
+	
+	<!-- 특정 레시피의 후기 개수 조회 -->
+	<select id="getReviewCount" parameterType="int" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM review 
+	    WHERE recipe_id = #{recipeId}
+	</select>
+	
+	<!-- 후기 ID로 후기 조회 -->
+	<select id="getReviewById" parameterType="int" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.ReviewDTO">
+	    SELECT 
+	        review_id as review_Id,
+	        recipe_id as recipe_Id,
+	        member_id as memberId,
+	        content,
+	        rating,
+	        image,
+	        created_at as createdat
+	    FROM review 
+	    WHERE review_id = #{reviewId}
+	</select>
+
+    <select id="getRecipeCategories" parameterType="int" resultType="com.boot.YoRiZoRi.Recipe.dto.CategoryDTO">
+        SELECT
+            C.CATEGORY_ID,
+            C.NAME
+        FROM CATEGORY C
+        JOIN RECIPE_CATEGORY RC ON C.CATEGORY_ID = RC.CATEGORY_ID
+        WHERE RC.RECIPE_ID = #{recipeId}
+    </select>
+    <!-- 북마크 존재 여부 확인 -->
+<select id="checkBookmark" resultType="int">
+    SELECT COUNT(*)
+    FROM recipe_bookmark
+    WHERE member_id = #{param1}
+    AND recipe_id = #{param2}
+</select>
+
+<!-- 북마크 추가 -->
+<insert id="insertBookmark">
+    INSERT INTO recipe_bookmark (member_id, recipe_id, bookmarked_at)
+    VALUES (#{param1}, #{param2}, SYSDATE)
+</insert>
+
+<!-- 북마크 삭제 -->
+<delete id="deleteBookmark">
+    DELETE FROM recipe_bookmark
+    WHERE member_id = #{param1}
+    AND recipe_id = #{param2}
+</delete>
+
+<!-- 사용자의 북마크 목록 조회 -->
+<select id="getBookmarkList" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.DetailDTO">
+    SELECT 
+        r.recipe_id AS recipeId,
+        r.title,
+        r.main_image AS mainImage,
+        r.cooking_time AS cookingTime,
+        r.difficulty,
+        r.serving_size AS servingSize,
+        r.hit,
+        rb.bookmarked_at AS bookmarked_at,
+        NVL(AVG(rv.rating), 0) AS average_rating
+    FROM recipe r
+    INNER JOIN recipe_bookmark rb ON r.recipe_id = rb.recipe_id
+    LEFT JOIN review rv ON r.recipe_id = rv.recipe_id
+    WHERE rb.member_id = #{memberId}
+    GROUP BY r.recipe_id, r.title, r.main_image, r.cooking_time, r.difficulty, r.serving_size, r.hit, rb.bookmarked_at
+    ORDER BY rb.bookmarked_at DESC
+</select>
+</mapper>

@@ -1,0 +1,198 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.YoRiZoRi.Main_Page.dao.ItemDAO">
+
+    <select id="list" resultType="com.boot.YoRiZoRi.Main_Page.dto.ItemDTO">
+	    select r.recipe_id, r.member_id, r.title, r.description, r.serving_size, r.main_image, r.created_at, r.difficulty, r.cooking_time, r.hit, r2.rating from recipe r, review r2 where r.recipe_id = r2.recipe_id
+    </select>
+    
+<!--	<select id="list_rating" parameterType="map" resultType="com.boot.YoRiZoRi.Main_Page.dto.ItemDTO">-->
+<!--	  SELECT r.recipe_id, r.member_id, r.title, r.description, r.serving_size,-->
+<!--	         TO_CHAR(r.main_image) AS main_image, r.created_at, r.difficulty,-->
+<!--	         r.cooking_time, r.hit, NVL(AVG(r2.rating), 0) AS rating,-->
+<!--	         rc.category_id, c.name-->
+<!--	  FROM recipe r -->
+<!--	  LEFT OUTER JOIN review r2 ON r.recipe_id = r2.recipe_id  -->
+<!--	  JOIN recipe_category rc ON r.recipe_id = rc.recipe_id -->
+<!--	  JOIN category c ON rc.category_id = c.category_id-->
+<!--	  <where>-->
+<!--	    <if test="categoryList != null and categoryList.size() > 0">-->
+<!--	      rc.category_id IN -->
+<!--	      <foreach item="cat" collection="categoryList" open="(" separator="," close=")">-->
+<!--	        #{cat}-->
+<!--	      </foreach>-->
+<!--	    </if>-->
+<!--	  </where>-->
+<!--	  GROUP BY r.recipe_id, r.member_id, r.title, r.description, r.serving_size, -->
+<!--	           TO_CHAR(r.main_image), r.created_at, r.difficulty, r.cooking_time, -->
+<!--	           r.hit, rc.category_id, c.name-->
+<!--	  ORDER BY ${order} DESC, r.recipe_id ASC-->
+<!--	</select>-->
+	<select id="list_rating" parameterType="map" resultType="com.boot.YoRiZoRi.Main_Page.dto.ItemDTO">
+        SELECT 
+            r.recipe_id, r.member_id, r.title, r.description, r.serving_size,
+            TO_CHAR(r.main_image) AS main_image, r.created_at, r.difficulty,
+            r.cooking_time, r.hit, NVL(AVG(r2.rating), 0) AS rating
+        FROM recipe r 
+        LEFT OUTER JOIN review r2 ON r.recipe_id = r2.recipe_id
+        
+        <where>
+            <if test="categoryList != null and categoryList.size() > 0">
+                r.recipe_id IN (
+                    SELECT recipe_id 
+                    FROM recipe_category
+                    WHERE category_id IN 
+                    <foreach item="cat" collection="categoryList" open="(" separator="," close=")">
+                        #{cat}
+                    </foreach>
+                )
+            </if>
+        </where>
+        
+        GROUP BY 
+            r.recipe_id, r.member_id, r.title, r.description, r.serving_size, 
+            TO_CHAR(r.main_image), r.created_at, r.difficulty, r.cooking_time, r.hit
+            
+        <choose>
+            <when test="order == 'rating'">
+                ORDER BY rating DESC, r.recipe_id ASC
+            </when>
+            <when test="order == 'latest'">
+                ORDER BY r.created_at DESC, r.recipe_id ASC
+            </when>
+            <otherwise>
+                ORDER BY r.hit DESC, r.recipe_id ASC
+            </otherwise>
+        </choose>
+    </select>
+
+
+	<select id="getRandomRecipes" resultType="com.boot.YoRiZoRi.Main_Page.dto.ItemDTO">
+	    <![CDATA[
+	        SELECT *
+	        FROM (
+	            SELECT 
+	                recipe_id, 
+	                title, 
+	                description, 
+	                TO_CHAR(main_image) AS main_image 
+	            FROM recipe
+	            ORDER BY DBMS_RANDOM.VALUE
+	        )
+	        WHERE ROWNUM <= 3
+	    ]]>
+	</select>
+
+
+    <insert id="write">
+    	insert into item(name, price, description) values(#{name},#{price},#{description})
+    </insert>
+    
+<!-- 특정 회원이 작성한 레시피 조회 -->
+<select id="getRecipesByMemberId" parameterType="string" resultType="com.boot.YoRiZoRi.Main_Page.dto.ItemDTO">
+    SELECT 
+        r.recipe_id as recipeId,
+        r.member_id,
+        r.title,
+        r.description,
+        r.serving_size as servingSize,
+        TO_CHAR(r.main_image) as mainImage,
+        r.created_at,
+        r.difficulty,
+        r.cooking_time as cookingTime,
+        r.hit,
+        NVL(AVG(r2.rating), 0) AS rating
+    FROM recipe r 
+    LEFT OUTER JOIN review r2 ON r.recipe_id = r2.recipe_id
+    WHERE r.member_id = #{memberId}
+    GROUP BY r.recipe_id, r.member_id, r.title, r.description, r.serving_size, 
+             TO_CHAR(r.main_image), r.created_at, r.difficulty, r.cooking_time, r.hit
+    ORDER BY r.created_at DESC
+</select>
+
+<!-- 특정 회원의 레시피 개수 조회 -->
+<select id="getRecipeCountByMemberId" parameterType="string" resultType="int">
+    SELECT COUNT(*) 
+    FROM recipe 
+    WHERE member_id = #{memberId}
+</select>
+
+<!-- 페이징 처리를 위한 레시피 개수 조회 -->
+<select id="getRecipeCount" parameterType="map" resultType="int">
+    SELECT COUNT(DISTINCT r.recipe_id)
+    FROM recipe r 
+    LEFT OUTER JOIN review r2 ON r.recipe_id = r2.recipe_id
+    <where>
+        <if test="categoryList != null and categoryList.size() > 0">
+            r.recipe_id IN (
+                SELECT recipe_id 
+                FROM recipe_category
+                WHERE category_id IN 
+                <foreach item="cat" collection="categoryList" open="(" separator="," close=")">
+                    #{cat}
+                </foreach>
+            )
+        </if>
+    </where>
+</select>
+
+<!-- 페이징 처리를 위한 레시피 목록 조회 -->
+<select id="list_rating_paged" parameterType="map" resultType="com.boot.YoRiZoRi.Main_Page.dto.ItemDTO">
+    SELECT * FROM (
+        SELECT 
+            ROWNUM AS rn,
+            recipe_id AS recipeId, 
+            member_id AS member_Id, 
+            title, 
+            description, 
+            serving_size AS servingSize,
+            main_image AS mainImage, 
+            created_at, 
+            difficulty, 
+            cooking_time AS cookingTime, 
+            hit, 
+            rating
+        FROM (
+            SELECT 
+                r.recipe_id, r.member_id, r.title, r.description, r.serving_size,
+                TO_CHAR(r.main_image) AS main_image, r.created_at, r.difficulty,
+                r.cooking_time, r.hit, NVL(AVG(r2.rating), 0) AS rating
+            FROM recipe r 
+            LEFT OUTER JOIN review r2 ON r.recipe_id = r2.recipe_id
+            
+            <where>
+                <if test="categoryList != null and categoryList.size() > 0">
+                    r.recipe_id IN (
+                        SELECT recipe_id 
+                        FROM recipe_category
+                        WHERE category_id IN 
+                        <foreach item="cat" collection="categoryList" open="(" separator="," close=")">
+                            #{cat}
+                        </foreach>
+                    )
+                </if>
+            </where>
+            
+            GROUP BY 
+                r.recipe_id, r.member_id, r.title, r.description, r.serving_size, 
+                TO_CHAR(r.main_image), r.created_at, r.difficulty, r.cooking_time, r.hit
+                
+            <choose>
+                <when test="order == 'rating'">
+                    ORDER BY rating DESC, r.recipe_id ASC
+                </when>
+                <when test="order == 'latest'">
+                    ORDER BY r.created_at DESC, r.recipe_id ASC
+                </when>
+                <otherwise>
+                    ORDER BY r.hit DESC, r.recipe_id ASC
+                </otherwise>
+            </choose>
+        )
+    )
+    WHERE rn BETWEEN #{startRow} AND #{endRow}
+</select>
+	
+</mapper>

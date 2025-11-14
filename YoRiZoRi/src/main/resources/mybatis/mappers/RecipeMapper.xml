@@ -1,0 +1,57 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.YoRiZoRi.Recipe.dao.RecipeDAO">
+
+<insert id="insertRecipe" parameterType="com.boot.YoRiZoRi.Recipe.dto.RecipeDTO">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT recipe_id_seq.CURRVAL FROM DUAL
+        </selectKey>
+        INSERT INTO recipe (
+            member_id, title, description, serving_size, 
+            difficulty, cooking_time, main_image
+        ) VALUES (
+            #{memberId}, #{title}, #{description}, #{servingSize}, 
+            #{difficulty}, #{cookingTime}, #{mainImage}
+        )
+        </insert>
+
+    <insert id="insertStep" parameterType="com.boot.YoRiZoRi.Recipe.dto.StepDTO">
+        INSERT INTO recipe_step (recipe_id, step_number, instruction)
+        VALUES (#{recipeId}, #{stepNumber}, #{instruction})
+    </insert>
+
+    <insert id="insertStepImage" parameterType="com.boot.YoRiZoRi.Recipe.dto.StepDTO">
+        INSERT INTO recipe_step_image (recipe_id, step_number, image_url)
+        VALUES (#{recipeId}, #{stepNumber}, #{image})
+    </insert>
+    
+    <insert id="insertIngredient" parameterType="com.boot.YoRiZoRi.Recipe.dto.IngredientDTO">
+        <selectKey keyProperty="ingredientId" resultType="int" order="AFTER">
+            SELECT ingredient_ingredient_id_seq.CURRVAL FROM DUAL
+        </selectKey>
+        INSERT INTO ingredient(name) VALUES(#{name})
+    </insert>
+    
+    <insert id="insertRecipeIngredient" parameterType="com.boot.YoRiZoRi.Recipe.dto.IngredientDTO">
+        INSERT INTO recipe_ingredient(recipe_id, ingredient_id, quantity)
+        VALUES(#{recipeId}, #{ingredientId}, #{quantity}) 
+    </insert>
+    
+    <select id="findIngredientByName" parameterType="string" resultType="com.boot.YoRiZoRi.Recipe.dto.IngredientDTO">
+        SELECT ingredient_id, name FROM ingredient WHERE name = #{name}
+    </select>
+
+	<select id="findAllCategories" resultType="com.boot.YoRiZoRi.Recipe.dto.CategoryDTO">
+        SELECT category_id AS categoryId, name 
+        FROM category 
+        ORDER BY category_id ASC
+    </select>
+
+    <insert id="insertRecipeCategory" parameterType="java.util.Map">
+        INSERT INTO recipe_category (recipe_id, category_id)
+        VALUES (#{recipeId}, #{categoryId})
+    </insert>
+
+</mapper>
