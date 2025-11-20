@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -290,6 +291,92 @@
                 font-size: 1.5rem;
             }
         }
+		/* ✅ [추가] 모달 배경 스타일 */
+		        .modal-overlay {
+		            position: fixed;
+		            top: 0;
+		            left: 0;
+		            width: 100%;
+		            height: 100%;
+		            background: rgba(0, 0, 0, 0.6);
+		            display: none; /* 초기에는 숨김 */
+		            justify-content: center;
+		            align-items: center;
+		            z-index: 1050;
+		        }
+
+		        /* ✅ [추가] 모달 창 스타일 */
+		        .message-modal-content {
+		            background: white;
+		            padding: 30px;
+		            border-radius: 15px;
+		            width: 90%;
+		            max-width: 500px;
+		            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+		            animation: fadeIn 0.3s ease-out;
+		        }
+
+		        .modal-header {
+		            display: flex;
+		            justify-content: space-between;
+		            align-items: center;
+		            border-bottom: 1px solid #eee;
+		            padding-bottom: 15px;
+		            margin-bottom: 20px;
+		        }
+
+		        .modal-header h4 {
+		            margin: 0;
+		            color: #ff6b6b;
+		            font-weight: 700;
+		        }
+		        
+		        .modal-header button {
+		            background: none;
+		            border: none;
+		            font-size: 1.5rem;
+		            cursor: pointer;
+		            color: #aaa;
+		        }
+		        
+		        .modal-body label {
+		            display: block;
+		            margin-bottom: 5px;
+		            font-weight: 600;
+		            color: #333;
+		        }
+
+		        .modal-body input[type="text"], 
+		        .modal-body textarea {
+		            width: 100%;
+		            padding: 10px;
+		            margin-bottom: 15px;
+		            border: 1px solid #ddd;
+		            border-radius: 8px;
+		            box-sizing: border-box;
+		            resize: vertical;
+		        }
+
+		        .btn-send-message {
+		            width: 100%;
+		            padding: 12px;
+		            background: #ff6b6b;
+		            color: white;
+		            border: none;
+		            border-radius: 8px;
+		            font-weight: 600;
+		            cursor: pointer;
+		            transition: background-color 0.3s;
+		        }
+
+		        .btn-send-message:hover {
+		            background: #e65a50;
+		        }
+
+		        @keyframes fadeIn {
+		            from { opacity: 0; transform: scale(0.95); }
+		            to { opacity: 1; transform: scale(1); }
+		        }
     </style>
 </head>
 <body>
@@ -301,17 +388,22 @@
             <div class="profile-image-wrapper">
                 <c:choose>
                     <c:when test="${not empty memberInfo.profileImage}">
-                        <img src="${memberInfo.profileImage}" alt="${memberInfo.nickname}" class="profile-image">
+                        <img src="/images/${memberInfo.profileImage}" alt="${memberInfo.nickname}" class="profile-image">
                     </c:when>
                     <c:otherwise>
-                        <img src="https://via.placeholder.com/150/667eea/ffffff?text=${memberInfo.nickname}" 
-                             alt="${memberInfo.nickname}" class="profile-image">
+                       <img src="${pageContext.request.contextPath}/images/기본프로필.png" alt="기본 프로필 이미지" />
                     </c:otherwise>
                 </c:choose>
             </div>
 
             <h1 class="member-nickname">${memberInfo.nickname}</h1>
-            <p class="member-id">@${memberInfo.memberId}</p>
+			
+			<%-- ✅ [수정 핵심 1] 프로필 카드 ID 마스킹 --%>
+            <c:set var="targetId" value="${memberInfo.memberId}" />
+            <c:set var="idLen" value="${fn:length(targetId)}" />
+            <c:set var="visibleLen" value="${idLen - fn:length(targetId) / 2}" />
+			
+            <p class="member-id">@<c:out value="${fn:substring(targetId, 0, visibleLen)}" /><c:forEach begin="1" end="${idLen - visibleLen}">*</c:forEach></p>
 
             <div class="info-divider"></div>
 
@@ -354,6 +446,17 @@
                     <div class="stat-label">작성한 레시피</div>
                 </div>
             </div>
+			
+			<%-- ✅ [추가] 쪽지 보내기 버튼 --%>
+            <c:if test="${sessionScope.id != memberInfo.memberId and not empty sessionScope.id}">
+            <div style="text-align: center; margin-top: 25px;">
+                <button type="button" class="btn btn-warning" id="sendMessageBtn"
+				onclick="openReplyModal('${memberInfo.memberId}', '${memberInfo.nickname}')" 
+                        style="width: 80%; padding: 12px 0; font-weight: 600;">
+                    <i class="bi bi-send-fill"></i> ${memberInfo.nickname}님께 쪽지 보내기
+                </button>
+            </div>
+            </c:if>
         </aside>
 
         <!-- 오른쪽: 레시피 목록 -->
@@ -368,7 +471,7 @@
                     <c:when test="${not empty recipes}">
                         <c:forEach var="recipe" items="${recipes}">
                             <a href="detail.do?recipe_Id=${recipe.recipeId}" class="recipe-card">
-                                <img src="${recipe.mainImage}" alt="${recipe.title}" class="recipe-image">
+                                <img src="/images/${recipe.mainImage}" alt="${recipe.title}" class="recipe-image">
                                 <div class="recipe-content">
                                     <h3 class="recipe-title">${recipe.title}</h3>
                                     <p class="recipe-desc">${recipe.description}</p>
@@ -390,7 +493,113 @@
             </div>
         </section>
     </div>
+	
+	<%-- ========================================================== --%>
+	    <%-- ✅ [추가] 쪽지 보내기 모달 (팝업) 구조 --%>
+	    <%-- ========================================================== --%>
+		<div class="modal-overlay" id="messageModal">
+			        <div class="message-modal-content">
+			            <div class="modal-header">
+			                <h4 id="replyModalTitle"></h4> <button type="button" onclick="closeModal()">&times;</button>
+			            </div>
+			            
+			            <div class="modal-body">
+			                <form id="sendMessageForm" action="${pageContext.request.contextPath}/message/send" method="post">
+			                    
+			                    <label>받는 사람 (ID)</label>
+			                    <div class="masked-id-display">
+		                            <i class="bi bi-person-badge" style="margin-right: 5px;"></i> 
+		                            <span id="maskedReceiverId"></span> 
+		                        </div>
+
+			                    <input type="hidden" id="modalReceiverId" name="receiverId" value="" required>
+
+			                    <label for="modalContent">내용</label>
+			                    <textarea id="modalContent" name="content" rows="6" required maxlength="2000"></textarea>
+
+			                    <button type="submit" class="btn-send-message">쪽지 보내기</button>
+			                </form>
+			            </div>
+			        </div>
+			    </div>
+	    <%-- ========================================================== --%>
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	
+	<script>
+	        document.addEventListener("DOMContentLoaded", function() {
+	            const modal = document.getElementById('messageModal');
+	            const sendMessageBtn = document.getElementById('sendMessageBtn');
+
+	            // 쪽지 보내기 버튼 클릭 시 모달 열기
+	            if (sendMessageBtn) {
+	                sendMessageBtn.addEventListener('click', openModal);
+	            }
+
+	            // 모달 외부를 클릭했을 때 닫기
+	            modal.addEventListener('click', (event) => {
+	                if (event.target === modal) {
+	                    closeModal();
+	                }
+	            });
+	        });
+
+	        function openModal() {
+	            document.getElementById('messageModal').style.display = 'flex';
+	        }
+
+	        function closeModal() {
+	            document.getElementById('messageModal').style.display = 'none';
+	        }
+			function openReplyModal(receiverId, receiverNickname) {
+		            const hiddenReceiverIdInput = document.getElementById('modalReceiverId');
+		            const maskedIdSpan = document.getElementById('maskedReceiverId');
+		            const modalTitle = document.getElementById('replyModalTitle');
+
+		            // 1. 모달의 제목과 입력 필드에 값 설정
+		            modalTitle.textContent = receiverNickname + '님께 쪽지 보내기';
+		            
+		            // 2. 실제 ID와 마스킹된 ID 설정
+		            hiddenReceiverIdInput.value = receiverId; // hidden 필드에 마스킹되지 않은 전체 ID 저장
+		            maskedIdSpan.textContent = maskId(receiverId); // 화면 표시용 ID 설정
+		            
+		            // 3. 내용 입력란 초기화
+		            document.getElementById('modalContent').value = '';
+
+		            // 4. 모달 표시
+		            document.getElementById('messageModal').style.display = 'flex';
+		        }
+
+		        function closeModal() {
+		            document.getElementById('messageModal').style.display = 'none';
+		        }
+		        
+		        document.addEventListener("DOMContentLoaded", function() {
+		            const modal = document.getElementById('messageModal');
+		            
+		            // [주의] sendMessageBtn은 이미 onclick을 가지고 있으므로, 추가 리스너는 필요 없습니다.
+
+		            // 모달 외부를 클릭했을 때 닫기
+		            modal.addEventListener('click', (event) => {
+		                // event.target === modal (검은 배경 자체)를 클릭했는지 확인
+		                if (event.target === modal) {
+		                    closeModal();
+		                }
+		            });
+		        });
+	        
+	        // 폼 제출 후 알림 메시지 표시 (필요에 따라)
+	        // Spring의 RedirectAttributes 메시지를 받아서 표시하는 로직이 필요할 수 있습니다.
+	        // if ("${message}" != "") { alert("${message}"); }
+			// ✅ [추가] ID 마스킹 함수
+	        function maskId(id) {
+	            if (!id) return '';
+	            const length = id.length;
+	            const visibleLength = Math.ceil(length / 2); // 절반은 보이게 (올림)
+	            const visiblePart = id.substring(0, visibleLength);
+	            const maskedPart = '*'.repeat(length - visibleLength);
+	            return visiblePart + maskedPart;
+	        }
+	    </script>	
 </body>
 </html>

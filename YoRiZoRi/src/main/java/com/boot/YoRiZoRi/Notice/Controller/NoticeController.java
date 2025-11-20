@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.boot.YoRiZoRi.Notice.dto.NoticeDTO;
 import com.boot.YoRiZoRi.Notice.service.NoticeService;
+import com.boot.YoRiZoRi.common.dto.PageDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,42 +25,69 @@ public class NoticeController {
     
     @Autowired
     private NoticeService noticeService;
+
+    // 🔧 공통적으로 admin 값을 안전하게 읽는 함수
+    private Integer getAdminValue(HttpSession session) {
+        if (session == null) return null;
+        Object adminObj = session.getAttribute("admin");
+        if (adminObj == null) return null;
+        try {
+            return Integer.parseInt(adminObj.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
     
-    // 공지사항 목록 페이지
+    // 공지사항 목록 페이지 - 페이징 추가
     @GetMapping("/notice")
     public String noticeList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "keyword", required = false) String keyword,
             HttpServletRequest request,
             Model model) {
-        log.info("@# GET /notice category={}, keyword={}", category, keyword);
+
+        log.info("@# GET /notice page={}, category={}, keyword={}", page, category, keyword);
         
-        // 세션에서 관리자 정보 확인
         HttpSession session = request.getSession(false);
-        if (session != null) {
-            Integer admin = (Integer) session.getAttribute("admin");
-            log.info("@# 공지사항 목록 - 세션 admin 값: {}", admin);
-            model.addAttribute("adminCheck", admin);
-        }
-        
-        List<NoticeDTO> notices;
-        
+
+        // 🔧 admin 값 안전 처리
+        Integer admin = getAdminValue(session);
+        model.addAttribute("adminCheck", admin);
+        log.info("@# 공지사항 목록 - 세션 admin 값: {}", admin);
+
         // 고정 공지사항 조회
         List<NoticeDTO> fixedNotices = noticeService.getFixedNotices();
         model.addAttribute("fixedNotices", fixedNotices);
         
-        // 검색어가 있으면 검색, 카테고리가 있으면 카테고리별 조회, 없으면 전체 조회
+        int pageSize = 6;
+        
+        int totalCount = 0;
+        List<NoticeDTO> notices;
+        
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("startRow", (page - 1) * pageSize);
+        param.put("pageSize", pageSize);
+        
         if (keyword != null && !keyword.trim().isEmpty()) {
-            HashMap<String, String> param = new HashMap<>();
             param.put("keyword", keyword);
-            notices = noticeService.search(param);
+            totalCount = noticeService.getSearchCount(param);
+            notices = noticeService.searchWithPaging(param);
+            model.addAttribute("keyword", keyword);
         } else if (category != null && !category.isEmpty()) {
-            notices = noticeService.listByCategory(category);
+            param.put("category", category);
+            totalCount = noticeService.getCategoryCount(category);
+            notices = noticeService.listByCategoryWithPaging(param);
+            model.addAttribute("category", category);
         } else {
-            notices = noticeService.list();
+            totalCount = noticeService.getTotalCount();
+            notices = noticeService.listWithPaging(param);
         }
         
+        PageDTO pageDTO = new PageDTO(page, totalCount, pageSize);
         model.addAttribute("notices", notices);
+        model.addAttribute("pageDTO", pageDTO);
+        
         return "notice/notice_list";
     }
     
@@ -73,121 +101,108 @@ public class NoticeController {
         
         return "notice/notice_detail";
     }
-    
-    // 공지사항 작성 페이지 (관리자만)
+
+    // 공지사항 작성 페이지
     @GetMapping("/notice/write")
     public String noticeWriteForm(HttpServletRequest request) {
-        log.info("@# GET /notice/write");
-        
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("id") == null) {
             return "redirect:/login";
         }
-        
-        Integer adminCk = (Integer) session.getAttribute("admin");
+
+        Integer adminCk = getAdminValue(session);
         if (adminCk == null || adminCk != 1) {
             return "redirect:/notice";
         }
         
         return "notice/notice_write";
     }
-    
+
     // 공지사항 작성 처리
     @PostMapping("/notice/write")
-    public String noticeWrite(
-            @RequestParam HashMap<String, String> param,
-            HttpServletRequest request) {
-        log.info("@# POST /notice/write param={}", param);
-        
+    public String noticeWrite(@RequestParam HashMap<String, String> param,
+                              HttpServletRequest request) {
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("id") == null) {
             return "redirect:/login";
         }
-        
-        Integer adminCk = (Integer) session.getAttribute("admin");
+
+        Integer adminCk = getAdminValue(session);
         if (adminCk == null || adminCk != 1) {
             return "redirect:/notice";
         }
-        
-        String memberId = (String) session.getAttribute("id");
-        param.put("member_id", memberId);
-        
+
+        param.put("member_id", (String) session.getAttribute("id"));
         noticeService.write(param);
         
         return "redirect:/notice";
     }
-    
+
     // 공지사항 수정 페이지
     @GetMapping("/notice/modify")
-    public String noticeModifyForm(
-            @RequestParam("noticeId") int noticeId,
-            HttpServletRequest request,
-            Model model) {
-        log.info("@# GET /notice/modify noticeId={}", noticeId);
-        
+    public String noticeModifyForm(@RequestParam("noticeId") int noticeId,
+                                   HttpServletRequest request,
+                                   Model model) {
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("id") == null) {
             return "redirect:/login";
         }
-        
-        Integer adminCk = (Integer) session.getAttribute("admin");
+
+        Integer adminCk = getAdminValue(session);
         if (adminCk == null || adminCk != 1) {
             return "redirect:/notice";
         }
-        
+
         NoticeDTO notice = noticeService.notgetNotice(noticeId);
         model.addAttribute("notice", notice);
         
         return "notice/notice_modify";
     }
-    
+
     // 공지사항 수정 처리
     @PostMapping("/notice/modify")
-    public String noticeModify(
-            @RequestParam HashMap<String, String> param,
-            HttpServletRequest request) {
-        log.info("@# POST /notice/modify param={}", param);
-        
+    public String noticeModify(@RequestParam HashMap<String, String> param,
+                               HttpServletRequest request) {
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("id") == null) {
             return "redirect:/login";
         }
-        
-        Integer adminCk = (Integer) session.getAttribute("admin");
+
+        Integer adminCk = getAdminValue(session);
         if (adminCk == null || adminCk != 1) {
             return "redirect:/notice";
         }
-        
-        // is_fixed 값이 없으면 0으로 설정
+
         if (!param.containsKey("is_fixed") || param.get("is_fixed") == null || param.get("is_fixed").isEmpty()) {
             param.put("is_fixed", "0");
         }
-        
+
         noticeService.modify(param);
         
         return "redirect:/notice/detail?noticeId=" + param.get("notice_id");
     }
-    
+
     // 공지사항 삭제
     @PostMapping("/notice/delete")
-    public String noticeDelete(
-            @RequestParam("noticeId") int noticeId,
-            HttpServletRequest request) {
-        log.info("@# POST /notice/delete noticeId={}", noticeId);
+    public String noticeDelete(@RequestParam("noticeId") int noticeId,
+                               HttpServletRequest request) {
         
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("id") == null) {
             return "redirect:/login";
         }
-        
-        Integer adminCk = (Integer) session.getAttribute("admin");
+
+        Integer adminCk = getAdminValue(session);
         if (adminCk == null || adminCk != 1) {
             return "redirect:/notice";
         }
-        
+
         noticeService.delete(noticeId);
         
         return "redirect:/notice";
     }
 }
-

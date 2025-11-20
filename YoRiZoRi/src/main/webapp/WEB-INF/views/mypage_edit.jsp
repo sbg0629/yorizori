@@ -107,20 +107,7 @@
             border-color: #2e7d32;
             box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
         }
-        .gender-group {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        .gender-group label {
-            margin: 0;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        .gender-group input[type="radio"] {
-            margin-right: 8px;
-        }
+  
 
         /* [추가] 이메일 인증 버튼용 스타일 */
         .input-group.with-button {
@@ -214,19 +201,38 @@
         <h2>마이페이지 수정</h2>
         
         <%-- [수정] 모든 ${member.속성} 을 ${user.속성} 으로 변경 --%>
-        <form action="<c:url value='/modify'/>" method="post" class="form-content">
-            <input type="hidden" name="memberId" value="${user.memberId}" />
+		<form action="<c:url value='/modify'/>" method="post" class="form-content" enctype="multipart/form-data">
+		    <input type="hidden" name="memberId" value="${user.memberId}" />
 
-            <div class="profile-image-section">
-                <c:choose>
-                    <c:when test="${not empty user.profileImage}">
-                         <img src="<c:url value='/resources/uploads/${user.profileImage}'/>" alt="프로필 이미지"/>
-                    </c:when>
-                    <c:otherwise>
-                        <img src="https://via.placeholder.com/150" alt="기본 프로필 이미지"/>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+		    <%-- ✅ [추가] 기존 파일명을 서버로 전송하여 파일 유지 또는 삭제의 기준으로 삼습니다. --%>
+		    <input type="hidden" name="profileImage" id="existingProfileImage" value="${user.profileImage}" /> 
+
+		    <div class="profile-image-section">
+		        <%-- 이미지 미리보기가 표시될 <img> 태그입니다. --%>
+		        <c:set var="imageSrc" value="${pageContext.request.contextPath}/images/기본프로필.png" />
+		        <c:if test="${not empty user.profileImage}">
+		            <%-- Spring Resource Handler 설정을 따르기 위해 '/images/' 경로를 사용합니다. --%>
+		            <c:set var="imageSrc" value="/images/${user.profileImage}" />
+		        </c:if>
+		        
+		        <%-- ✅ [수정] 이미지 로딩 시 미리보기 기능을 위한 id를 부여합니다. --%>
+		        <img id="profileImagePreview" 
+		             src="${imageSrc}" 
+		             alt="프로필 이미지" 
+		             style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;" />
+		        
+		        <div class="file-upload-controls" style="margin-top: 15px;">
+		            <label for="profileImageFile" class="btn btn-sm btn-outline-secondary">
+		                사진 변경
+		            </label>
+		            <%-- ✅ [추가] 파일 업로드를 위한 <input type="file"> 태그 --%>
+		            <input type="file" 
+		                   id="profileImageFile" 
+		                   name="profileImageFile" 
+		                   style="display: none;" 
+		                   accept="image/*" />
+		        </div>
+		    </div>
             
             <div class="form-fields">
                 <div class="form-group">
@@ -264,13 +270,7 @@
                     <label for="birthdate">생년월일</label>
                     <input type="date" id="birthdate" name="birthdate" value="<fmt:formatDate value="${user.birthdate}" pattern="yyyy-MM-dd"/>" />
                 </div>
-                <div class="form-group">
-                    <label>성별</label>
-                    <div class="gender-group">
-                        <label><input type="radio" name="gender" value="1" ${user.gender == 1 ? 'checked' : ''}> 남자</label>
-                        <label><input type="radio" name="gender" value="2" ${user.gender == 2 ? 'checked' : ''}> 여자</label>
-                    </div>
-                </div>
+
                 
                 <div class="form-actions">
                     <input type="submit" value="수정 완료" class="btn-submit" />
@@ -308,6 +308,35 @@
     const btnCheckEmailCode = document.getElementById('btnCheckEmailCode');
     const emailMsg = document.getElementById('emailMsg');
     const emailVerifyMsg = document.getElementById('emailVerifyMsg');
+	
+	document.addEventListener('DOMContentLoaded', function() {
+	        const fileInput = document.getElementById('profileImageFile');
+	        const previewImg = document.getElementById('profileImagePreview');
+	        const existingImg = document.getElementById('existingProfileImage');
+
+	        fileInput.addEventListener('change', function() {
+	            if (fileInput.files && fileInput.files[0]) {
+	                // 새 파일이 선택된 경우: FileReader로 미리보기
+	                const reader = new FileReader();
+	                reader.onload = function(e) {
+	                    previewImg.src = e.target.result;
+	                };
+	                reader.readAsDataURL(fileInput.files[0]);
+	            } else {
+	                // 파일 선택이 취소된 경우: 기존 이미지(hidden 필드 값)로 복원
+	                const existingFileName = existingImg.value;
+	                const defaultPath = '${pageContext.request.contextPath}/images/기본프로필.png';
+
+	                if (existingFileName) {
+	                    // 기존 파일명이 있다면 Spring Resource Handler 경로로 복원
+	                    previewImg.src = '/images/' + existingFileName;
+	                } else {
+	                    // 기존 파일명이 없다면 기본 이미지 경로로 복원
+	                    previewImg.src = defaultPath;
+	                }
+	            }
+	        });
+	    });
     
     
     // --- 2. 이메일 입력창 'blur' (포커스 아웃) 이벤트 리스너 ---

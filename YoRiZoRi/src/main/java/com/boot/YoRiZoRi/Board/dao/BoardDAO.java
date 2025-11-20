@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.boot.YoRiZoRi.Board.dto.BoardDTO;
 
-
+@Mapper
 public interface BoardDAO {
     
     // 게시글 목록 조회

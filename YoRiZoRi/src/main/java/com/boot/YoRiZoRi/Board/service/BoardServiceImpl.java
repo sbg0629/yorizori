@@ -1,4 +1,4 @@
-package com.boot.YoRiZoRi.Board.service;
+	package com.boot.YoRiZoRi.Board.service;
 
 import java.util.HashMap;
 import java.util.List;

@@ -11,27 +11,34 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 public class detailController {
 
     private final detailService detailedService;
+    
 
     // 생성자를 통한 의존성 주입 (DI)
     public detailController(detailService detailedService) {
         this.detailedService = detailedService;
     }
+    
+  
 
     /**
      * 레시피 상세 정보 페이지를 보여주는 메서드
@@ -521,5 +528,61 @@ public class detailController {
         model.addAttribute("bookmarkList", bookmarkList);
         
         return "mybookmark";
+    }
+    
+    @PostMapping("/review/writeFile")
+    public String writeReviewWithFile(@ModelAttribute ReviewDTO review, 
+                                      RedirectAttributes redirectAttributes,
+                                      HttpSession session) {
+        
+        // 1. 로그인 체크
+        String memberId = (String) session.getAttribute("id");
+        if (memberId == null) {
+            redirectAttributes.addFlashAttribute("msg", "로그인이 필요합니다.");
+            return "redirect:/login_view"; // 로그인 페이지 경로로 변경
+        }
+        if (review.getImageFile() == null || review.getImageFile().isEmpty()) {
+            // 이 메시지가 로그에 찍힌다면, 파일이 컨트롤러에서 Service로 넘어갈 때 유실된 것입니다.
+            System.out.println("❌ ERROR: Review Image File object is MISSING or EMPTY upon Controller reception.");
+        } else {
+            System.out.println("✅ SUCCESS: File received in Controller. Filename: " + review.getImageFile().getOriginalFilename());
+        }
+        
+        // ⭐ [수정 핵심] DTO 바인딩 문제 해결
+        // ReviewDTO에 private int recipeId; 필드를 추가하여 폼 데이터(name="recipeId")가 여기에 바인딩되었다고 가정합니다.
+        // DB 컬럼명(recipe_Id)에 올바른 값을 설정합니다. (이전까지 0이 들어갔던 문제를 해결)
+        if (review.getRecipe_Id() == 0 && review.getRecipeId() != 0) {
+            review.setRecipe_Id(review.getRecipeId());
+        }
+
+        // 2. 평점 유효성 검사 (클라이언트 검증 실패 대비)
+        if (review.getRating() < 1 || review.getRating() > 5) {
+            redirectAttributes.addFlashAttribute("message", "평점은 1~5점 사이로 입력해주세요.");
+            // 이제 review.getRecipe_Id()에는 올바른 ID(1)가 설정되어 있습니다.
+            return "redirect:/detail.do?recipe_Id=" + review.getRecipe_Id();
+        }
+        
+        // 3. 후기 작성 (Service에서 파일 처리 및 DB 저장)
+        review.setMemberId(memberId);
+        
+        try {
+            // Service의 insertReview 메서드 (파일 처리 로직 포함 가정) 호출
+            // Service로 전달되는 review 객체의 recipe_Id는 이제 1입니다.
+            boolean success = detailedService.insertReview(review);
+            
+            if (success) {
+                redirectAttributes.addFlashAttribute("message", "후기가 성공적으로 작성되었습니다.");
+            } else {
+                redirectAttributes.addFlashAttribute("message", "후기 작성에 실패했습니다.");
+            }
+            
+        } catch (Exception e) {
+            // [TODO] log.error("후기 작성 중 오류 발생", e);
+            redirectAttributes.addFlashAttribute("message", "후기 작성 중 서버 오류가 발생했습니다.");
+        }
+
+        // 4. 후기 작성 후 해당 레시피 상세 페이지로 리다이렉트
+        // ✅ review.getRecipe_Id()는 올바른 값(1)을 반환하므로, URL은 detail.do?recipe_Id=1이 됩니다.
+        return "redirect:/detail.do?recipe_Id=" + review.getRecipe_Id();
     }
 }

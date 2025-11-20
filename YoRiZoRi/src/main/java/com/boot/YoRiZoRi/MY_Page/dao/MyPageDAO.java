@@ -10,7 +10,7 @@ public interface MyPageDAO {
 	 List<MyPageDTO> list();
 	 MyPageDTO getUserById(String memberId); 
 	 List<MyRecipeDTO> getById(String memberId);
-	public void modify(HashMap<String, String> param);
+	public void modify(MyPageDTO myPageDTO);
 	public void delete(HashMap<String, String> param);
 	
 	

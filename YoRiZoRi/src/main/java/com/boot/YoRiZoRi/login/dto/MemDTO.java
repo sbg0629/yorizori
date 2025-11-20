@@ -19,5 +19,7 @@ public class MemDTO {
     private Integer gender;
     private Date joinDate;
     private int Adminck;
+    private String socialType;
+    private String socialId;
     
 }

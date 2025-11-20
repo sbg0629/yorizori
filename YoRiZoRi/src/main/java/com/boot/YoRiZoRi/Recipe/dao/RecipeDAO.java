@@ -3,11 +3,14 @@ package com.boot.YoRiZoRi.Recipe.dao;
 import java.util.List; // [추가]
 import java.util.Map;  // [추가]
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.boot.YoRiZoRi.Recipe.dto.CategoryDTO;
 import com.boot.YoRiZoRi.Recipe.dto.IngredientDTO;
 import com.boot.YoRiZoRi.Recipe.dto.RecipeDTO;
 import com.boot.YoRiZoRi.Recipe.dto.StepDTO;
 
+@Mapper
 public interface RecipeDAO {
     // 레시피 기본 정보
     void insertRecipe(RecipeDTO recipeDTO);

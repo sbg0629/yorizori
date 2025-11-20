@@ -24,20 +24,24 @@
             MEMBER_ID = #{MEMBER_ID} AND password = #{PASSWORD}
     </select>
     
-    <insert id="write" parameterType="java.util.HashMap">
-        INSERT INTO member_tb ( 
-            member_id, name, password, nickname, email, 
-            profile_image, phone_number, birthdate, gender 
-        ) VALUES ( 
-            #{MEMBER_ID}, #{NAME}, #{PASSWORD}, #{NICKNAME}, #{EMAIL}, 
-            #{PROFILE_IMAGE}, #{PHONE_NUMBER}, TO_DATE(#{BIRTHDATE}, 'YYYY-MM-DD'), #{GENDER} 
-        )
-    </insert>
-    
     <select id="getMemberInfo" parameterType="string" resultMap="memResultMap">
         SELECT * FROM member_tb 
         WHERE MEMBER_ID = #{id}
-    </select>
+   </select>
+   
+   
+<insert id="write" parameterType="java.util.HashMap">
+    INSERT INTO member_tb (
+        member_id, name, password, nickname, email,
+        phone_number, birthdate,
+        social_type, social_id
+    ) VALUES (
+        #{MEMBER_ID}, #{NAME}, #{PASSWORD}, #{NICKNAME}, #{EMAIL, jdbcType=VARCHAR},
+        #{PHONE_NUMBER, jdbcType=VARCHAR}, #{BIRTHDATE, jdbcType=DATE},
+        #{SOCIAL_TYPE, jdbcType=VARCHAR}, #{SOCIAL_ID, jdbcType=VARCHAR}
+    )
+</insert>
+    
 
     <select id="idCheck" parameterType="string" resultType="int">
         SELECT count(*) FROM member_tb WHERE MEMBER_ID = #{memberId}
@@ -67,10 +71,18 @@
     
     <!-- 랜덤 멤버 5명 조회 -->
     <select id="getRandomMembers" resultMap="memResultMap">
-        SELECT * FROM (
-            SELECT * FROM member_tb 
-            ORDER BY DBMS_RANDOM.VALUE
-        ) WHERE ROWNUM &lt;= 5
-    </select>
+	    SELECT * FROM (
+	        SELECT 
+	            MEMBER_ID, 
+	            NICKNAME, 
+	            PROFILE_IMAGE  
+	            FROM member_tb 
+	        ORDER BY DBMS_RANDOM.VALUE
+	    ) WHERE ROWNUM &lt;= 5
+	</select>
     
+          <select id="findMemberBySocial" parameterType="java.util.HashMap" resultMap="memResultMap">
+        SELECT * FROM member_tb
+        WHERE social_type = #{socialType} AND social_id = #{socialId}
+    </select>
 </mapper>

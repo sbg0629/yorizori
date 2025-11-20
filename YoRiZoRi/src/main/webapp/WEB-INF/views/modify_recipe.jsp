@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <%-- (1) 제목 변경 --%>
     <title>레시피 수정 - ${recipe.title}</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 		    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
@@ -43,8 +42,13 @@
         button { padding: 12px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 1rem; font-weight: 600; }
         .btn-add { background-color: #e0e0e0; color: #333; }
         .btn-remove { background-color: #fbe9e7; color: #ff6f61; padding: 8px 12px; font-size: 0.9rem; }
+        /* ✅ 수정: 이미지 스타일 통합 및 크기 조정 */
+        .image-preview-container { margin-top: 10px; margin-bottom: 10px; display: flex; flex-direction: column; align-items: flex-start; }
+        .recipe-image-preview { max-width: 150px; max-height: 150px; border-radius: 5px; object-fit: cover; border: 1px solid #ddd; }
+        .step-image-group { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .step-image-preview { max-width: 100px; max-height: 100px; border-radius: 5px; object-fit: cover; border: 1px solid #ddd; margin-bottom: 5px; }
+
         .btn-submit { display: block; width: 100%; padding: 15px; font-size: 1.2rem; background-color: #ff6f61; color: white; margin-top: 20px; }
-        .current-image { max-width: 100px; max-height: 100px; margin-right: 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -52,9 +56,7 @@
 
 <main>
     <div class="form-container">
-        <%-- (2) form 태그 action 경로 변경 --%>
         <form action="${pageContext.request.contextPath}/updateRecipe" method="post" enctype="multipart/form-data">
-            <%-- (3) 어떤 레시피를 수정할지 알려주기 위한 hidden input 추가 --%>
             <input type="hidden" name="recipeId" value="${recipe.recipeId}">
             
             <h2>레시피 수정</h2>
@@ -68,7 +70,6 @@
                 </div>
                 <div class="form-group">
                     <label for="description">설명</label>
-                    <%-- textarea는 value 속성이 없으므로 태그 사이에 값을 넣어줍니다. --%>
                     <textarea id="description" name="description" required>${recipe.description}</textarea>
                 </div>
                 <div class="form-group">
@@ -83,46 +84,47 @@
                     <label for="cookingTime">조리 시간</label>
                     <input type="text" id="cookingTime" name="cookingTime" value="${recipe.cookingTime}">
                 </div>
+                
                 <div class="form-group">
                     <label for="mainImageFile">메인 이미지</label>
-                    <div>
-                        <p>현재 이미지:</p>
-                        <img src="${recipe.mainImage}" alt="현재 메인 이미지" class="current-image">
-                        <p>새 이미지로 변경하려면 아래에서 파일을 선택하세요.</p>
-                        <input type="file" id="mainImageFile" name="mainImageFile">
-                        <%-- 기존 이미지 URL을 보내서, 새 파일이 없으면 유지하도록 서버에서 처리 --%>
+                    <div class="image-preview-container">
+                        <%-- ✅ 기존 이미지 표시 또는 미리보기용 이미지 --%>
+                        <img id="mainImagePreview" 
+                             class="recipe-image-preview" 
+                             src="/images/${recipe.mainImage}" 
+                             alt="현재 메인 이미지"
+                             style="<c:if test="${empty recipe.mainImage}">display:none;</c:if>">
+                        
+                        <p style="margin-top: 10px; margin-bottom: 5px;">이미지 변경:</p>
+                        <input type="file" id="mainImageFile" name="mainImageFile" accept="image/*">
+                        
+                        <%-- 기존 이미지 URL을 서버로 다시 보냅니다. 파일이 선택되지 않으면 이 값이 사용됩니다. --%>
                         <input type="hidden" name="mainImage" value="${recipe.mainImage}">
                     </div>
                 </div>
             </fieldset>
 
-            <%-- 카테고리는 등록 페이지와 동일하게 가져온다고 가정 --%>
+            <%-- 카테고리 필드셋 (변경 없음) --%>
             <fieldset>
-    <legend>카테고리</legend>
-    <div class="form-group category-group">
-        <%-- recipe 객체에 categoryList가 있다고 가정합니다. 없다면 Controller에서 따로 넘겨줘야 합니다. --%>
-        <%-- 현재 레시피가 속한 카테고리 ID들을 Set으로 만들어 빠른 조회를 준비합니다. --%>
-        <c:set var="selectedCategoryIds" value="${recipe.getCategoryIdsSet()}" /> 
-
-        <c:forEach items="${categories}" var="category">
-            <label>
-                <%-- Set에 현재 카테고리 ID가 포함되어 있으면 checked 속성을 추가합니다. --%>
-                <input type="checkbox" name="categoryIds" value="${category.categoryId}" 
-                       <c:if test="${selectedCategoryIds.contains(category.categoryId)}">checked</c:if>>
-                ${category.name}
-            </label>
-        </c:forEach>
-    </div>
-</fieldset>
+                <legend>카테고리</legend>
+                <div class="form-group category-group">
+                    <c:set var="selectedCategoryIds" value="${recipe.getCategoryIdsSet()}" /> 
+                    <c:forEach items="${categories}" var="category">
+                        <label>
+                            <input type="checkbox" name="categoryIds" value="${category.categoryId}" 
+                                   <c:if test="${selectedCategoryIds.contains(category.categoryId)}">checked</c:if>>
+                            ${category.name}
+                        </label>
+                    </c:forEach>
+                </div>
+            </fieldset>
 
             <fieldset>
                 <legend>재료</legend>
                 <div id="ingredients">
-                    <%-- (4) 기존 재료 목록을 c:forEach로 출력 --%>
                     <c:forEach var="ing" items="${recipe.ingredientList}" varStatus="loop">
                         <div class="ingredient dynamic-item">
                         	<input type="hidden" name="ingredientList[${loop.index}].ingredientId" value="${ing.ingredientId}">
-                            <%-- name 속성의 인덱스를 loop.index로 동적 할당 --%>
                             <input type="text" name="ingredientList[${loop.index}].name" placeholder="재료명" required value="${ing.name}">
                             <input type="text" name="ingredientList[${loop.index}].quantity" placeholder="양" required value="${ing.quantity}">
                             <button type="button" class="removeIngredientBtn btn-remove">삭제</button>
@@ -135,18 +137,19 @@
             <fieldset>
                 <legend>조리 순서</legend>
                 <div id="steps">
-                    <%-- (5) 기존 조리 순서 목록을 c:forEach로 출력 --%>
                     <c:forEach var="step" items="${recipe.stepList}" varStatus="loop">
                         <div class="step dynamic-item">
                             <input type="text" name="stepList[${loop.index}].stepNumber" value="${step.stepNumber}" readonly size="3" style="flex-grow:0; text-align:center; background-color: #f8f9fa;">
                             <input type="text" name="stepList[${loop.index}].instruction" placeholder="설명" required value="${step.instruction}">
                             
-                            <%-- 기존 이미지 표시 및 새 파일 업로드 필드 --%>
-                            <div>
-                                <c:if test="${not empty step.imageUrl}">
-                                    <img src="${step.imageUrl}" alt="Step ${step.stepNumber} Image" class="current-image">
-                                </c:if>
-                                <input type="file" name="stepList[${loop.index}].imageFile" style="flex-grow:0;">
+                            <%-- ✅ 조리 순서 이미지 표시 및 새 파일 업로드 필드 --%>
+                            <div class="step-image-group">
+                                <img class="step-image-preview"
+                                     src="/images/${step.imageUrl}" 
+                                     alt="Step ${step.stepNumber} Image"
+                                     style="<c:if test="${empty step.imageUrl}">display:none;</c:if>">
+                                     
+                                <input type="file" name="stepList[${loop.index}].imageFile" class="stepImageFile" style="flex-grow:0;" accept="image/*">
                                 <input type="hidden" name="stepList[${loop.index}].imageUrl" value="${step.imageUrl}">
                             </div>
                             
@@ -157,7 +160,6 @@
                 <button type="button" id="addStepBtn" class="btn-add">조리 순서 추가</button>
             </fieldset>
 
-            <%-- (6) 버튼 텍스트 변경 --%>
             <button type="submit" class="btn-submit">수정하기</button>
         </form>
     </div>
@@ -165,7 +167,7 @@
 
 <footer>...</footer>
 
-<%-- 재료, 조리 순서 추가를 위한 템플릿 (등록 페이지와 동일) --%>
+<%-- 재료, 조리 순서 추가를 위한 템플릿 (step-template에 이미지 필드 추가) --%>
 <div id="ingredient-template" style="display: none;">
     <div class="ingredient dynamic-item">
     	<input type="hidden" name="ingredientList[__INDEX__].ingredientId" value="0">
@@ -178,176 +180,137 @@
     <div class="step dynamic-item">
         <input type="text" name="stepList[__INDEX__].stepNumber" value="__STEP_NUMBER__" readonly size="3" style="flex-grow:0; text-align:center; background-color: #f8f9fa;">
         <input type="text" name="stepList[__INDEX__].instruction" placeholder="설명" required>
-        <input type="file" name="stepList[__INDEX__].imageFile" style="flex-grow:0;">
-        <input type="hidden" name="stepList[__INDEX__].imageUrl" value="">
+        
+        <%-- ✅ 템플릿에도 이미지 미리보기/업로드 필드 추가 --%>
+        <div class="step-image-group">
+            <img class="step-image-preview" src="#" alt="순서 이미지 미리보기" style="display:none;">
+            <input type="file" name="stepList[__INDEX__].imageFile" class="stepImageFile" style="flex-grow:0;" accept="image/*">
+            <input type="hidden" name="stepList[__INDEX__].imageUrl" value="">
+        </div>
+        
         <button type="button" class="removeStepBtn btn-remove">삭제</button>
     </div>
 </div>
 
 
-<%-- [최종 해결 v4] 디버깅 로그 제거한 최종본 --%>
 <script>
-$(document).ready(function() {
-    // ========== 헤더 기능 Javascript ==========
-    // (이하 생략 - 기존과 동일)
-    $('#search-icon').on('click', function(e) {
-        $('.search-box').toggleClass('active');
-        if ($('.search-box').hasClass('active')) {
-            $('.search-input').focus();
-        }
-        e.stopPropagation(); 
-    });
-    $('#menu-toggle').on('click', function(e) {
-        $('#login-menu').toggleClass('show');
-        $(this).toggleClass('bi-list bi-x');
-        e.stopPropagation();
-    });
-    $(document).on('click', function() {
-        if ($('.search-box').hasClass('active')) {
-            $('.search-box').removeClass('active');
-        }
-        if ($('#login-menu').hasClass('show')) {
-            $('#login-menu').removeClass('show');
-            $('#menu-toggle').removeClass('bi-x').addClass('bi-list');
-        }
-    });
-    $('#login-menu, .search-box').on('click', function(e) {
-        e.stopPropagation();
-    });
-    // (헤더 기능 끝)
     // ===========================================
-	
- 
-    // 1. 재료 추가 로직 (기존과 동일)
+    // ✅ 이미지 미리보기 공통 함수 (기존/신규 파일 처리 로직 포함)
     // ===========================================
-    $('#addIngredientBtn').click(function () {
-        const newIndex = $('#ingredients .ingredient').length;
-        const template = $('#ingredient-template').html();
-        const newHtml = template.replace(/__INDEX__/g, newIndex);
-        $('#ingredients').append(newHtml);
-    });
-
-    // ===========================================
-    // 2. 재료 삭제 로직 (✅ [수정됨] EL 충돌 제거)
-    // ===========================================
-    $('#ingredients').on('click', '.removeIngredientBtn', function () {
-        if ($('#ingredients .ingredient').length <= 1) {
-            alert("최소 1개의 재료는 필요합니다.");
-            return;
-        }
-
-        $(this).closest('.ingredient').remove();
-
-        // console.log("--- [v6] 재료 삭제 후 인덱스 재정렬 시작 ---"); // 로그 제거
-        $('#ingredients .ingredient').each(function (index) {
-            // console.log("[v6 재료 " + index + "] 처리 시작"); // 로그 제거
-            const inputs = $(this).find('> input');
-
-            if (inputs.length >= 3) {
-                const idInput = inputs.eq(0);
-                const nameInput = inputs.eq(1);
-                const quantityInput = inputs.eq(2);
-
-                idInput.attr('name', 'ingredientList[' + index + '].ingredientId');
-                // console.log("  ID 실제 값: " + idInput.attr('name')); // 로그 제거
-
-                nameInput.attr('name', 'ingredientList[' + index + '].name');
-                // console.log("  Name 실제 값: " + nameInput.attr('name')); // 로그 제거
-
-                quantityInput.attr('name', 'ingredientList[' + index + '].quantity');
-                // console.log("  Quantity 실제 값: " + quantityInput.attr('name')); // 로그 제거
+    function previewImage(fileInput, previewElement) {
+        if (fileInput.files && fileInput.files[0]) {
+            // 1. 새 파일이 선택된 경우: FileReader로 미리보기
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewElement.attr('src', e.target.result).show();
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        } else {
+            // 2. 파일이 선택되지 않은 경우 (취소한 경우)
+            //    2-1. 기존 이미지 URL hidden 필드 찾기
+            const parent = fileInput.closest('.form-group, .step-image-group'); // 부모 컨테이너 찾기
+            const existingUrlInput = parent.find('input[type="hidden"][name*="Image"], input[type="hidden"][name*="Url"]');
+            const existingUrl = existingUrlInput.val();
+            
+            if (existingUrl && existingUrl !== '') {
+                // 2-2. 기존 이미지 URL이 있으면 다시 표시
+                previewElement.attr('src', '/images/' + existingUrl).show();
             } else {
-                 // console.error("[오류 v6] 재료 " + index + ": 예상과 달리 input이 " + inputs.length + "개 발견됨"); // 로그 제거
+                // 2-3. 기존 이미지도 없으면 숨김
+                previewElement.attr('src', '#').hide();
             }
-        });
-        // console.log("--- [v6] 재료 삭제 후 인덱스 재정렬 완료 ---"); // 로그 제거
-    }); // 재료 삭제 로직 끝
-
-    // ===========================================
-    // 3. 조리 순서 추가 로직 (기존과 동일)
-    // ===========================================
-    $('#addStepBtn').click(function () {
-        const newIndex = $('#steps .step').length;
-        const newStepNumber = newIndex + 1;
-        const template = $('#step-template').html();
-        let newHtml = template.replace(/__INDEX__/g, newIndex);
-        newHtml = newHtml.replace(/__STEP_NUMBER__/g, newStepNumber);
-        $('#steps').append(newHtml);
-    });
-
-    // ===========================================
-    // 4. 조리 순서 삭제 로직 (✅ [수정됨] EL 충돌 제거)
-    // ===========================================
-    $('#steps').on('click', '.removeStepBtn', function () {
-        if ($('#steps .step').length <= 1) {
-            alert("최소 1개의 조리 순서는 필요합니다.");
-            return;
         }
+    }
 
-        $(this).closest('.step').remove();
-
-        // console.log("--- [v6] 조리 순서 삭제 후 인덱스 재정렬 시작 ---"); // 로그 제거
-        $('#steps .step').each(function (index) {
-            // console.log("[v6 순서 " + index + "] 처리 시작"); // 로그 제거
-            const stepNumber = index + 1;
-            const inputs = $(this).find('input');
-
-            if (inputs.length >= 4) {
-                 const numberInput = inputs.eq(0);
-                 const instructionInput = inputs.eq(1);
-                 const fileInput = inputs.eq(2);
-                 const urlInput = inputs.eq(3);
-
-                 numberInput.val(stepNumber);
-                 numberInput.attr('name', 'stepList[' + index + '].stepNumber');
-                 // console.log("  Number 실제 값: " + numberInput.attr('name')); // 로그 제거
-
-                 instructionInput.attr('name', 'stepList[' + index + '].instruction');
-                 // console.log("  Instruction 실제 값: " + instructionInput.attr('name')); // 로그 제거
-
-                 fileInput.attr('name', 'stepList[' + index + '].imageFile');
-                 // console.log("  File 실제 값: " + fileInput.attr('name')); // 로그 제거
-
-                 urlInput.attr('name', 'stepList[' + index + '].imageUrl');
-                 // console.log("  Url 실제 값: " + urlInput.attr('name')); // 로그 제거
-            } else {
-                 // console.error("[오류 v6] 조리 순서 " + index + ": 예상과 달리 input이 " + inputs.length + "개 발견됨"); // 로그 제거
-            }
+    $(document).ready(function() {
+    
+        // 1. 메인 이미지 미리보기 이벤트 핸들러
+        // ===========================================
+        $('#mainImageFile').change(function() {
+            previewImage(this, $('#mainImagePreview'));
         });
-        // console.log("--- [v6] 조리 순서 삭제 후 인덱스 재정렬 완료 ---"); // 로그 제거
-    }); // 조리 순서 삭제 로직 끝
- // ===========================================
-    // ✅ [추가] 카테고리 체크박스 하나만 선택되도록 제한
-    // ===========================================
-    // name이 "categoryIds"인 체크박스들의 'change' 이벤트를 감지합니다.
-    $('input[type="checkbox"][name="categoryIds"]').on('change', function() {
-        // 1. 현재 클릭된 체크박스가 '체크된' 상태인지 확인합니다.
-        if ($(this).is(':checked')) {
-            // 2. 만약 체크되었다면, '다른' 체크박스들을 모두 찾아서
-            //    (name이 같지만 현재 클릭된 것은 제외)
-            $('input[type="checkbox"][name="categoryIds"]').not(this).each(function() {
-                // 3. 체크를 해제합니다.
-                $(this).prop('checked', false);
+
+        // 2. 조리 순서 추가 로직
+        // ===========================================
+        $('#addStepBtn').click(function () {
+            const newIndex = $('#steps .step').length;
+            const newStepNumber = newIndex + 1;
+            const template = $('#step-template').html();
+            let newHtml = template.replace(/__INDEX__/g, newIndex);
+            newHtml = newHtml.replace(/__STEP_NUMBER__/g, newStepNumber);
+            
+            // ✅ 템플릿을 추가할 때, 새로 추가된 요소에 이미지가 없으므로 숨깁니다.
+            const $newStep = $(newHtml);
+            $newStep.find('.step-image-preview').hide();
+            $('#steps').append($newStep);
+        });
+
+        // 3. 동적 생성/기존 조리 순서 이미지 미리보기 이벤트 핸들러
+        // ===========================================
+        $('#steps').on('change', '.stepImageFile', function() {
+             const previewElement = $(this).siblings('.step-image-preview');
+             previewImage(this, previewElement);
+        });
+        
+        // --- (나머지 재료/순서 추가/삭제 로직, 카테고리 로직은 변경 없이 유지) ---
+        // 재료 추가 로직
+        $('#addIngredientBtn').click(function () {
+            const newIndex = $('#ingredients .ingredient').length;
+            const template = $('#ingredient-template').html();
+            const newHtml = template.replace(/__INDEX__/g, newIndex);
+            $('#ingredients').append(newHtml);
+        });
+
+        // 재료 삭제 로직
+        $('#ingredients').on('click', '.removeIngredientBtn', function () {
+            if ($('#ingredients .ingredient').length <= 1) {
+                alert("최소 1개의 재료는 필요합니다.");
+                return;
+            }
+            $(this).closest('.ingredient').remove();
+            $('#ingredients .ingredient').each(function (index) {
+                const inputs = $(this).find('> input');
+                if (inputs.length >= 3) {
+                    inputs.eq(0).attr('name', 'ingredientList[' + index + '].ingredientId');
+                    inputs.eq(1).attr('name', 'ingredientList[' + index + '].name');
+                    inputs.eq(2).attr('name', 'ingredientList[' + index + '].quantity');
+                }
             });
-        }
-        // 만약 체크를 '해제'한 경우에는 아무것도 하지 않습니다.
-        // (즉, 마지막으로 체크된 것을 해제하면 모두 해제된 상태가 됩니다.)
-    });
+        }); 
 
+        // 조리 순서 삭제 로직
+        $('#steps').on('click', '.removeStepBtn', function () {
+            if ($('#steps .step').length <= 1) {
+                alert("최소 1개의 조리 순서는 필요합니다.");
+                return;
+            }
+            $(this).closest('.step').remove();
+            $('#steps .step').each(function (index) {
+                const stepNumber = index + 1;
+                const inputs = $(this).find('input');
 
-    // ===========================================
-    // 폼 제출 직전 데이터 검사 (로그 제거됨)
-    // ===========================================
-    /*
-    $('form').on('submit', function(event) {
-        console.log("\n--- [v6] 폼 제출 직전 데이터 검사 ---");
-        // ... (로그 출력 코드) ...
-        event.preventDefault();
-        alert("폼 제출이 중단되었습니다. 개발자 도구 콘솔을 확인하세요.");
-    });
-    */
+                if (inputs.length >= 4) {
+                     inputs.eq(0).val(stepNumber);
+                     inputs.eq(0).attr('name', 'stepList[' + index + '].stepNumber');
+                     inputs.eq(1).attr('name', 'stepList[' + index + '].instruction');
+                     // inputs.eq(2)는 file input 이므로 class로 찾는것보다 inputs의 index로 처리합니다.
+                     inputs.eq(2).attr('name', 'stepList[' + index + '].imageFile');
+                     inputs.eq(3).attr('name', 'stepList[' + index + '].imageUrl');
+                }
+            });
+        }); 
+        
+        // 카테고리 체크박스 하나만 선택되도록 제한
+        $('input[type="checkbox"][name="categoryIds"]').on('change', function() {
+            if ($(this).is(':checked')) {
+                $('input[type="checkbox"][name="categoryIds"]').not(this).each(function() {
+                    $(this).prop('checked', false);
+                });
+            }
+        });
+        // --- (나머지 로직 끝) ---
 
-}); // $(document).ready 끝
+    }); // $(document).ready 끝
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>

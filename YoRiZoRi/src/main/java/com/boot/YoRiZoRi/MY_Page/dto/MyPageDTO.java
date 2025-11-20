@@ -1,6 +1,9 @@
 package com.boot.YoRiZoRi.MY_Page.dto;
 
 import java.sql.Date;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -14,5 +17,7 @@ public class MyPageDTO {
     private String profileImage;
     private String phoneNumber;
     private Date birthdate;
-    private Integer gender;
+//    private Integer gender;
+    
+    private MultipartFile profileImageFile;
 }

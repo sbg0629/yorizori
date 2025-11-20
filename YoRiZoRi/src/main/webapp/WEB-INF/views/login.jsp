@@ -1,4 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    // 네이버 설정
+    String naverClientId = ""; 
+    String naverRedirectUri = "http://localhost:8484/login/oauth2/code/naver"; 
+    String state = "RANDOM_STATE"; 
+    
+    // 카카오 설정 추가
+	String kakaoClientId = "";  
+		
+	String kakaoRedirectUri = "http://localhost:8484/oauth2/callback/kakao";
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,15 +17,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인 | 요리조리</title>
     
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
+    <!-- 필수 아이콘 및 스타일 로드 -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-		    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-			<link href="${pageContext.request.contextPath}/css/header.css" rel="stylesheet" type="text/css">
-			<link href="${pageContext.request.contextPath}/css/footer.css" rel="stylesheet" type="text/css">
-			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link href="${pageContext.request.contextPath}/css/header.css" rel="stylesheet" type="text/css">
+	<link href="${pageContext.request.contextPath}/css/footer.css" rel="stylesheet" type="text/css">
     
     <style>
         /* ====== 공통 스타일 ====== */
@@ -35,7 +41,7 @@
         }
 
 
-        /* ====== 로그인 폼 영역 (새롭게 디자인) ====== */
+        /* ====== 로그인 폼 영역 ====== */
         .login-container {
             flex: 1;
             display: flex;
@@ -76,7 +82,7 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
-            box-sizing: border-box; /* 패딩 포함해서 너비 계산 */
+            box-sizing: border-box;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
         .form-control:focus {
@@ -104,6 +110,9 @@
             margin-top: 20px;
             font-size: 0.9rem;
             color: #777;
+            padding-bottom: 20px; /* 로고와 구분선 추가 */
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
         }
         .links-area a {
             color: #555;
@@ -117,16 +126,67 @@
             color: #e74c3c;
             margin-top: 15px;
             font-weight: 600;
-            height: 20px; /* 메시지 영역 항상 확보 */
+            height: 20px;
         }
 
+        /* ====== 소셜 로그인 로고 버튼 스타일 (수정됨) ====== */
+		.social-logo-container {
+		    display: flex;
+		    justify-content: center;
+		    gap: 20px; /* 로고 간 간격 */
+		    margin-top: 20px;
+		}
+
+		.social-logo-btn {
+		    width: 50px; 
+		    height: 50px;
+		    /* 둥근 사각형 (스쿼클) 모양 */
+		    border-radius: 12px; 
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    font-size: 24px;
+		    text-decoration: none;
+		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		    transition: all 0.3s ease;
+		}
+
+		.social-logo-btn:hover {
+		    transform: scale(1.1);
+		    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+		}
+
+		/* 카카오 (노란색 배경, 어두운 아이콘) */
+		.kakao-logo-btn {
+		    background-color: #FEE500;
+		    color: #3C1E1E; 
+		}
+
+		/* 구글 (흰색 배경, 이미지 로고) */
+		.google-logo-btn {
+		    background-color: white; 
+            border: 1px solid #ddd; 
+		}
+        .google-logo-btn img {
+            width: 70%; /* 이미지 크기 조정 */
+            height: auto;
+        }
+        
+        /* 네이버 (흰색 배경, 이미지 로고) */
+		.naver-logo-btn {
+		    background-color: white; 
+            border: 1px solid #ddd;
+		}
+        .naver-logo-btn img {
+            width: 70%; /* 이미지 크기 조정 */
+            height: auto;
+        }
   
     </style>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
-    <!-- 새롭게 디자인된 로그인 폼 -->
     <main class="login-container">
         <div class="login-box">
             <h2>로그인</h2>
@@ -143,6 +203,30 @@
                 <div class="msg">${msg}</div>
 
                 <button type="submit" class="btn-login">로그인</button>
+				<!-- 소셜 로그인 로고 버튼 컨테이너 -->
+						<div class="social-logo-container">
+						    
+						    <!-- 카카오 로그인 (아이콘: Chat Bubble) -->
+						    <a href="https://kauth.kakao.com/oauth/authorize?client_id=<%=kakaoClientId%>&redirect_uri=<%=kakaoRedirectUri%>&response_type=code" 
+						       class="social-logo-btn kakao-logo-btn" title="카카오 로그인">
+						        <!-- Font Awesome Chat Icon -->
+						        <i class="fas fa-comment"></i>
+						    </a>
+
+						    <!-- 구글 로그인 (이미지 로고 사용) -->
+						    <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=[[]][][][][][][][][[][][][][]&redirect_uri=http://localhost:8484/login/oauth2/code/google&response_type=code&scope=profile email openid" 
+						       class="social-logo-btn google-logo-btn" title="Google 로그인">
+				                <img src="https://recipe1.ezmember.co.kr/img/mobile/2022/icon_sns_g2.png?v.1" alt="Google 로고">
+						    </a>
+
+						    <!-- 네이버 로그인 (이미지 로고 사용) -->
+						    <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=<%=naverClientId%>&redirect_uri=<%=naverRedirectUri%>&state=<%=state%>" 
+						       class="social-logo-btn naver-logo-btn" title="Naver 로그인">
+						        <!-- 네이버 로고 이미지 -->
+						        <img src="https://recipe1.ezmember.co.kr/img/mobile/2022/icon_sns_n3.png?v.1" alt="Naver 로고">
+						    </a>
+						</div>
+
                 
                 <div class="links-area">
                     <a href="${pageContext.request.contextPath}/register">회원가입</a> |
@@ -150,6 +234,9 @@
                     <a href="javascript:history.back()">뒤로가기</a>
                 </div>
             </form>
+			
+		
+
         </div>
     </main>
 

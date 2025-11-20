@@ -18,4 +18,5 @@ public class CommentDTO {
     private String memberId;
     private String content;
     private Date createdat;
+    private String nickname;
 }

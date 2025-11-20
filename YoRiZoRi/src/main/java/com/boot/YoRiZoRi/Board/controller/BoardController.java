@@ -34,12 +34,13 @@ public class BoardController {
     
     // 게시판 목록 페이지
     @GetMapping("/board")
-    public String boardList(
+    public String boardList(    		
+    		@RequestParam(value = "type", required = false) String type,
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "page", required = false, defaultValue = "1") int page,
             HttpServletRequest request,
             Model model) {
-        log.info("@# GET /board keyword={}, page={}", keyword, page);
+        log.info("@# GET /board type={}, keyword={}, page={}", type,keyword, page);
         
         // 세션에서 사용자 정보 확인
         HttpSession session = request.getSession(false);
@@ -48,11 +49,16 @@ public class BoardController {
             model.addAttribute("memberId", memberId);
         }
         
+        String refinedtype = (type != null && !type.trim().isEmpty()) ? type.trim() : null;
         String refinedKeyword = (keyword != null && !keyword.trim().isEmpty()) ? keyword.trim() : null;
         
         HashMap<String, Object> param = new HashMap<>();
         if (refinedKeyword != null) {
             param.put("keyword", refinedKeyword);
+        }
+        
+        if (refinedtype != null) {
+        	param.put("type", refinedtype);
         }
         
         int totalCount = boardService.getBoardCount(param);
@@ -66,6 +72,7 @@ public class BoardController {
         model.addAttribute("boards", boards);
         model.addAttribute("pageDTO", pageDTO);
         model.addAttribute("keyword", refinedKeyword);
+        model.addAttribute("type", refinedtype);
         return "board/board_list";
     }
     

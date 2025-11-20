@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,6 +27,7 @@ public class MyPageController {
 	
 	@Autowired
 	private MyPageService service;
+	
 	
 	
 	@RequestMapping("/role")
@@ -82,26 +85,25 @@ public class MyPageController {
 //		String memberId = param.get("member_Id");
 //		return "redirect:list?member_Id=" + memberId;
 //	}
-	@RequestMapping("/modify")
-	public String modify(HttpServletRequest request, @RequestParam HashMap<String, String> param, Model model) {
-	    // 세션 확인
-	    HttpSession session = request.getSession(false);
-	    if(session == null || session.getAttribute("id") == null) {
+	@PostMapping("/modify")
+	public String modify(@ModelAttribute MyPageDTO myPageDTO, 
+	                     HttpSession session) {
+	    
+	    String memberId = (String) session.getAttribute("id");
+	    if (memberId == null) {
+	        log.warn("로그인되지 않은 사용자가 회원 정보 수정 시도.");
 	        return "redirect:login_view";
 	    }
+	    
+	    // DTO에 현재 로그인된 사용자 ID를 설정합니다.
+	    myPageDTO.setMemberId(memberId);
+	    
+	    log.info("@# modify() MyPageDTO: " + myPageDTO);
+	    
+	    // 서비스에서 파일 처리 및 DB 업데이트를 모두 수행합니다.
+	    service.modify(myPageDTO);
 
-	    // 세션에서 memberId 가져오기
-	    String memberId = (String) session.getAttribute("id");
-
-	    // 수정할 파라미터에 member_Id가 없으면 세션에서 넣기
-	    if(!param.containsKey("member_Id")) {
-	        param.put("member_Id", memberId);
-	    }
-
-	    log.info("@# modify() param: " + param);
-	    service.modify(param);
-
-	    // 수정 후 세션 기반 memberId로 list 페이지로 리다이렉트
+	    // 수정 후 마이페이지 목록/메인 페이지로 리다이렉트
 	    return "redirect:list";
 	}
 		

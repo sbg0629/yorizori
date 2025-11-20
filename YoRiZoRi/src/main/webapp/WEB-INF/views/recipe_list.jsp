@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -88,6 +89,20 @@
         accent-color: #4CAF50; 
         transform: scale(1.3);
         cursor: pointer;
+    }
+	/* [추가] 검색 입력창 스타일 */
+    .search-input {
+        width: 100%;
+        max-width: 400px; /* 너무 길어지지 않게 제한 */
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+    }
+    .search-input:focus {
+        border-color: #FF7043; /* 포커스 시 테마색 */
+        outline: none;
     }
 
     /* 버튼 영역 */
@@ -227,6 +242,92 @@
 	        background-color: #bdbdbd;
 	        transform: translateY(-2px);
 	    }
+        .pagination-container {
+				    margin-top: 60px;
+				    padding-top: 40px;
+				    border-top: 2px solid #f0f0f0;
+				    animation: fadeIn 0.5s ease-out;
+				}
+
+				.pagination {
+				    display: flex;
+				    justify-content: center;
+				    align-items: center;
+				    gap: 10px;
+				    margin-bottom: 25px;
+				    background: white;
+				    padding: 15px 20px;
+				    border-radius: 16px;
+				    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+				}
+
+				.page-btn, .page-number {
+				    display: inline-flex;
+				    align-items: center;
+				    justify-content: center;
+				    min-width: 42px;
+				    height: 42px;
+				    padding: 0 14px;
+				    border-radius: 10px;
+				    font-size: 0.95rem;
+				    font-weight: 600;
+				    text-decoration: none;
+				    transition: all 0.3s ease;
+				    cursor: pointer;
+				    background: white;
+				    border: 2px solid #e0e0e0;
+				    color: #555;
+				}
+
+				.page-btn {
+				    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+				}
+
+				.page-btn:hover {
+				    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+				    border-color: #ff6b6b;
+				    color: white;
+				    transform: translateY(-2px);
+				    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+				}
+
+				.page-btn:disabled {
+				    background: #f5f5f5;
+				    border-color: #e0e0e0;
+				    color: #ccc;
+				    cursor: not-allowed;
+				    opacity: 0.5;
+				}
+
+				.page-number {
+				    font-size: 0.9rem;
+				}
+
+				.page-number:hover {
+				    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+				    border-color: #ff6b6b;
+				    color: #ff6b6b;
+				    transform: translateY(-2px);
+				}
+
+				.page-number.active {
+				    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+				    border-color: #ff6b6b;
+				    color: white;
+				    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+				    cursor: default;
+				    pointer-events: none;
+				}
+
+				.page-info {
+				    text-align: center;
+				    padding: 15px 20px;
+				    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+				    border-radius: 12px;
+				    font-size: 0.95rem;
+				    color: #666;
+				    font-weight: 600;
+				}
 </style>
 </head>
 <body>
@@ -250,7 +351,7 @@
       
       <label><input type="checkbox" name="category" value="2" 
           <c:if test="${not empty selectedCategories && selectedCategories.contains('2')}">checked</c:if>
-      />일식</label>
+      />양식</label>
       
       <label><input type="checkbox" name="category" value="3" 
           <c:if test="${not empty selectedCategories && selectedCategories.contains('3')}">checked</c:if>
@@ -258,45 +359,53 @@
       
       <label><input type="checkbox" name="category" value="4" 
           <c:if test="${not empty selectedCategories && selectedCategories.contains('4')}">checked</c:if>
-      />양식</label>
+      />일식</label>
       
       <label><input type="checkbox" name="category" value="5" 
           <c:if test="${not empty selectedCategories && selectedCategories.contains('5')}">checked</c:if>
-      />디저트</label>
+      />분식</label>
       
       <label><input type="checkbox" name="category" value="6" 
           <c:if test="${not empty selectedCategories && selectedCategories.contains('6')}">checked</c:if>
-      />분식</label>
+      />디저트</label>
       
     </div>
   </div>
   
   <div class="form-group">
-    <label class="group-label">정렬 방법</label>
-    <div class="sort-options">
-      
-      <label><input type="radio" name="order" 
-        value="hit" 
-          <c:if test="${selectedOrder == 'hit'}">checked</c:if> 
-      />인기순</label>
-      
-      <label><input type="radio" name="order" value="rating" 
-          <c:if test="${selectedOrder == 'rating'}">checked</c:if> 
-      />평점순</label>
-      
-      <label><input type="radio" name="order" value="latest" 
-          <c:if test="${selectedOrder == 'latest'}">checked</c:if> 
-      />최신순</label>
-      
+      <label class="group-label">정렬 방법</label>
+      <div class="sort-options">
+        
+        <label><input type="radio" name="order" 
+          value="hit" 
+            <c:if test="${selectedOrder == 'hit'}">checked</c:if> 
+        />인기순</label>
+        
+        <label><input type="radio" name="order" value="rating" 
+            <c:if test="${selectedOrder == 'rating'}">checked</c:if> 
+        />평점순</label>
+        
+        <label><input type="radio" name="order" value="latest" 
+            <c:if test="${selectedOrder == 'latest'}">checked</c:if> 
+        />최신순</label>
+        
+      </div>
     </div>
-  </div>
-  
-  <input type="hidden" name="page" id="recipePageInput" value="${pageDTO != null ? pageDTO.currentPage : 1}" />
-  <div class="btn-area">
-      <input type="submit" value="레시피 찾기" />
-      <%-- [수정] type="button"으로 변경하고 id="btnResetFilters" 추가 --%>
-      <input type="button" id="btnResetFilters" value="초기화" />
-  </div>
+
+    <div class="form-group">
+        <label class="group-label">검색어</label>
+        <div style="flex-grow: 1;"> <input type="text" name="keyword" class="search-input" 
+                   placeholder="요리명 또는 재료를 입력하세요" 
+                   value="${keyword}" /> 
+        </div>
+    </div>
+    
+    <input type="hidden" name="page" id="recipePageInput" value="${pageDTO != null ? pageDTO.currentPage : 1}" />
+    
+    <div class="btn-area">
+        <input type="submit" value="레시피 찾기" />
+        <input type="button" id="btnResetFilters" value="초기화" />
+    </div>
 
 
 </form>
@@ -309,17 +418,37 @@
              onclick="location.href='detail.do?recipe_Id=${dto.recipeId}'"
              style="cursor: pointer;">
             
-            <img src="${dto.mainImage}" alt="${dto.title}">
+             <img src="${pageContext.request.contextPath}/images/${dto.mainImage}" alt="${dto.title}">
  
             <div class="card-content">
                 <div class="card-title">${dto.title}</div>
                 
-                <div class="card-info"><strong>별점:</strong> <span>${dto.rating}</span></div>
+				<div class="card-info"><strong>별점:</strong> 
+				                    <span>
+				                       <c:choose>
+				                           <c:when test="${not empty dto.rating && dto.rating > 0}">
+				                               <fmt:formatNumber value="${dto.rating}" pattern="0.0" />
+				                           </c:when>
+				                           <c:otherwise>
+				                               0.0
+				                           </c:otherwise>
+				                       </c:choose>
+				                    </span>
+				               </div>
                 <div class="card-info"><strong>조회수:</strong> <span>${dto.hit}</span></div>
                 <div class="card-info"><strong>조리 시간:</strong> <span>${dto.cookingTime}</span></div>
                 
                 <div class="card-info"><strong>요리 양:</strong> <span>${dto.servingSize}인분</span></div>
-                <div class="card-info"><strong>난이도:</strong> <span>${dto.difficulty}</span></div>
+				<div class="card-info"><strong>난이도:</strong> 
+				    <span>
+				        <c:choose>
+				            <c:when test="${dto.difficulty == 1}">하</c:when>
+				            <c:when test="${dto.difficulty == 2}">중</c:when>
+				            <c:when test="${dto.difficulty == 3}">상</c:when>
+				            <c:otherwise>기타</c:otherwise>
+				        </c:choose>
+				    </span>
+				</div>
             </div>
         </div>
     </c:forEach>
@@ -331,87 +460,178 @@
     </c:if>
 </div>
 
-<c:if test="${not empty pageDTO && pageDTO.totalPage > 0}">
-    <div class="d-flex justify-content-center mb-5">
-        <ul class="pagination">
-            <li class="page-item ${pageDTO.hasPrev ? '' : 'disabled'}">
-                <a class="page-link" href="javascript:void(0);" onclick="changeRecipePage(${pageDTO.prevPage});">이전</a>
-            </li>
-            <c:forEach var="i" begin="${pageDTO.startPage}" end="${pageDTO.endPage}">
-                <li class="page-item ${i == pageDTO.currentPage ? 'active' : ''}">
-                    <a class="page-link" href="javascript:void(0);" onclick="changeRecipePage(${i});">${i}</a>
-                </li>
-            </c:forEach>
-            <li class="page-item ${pageDTO.hasNext ? '' : 'disabled'}">
-                <a class="page-link" href="javascript:void(0);" onclick="changeRecipePage(${pageDTO.nextPage});">다음</a>
-            </li>
-        </ul>
+<c:if test="${not empty pageDTO && pageDTO.totalCount > 0}">
+            <div class="pagination-container">
+                <div class="pagination">
+                    <!-- 이전 페이지 -->
+                    <c:choose>
+                        <c:when test="${pageDTO.hasPrev}">
+                            <a href="?page=${pageDTO.prevPage}<c:if test='${not empty category}'>&category=${category}</c:if><c:if test='${not empty keyword}'>&keyword=${keyword}</c:if>" 
+                               class="page-btn">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <button class="page-btn" disabled>
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                        </c:otherwise>
+                    </c:choose>
+                    
+                    <!-- 페이지 번호 -->
+                    <c:forEach begin="${pageDTO.startPage}" end="${pageDTO.endPage}" var="pageNum">
+                        <c:choose>
+                            <c:when test="${pageNum == pageDTO.currentPage}">
+                                <span class="page-number active">${pageNum}</span>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="?page=${pageNum}<c:if test='${not empty category}'>&category=${category}</c:if><c:if test='${not empty keyword}'>&keyword=${keyword}</c:if>" 
+                                   class="page-number">${pageNum}</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                    
+                    <!-- 다음 페이지 -->
+                    <c:choose>
+                        <c:when test="${pageDTO.hasNext}">
+                            <a href="?page=${pageDTO.nextPage}<c:if test='${not empty category}'>&category=${category}</c:if><c:if test='${not empty keyword}'>&keyword=${keyword}</c:if>" 
+                               class="page-btn">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <button class="page-btn" disabled>
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                
+                <!-- 페이지 정보 -->
+                <div class="page-info">
+                    <span>총 ${pageDTO.totalCount}개 | ${pageDTO.currentPage} / ${pageDTO.totalPage} 페이지</span>
+                </div>
+            </div>
+        </c:if>
     </div>
-</c:if>
 
 <jsp:include page="/WEB-INF/views/gemini_chat.jsp" />
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 
 <script>
-    function changeRecipePage(page) {
-        var pageInput = document.getElementById('recipePageInput');
-        var form = document.getElementById('categoryForm');
-        if (!pageInput || !form) {
-            return;
-        }
-        pageInput.value = page;
-        form.dataset.pageChange = 'true';
-        form.submit();
-    }
-    
-    var categoryForm = document.getElementById('categoryForm');
-    if (categoryForm) {
-        categoryForm.addEventListener('reset', function() {
-            var pageInput = document.getElementById('recipePageInput');
-            if (pageInput) {
-                pageInput.value = 1;
-            }
-        });
-        
-        categoryForm.addEventListener('submit', function() {
-            if (categoryForm.dataset.pageChange === 'true') {
-                categoryForm.dataset.pageChange = '';
-                return;
-            }
-            var pageInput = document.getElementById('recipePageInput');
-            if (pageInput) {
-                pageInput.value = 1;
-            }
-        });
-    }
+	// ===================================================
+	    // 1. AJAX로 레시피 목록을 가져오는 핵심 함수 ($.ajax 버전)
+	    // ===================================================
+		function fetchRecipes(page) {
+		        console.log("----- fetchRecipes 시작 (page: " + page + ") -----");
+		        
+		        const form = document.getElementById('categoryForm');
+		        const pageInput = document.getElementById('recipePageInput');
+		        
+		        if (!form || !pageInput) return;
+		        
+		        // 1. 페이지 설정
+		        pageInput.value = page;
+
+		        // 2. 정렬 값 가져오기
+		        const checkedRadio = document.querySelector('input[name="order"]:checked');
+		        let orderValue = checkedRadio ? checkedRadio.value : 'hit';
+
+		        // 3. 카테고리 값들 가져오기
+		        const categories = [];
+		        document.querySelectorAll('input[name="category"]:checked').forEach(function(box) {
+		            categories.push(box.value);
+		        });
+
+		        // 4. [추가] 검색어 값 가져오기
+		        const keywordInput = document.querySelector('input[name="keyword"]');
+		        const keywordValue = keywordInput ? keywordInput.value : '';
+
+		        // 5. URL 파라미터 생성
+		        const params = new URLSearchParams();
+		        params.append('order', orderValue);
+		        params.append('page', pageInput.value); // pageValue 대신 직접 참조
+		        if(keywordValue) {
+		             params.append('keyword', keywordValue); // 검색어가 있을 때만 추가
+		        }
+		        categories.forEach(function(cat) {
+		            params.append('category', cat);
+		        });
+		        
+		        const url = `select_result?${params.toString()}`;
+		        console.log("최종 Fetching URL:", url);
+
+		        // 6. AJAX 요청
+		        $.ajax({
+		            type: "GET",
+		            url: url,
+		            success: function(htmlText) {
+		                const parser = new DOMParser();
+		                const doc = parser.parseFromString(htmlText, 'text/html');
+		                
+		                const newGrid = doc.querySelector('.grid-container');
+		                const newPagination = doc.querySelector('.pagination-container'); // 클래스로 찾는 것이 더 안전할 수 있음
+
+		                const currentGrid = document.querySelector('.grid-container');
+		                const currentPagination = document.querySelector('.pagination-container');
+
+		                if (newGrid && currentGrid) {
+		                    currentGrid.innerHTML = newGrid.innerHTML;
+		                }
+		                
+		                // 페이징 영역 교체 (상위 div 자체를 교체하거나 내용만 교체)
+		                if (currentPagination && newPagination) {
+		                     currentPagination.innerHTML = newPagination.innerHTML;
+		                } else if (currentPagination && !newPagination) {
+		                     currentPagination.innerHTML = ""; // 결과가 없으면 페이징 삭제
+		                }
+		            },
+		            error: function(xhr, status, error) {
+		                console.error('Error:', error);
+		                alert('레시피를 불러오는 중 오류가 발생했습니다.');
+		            }
+		        });
+		    }
+
+	    // ===================================================
+	    // 2. 기존 이벤트 리스너 (변경 없음)
+	    // ===================================================
+
+	    // 페이지 번호 클릭 시
+	    function changeRecipePage(page) {
+	        fetchRecipes(page); // (이름은 fetchRecipes지만, 실제론 $.ajax가 실행됨)
+	    }
+	    
 	
-	
-	    // DOM(HTML)이 모두 로드된 후 스크립트를 실행합니다.
-	    document.addEventListener('DOMContentLoaded', function() {
+	    		// DOM(HTML)이 모두 로드된 후 스크립트를 실행합니다.
+	document.addEventListener('DOMContentLoaded', function() {
 	        
-	        // 1. 새로 만든 '초기화' 버튼을 찾습니다.
 	        const resetButton = document.getElementById('btnResetFilters');
+	        const form = document.getElementById('categoryForm');
 	        
 	        if (resetButton) {
-	            // 2. 버튼에 클릭 이벤트를 추가합니다.
 	            resetButton.addEventListener('click', function() {
 	                
-	                // 3. 모든 카테고리 체크박스를 찾습니다.
-	                const checkboxes = document.querySelectorAll('input[name="category"]');
-	                checkboxes.forEach(function(checkbox) {
-	                    checkbox.checked = false; // 강제로 'checked'를 해제합니다.
-	                });
+	                // 1. 카테고리 체크박스 해제
+	                document.querySelectorAll('input[name="category"]').forEach(box => box.checked = false);
 
-	                // 4. 모든 정렬 라디오 버튼을 찾습니다.
+	                // 2. 정렬 라디오 버튼 초기화 (인기순)
 	                const radios = document.querySelectorAll('input[name="order"]');
-	                if (radios.length > 0) {
-	                    // 5. 첫 번째 옵션('인기순')을 강제로 'checked'로 설정합니다.
-	                    radios[0].checked = true; 
-	                }
+	                if (radios.length > 0) radios[0].checked = true; 
+	                
+	                // 3. [추가] 검색어 입력창 비우기
+	                const keywordInput = document.querySelector('input[name="keyword"]');
+	                if (keywordInput) keywordInput.value = "";
+
+	                // 4. 페이지 번호 초기화
+	                const pageInput = document.getElementById('recipePageInput');
+	                if (pageInput) pageInput.value = 1;
+
+	                // 5. 폼 제출 (새로고침 방식)
+	                form.submit(); 
 	            });
 	        }
-
-	    });
+	    });
 </script>
 
 </body>

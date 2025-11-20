@@ -21,12 +21,23 @@
 		        <a href="${pageContext.request.contextPath}/notice"><i class="bi bi-megaphone-fill"></i> 공지 사항</a>
 		        <a href="${pageContext.request.contextPath}/board"><i class="bi bi-chat-left-text-fill"></i> 자유 게시판</a>
 		    </nav>
-		    <div class="header-right">
-		        <a href="${pageContext.request.contextPath}/message_box" class="message-box-icon">
-		            <i class="bi bi-chat-dots-fill" id="message-icon" title="쪽지함"></i>
-		        </a>
-		        <i class="bi bi-person-circle" id="menu-toggle" title="사용자 메뉴"></i>
-		    </div>
+			<div class="header-right">
+				<a href="${pageContext.request.contextPath}/message_box" 
+				   class="message-box-icon" 
+				   id="message-box-icon-container"> 
+				    
+				    <i class="bi bi-chat-dots-fill" id="message-icon" title="쪽지함"></i>
+				    
+				    <%-- 
+				         [유지]: Interceptor를 통해 초기 페이지 로드 시 카운트를 표시합니다. 
+				         [추가]: JavaScript가 이 요소를 쉽게 찾을 수 있도록 id를 부여합니다.
+				    --%>
+				    <c:if test="${unreadCount > 0}">
+				        <span class="message-badge" id="message-badge-count">${unreadCount}</span>
+				    </c:if>
+				</a>
+			    <i class="bi bi-person-circle" id="menu-toggle" title="사용자 메뉴"></i>
+			</div>
 		</header>
 
 		<div class="login-menu" id="login-menu">
@@ -38,7 +49,7 @@
 
 		        <c:otherwise>
 		            <p>
-		                **${sessionScope.name}님** 환영합니다!
+		                ${sessionScope.name}님 환영합니다!
 		            </p>
 		            <button type="button" class="menu-btn" onclick="location.href='<c:url value="/list"/>'">마이페이지</button>
 		            <form method="post" action="${pageContext.request.contextPath}/logout" style="margin: 0;">
@@ -87,6 +98,53 @@
 		                }
 		            });
 		        }
+		    });
+		</script>
+		<script>
+		    // ✅ 뱃지 업데이트 함수
+		    function updateMessageBadge(count) {
+		        const badge = document.getElementById('message-badge-count');
+		        const iconContainer = document.getElementById('message-box-icon-container'); // 헤더 <a> 태그의 ID
+		        
+		        // 1. 기존 뱃지 제거
+		        if (badge) {
+		            badge.remove();
+		        }
+
+		        // 2. 카운트가 0보다 클 때 새 뱃지 생성 및 추가
+		        if (count > 0 && iconContainer) {
+		            const newBadge = document.createElement('span');
+		            newBadge.id = 'message-badge-count';
+		            newBadge.className = 'message-badge'; // CSS 클래스는 header.jsp에 정의되어 있어야 함
+		            newBadge.textContent = count;
+		            iconContainer.appendChild(newBadge);
+		        }
+		    }
+
+		    // ✅ Polling 함수
+		    function checkUnreadMessages() {
+		        const contextPath = '${pageContext.request.contextPath}';
+		        
+		        // 로그인 상태인지 확인 (세션 ID 존재 여부로 간접 확인)
+		        if ('${sessionScope.id}' !== '') { 
+		            fetch(contextPath + '/message/unread/count')
+		                .then(response => response.json())
+		                .then(data => {
+		                    if (data.success) {
+		                        updateMessageBadge(data.count);
+		                    }
+		                })
+		                .catch(error => console.error('실시간 쪽지 카운트 오류:', error));
+		        }
+		    }
+
+		    // 페이지 로드 시 및 10초마다 폴링 시작
+		    document.addEventListener("DOMContentLoaded", function() {
+		        // 즉시 한 번 실행
+		        checkUnreadMessages();
+		        
+		        // 10초(10000ms)마다 반복 실행
+		        setInterval(checkUnreadMessages, 10000); 
 		    });
 		</script>
 

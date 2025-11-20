@@ -82,7 +82,7 @@ public class RecipeController {
             recipeDTO.setMemberId(memberId); 
 
             // 웹 애플리케이션 내의 /resources/uploads 폴더의 실제 서버 경로를 찾음
-            String uploadPath = servletContext.getRealPath("/resources/uploads");
+            String uploadPath = "C:\\dev\\test_img";
             log.info("@# Upload Path: " + uploadPath);
             
             // 파일 처리 및 DB 저장을 모두 서비스 레이어에 위임

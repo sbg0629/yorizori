@@ -147,13 +147,7 @@
                     <td>${user.email}</td>
                     <td>${user.phoneNumber}</td>
                     <td>${user.birthdate}</td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${user.gender == 1}">남성</c:when>
-                            <c:when test="${user.gender == 2}">여성</c:when>
-                            <c:otherwise>-</c:otherwise>
-                        </c:choose>
-                    </td>
+
                     <td>
                         <form action="delete2" method="post" class="delete-form">
                             <input type="hidden" name="memberId" value="${user.memberId}" />

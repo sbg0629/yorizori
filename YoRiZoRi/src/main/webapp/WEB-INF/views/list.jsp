@@ -182,10 +182,10 @@
             <div class="profile-image-section">
                 <c:choose>
                     <c:when test="${not empty user.profileImage}">
-                        <img src="${user.profileImage}" alt="프로필 이미지"/>
+                        <img src="/images/${user.profileImage}" alt="프로필 이미지"/>
                     </c:when>
                     <c:otherwise>
-                        <img src="https://via.placeholder.com/150" alt="기본 프로필 이미지"/>
+                        <img src="${pageContext.request.contextPath}/images/기본프로필.png" alt="기본 프로필 이미지"/>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -212,16 +212,7 @@
                         <span class="label">전화번호</span>
                         <span class="value">${user.phoneNumber}</span>
                     </div>
-                    <div class="info-item">
-                        <span class="label">성별</span>
-                        <span class="value">
-                            <c:choose>
-                                <c:when test="${user.gender == 1}">남성</c:when>
-                                <c:when test="${user.gender == 2}">여성</c:when>
-                                <c:otherwise>미지정</c:otherwise>
-                            </c:choose>
-                        </span>
-                    </div>
+
                 </div>
             </div>
         </div>

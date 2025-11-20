@@ -37,17 +37,17 @@
         }
 
         /* Hero Section */
-		.hero-section {
-		            position: relative;
-		            height: 65vh;
-		            min-height: 500px;
-		            display: flex;
-		            align-items: center;
-		            justify-content: center;
-		            text-align: center;
-		            overflow: hidden;
-		            margin-bottom: 60px;
-		        }
+        .hero-section {
+            position: relative;
+            height: 80vh; /* 높이 증가 */
+            min-height: 650px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            margin-bottom: 60px;
+        }
 
         .hero-section .slider {
             position: absolute;
@@ -77,7 +77,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.45); /* 배경 오버레이 조금 더 진하게 */
         }
 
         .hero-section .slide img {
@@ -86,71 +86,167 @@
             object-fit: cover;
         }
 
-		.hero-content {
-		            position: relative;
-		            z-index: 2;
-		            max-width: 800px; /* 최대 너비를 늘려서 제목이 더 잘 보이도록 */
-		            padding: 30px;
-		        }
-
-		        .hero-content h2 {
-		            font-size: 3.5rem; /* 폰트 크기 확대 */
-		            font-weight: 800; /* 폰트 굵기 강조 */
-		            color: white;
-		            margin-bottom: 40px; /* 검색 바와의 간격 확대 */
-		            /* 더 깊은 그림자 효과로 제목 강조 */
-		            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); 
-		            letter-spacing: -1px; /* 글자 간격 조정 */
-		        }
-
-        /* Search Bar */
-		.main-search {
-		            display: flex;
-		            max-width: 650px; /* 검색 바 너비 확대 */
-		            margin: 0 auto 25px;
-		            background: #ffffff; /* 배경을 흰색으로 고정 */
-		            border-radius: 50px;
-		            overflow: hidden;
-		            /* 더 부드러운 그림자 */
-		            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); 
-		            border: 2px solid rgba(255, 107, 107, 0.3); /* 연한 테두리 추가 */
-		        }
-
-		        .main-search input {
-		            flex: 1;
-		            border: none;
-		            padding: 18px 30px; /* 패딩 확대 */
-		            font-size: 16px;
-		            outline: none;
-		            /* placeholder 스타일링 */
-		            &::placeholder {
-		                color: #aaa;
-		            }
-		        }
-
-		        .main-search button {
-		            border: none;
-		            /* 그라데이션 배경으로 변경 */
-		            background: linear-gradient(90deg, #ff6b6b 0%, #ff8e8e 100%); 
-		            color: white;
-		            padding: 0 35px; /* 패딩 확대 */
-		            cursor: pointer;
-		            font-size: 20px;
-		            transition: all 0.3s;
-		        }
-
-		        .main-search button:hover {
-		            /* hover 시 배경을 더 어둡고 강하게 */
-		            background: linear-gradient(90deg, #ff5252 0%, #ff6b6b 100%);
-		            transform: scale(1.02); /* 버튼 클릭 유도 효과 */
-		        }
-
-        /* Quick Tags */
-        .quick-tags {
-            display: none;
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px; /* 최대 너비를 늘려서 레시피 카드 수용 */
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
         }
 
-        /* Section Title */
+        .hero-content h2 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.7); /* 그림자 더 강조 */
+            letter-spacing: -1px;
+        }
+
+        /* Search Bar */
+        .main-search {
+            display: flex;
+            max-width: 650px;
+            margin: 0 auto 50px; /* 레시피 목록과의 간격 확대 */
+            background: #ffffff;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .main-search input {
+            flex: 1;
+            border: none;
+            padding: 18px 30px;
+            font-size: 16px;
+            outline: none;
+            &::placeholder {
+                color: #aaa;
+            }
+        }
+
+        .main-search button {
+            border: none;
+            background: linear-gradient(90deg, #ff6b6b 0%, #ff8e8e 100%);
+            color: white;
+            padding: 0 35px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+
+        .main-search button:hover {
+            background: linear-gradient(90deg, #ff5252 0%, #ff6b6b 100%);
+            transform: scale(1.02);
+        }
+        
+        /* --- New Hero Recipe Styles --- */
+
+        .hero-recipe-scroller {
+            width: 100%;
+            padding: 25px;
+            /* 반투명한 흰색 배경 */
+            background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(5px); /* 배경 블러 처리로 가독성 향상 */
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3); /* 연한 테두리 */
+            text-align: left;
+        }
+
+        .hero-section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .horizontal-recipe-grid {
+            display: flex; /* 수평 배열 */
+            overflow-x: auto; /* 수평 스크롤 허용 */
+            gap: 20px;
+            padding-bottom: 10px; /* 스크롤 바 공간 확보 */
+            scrollbar-width: thin; /* Firefox */
+            scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+        }
+
+        /* WebKit browsers (Chrome, Safari) scrollbar styling */
+        .horizontal-recipe-grid::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .horizontal-recipe-grid::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+        }
+
+        .horizontal-recipe-grid::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .recipe-card {
+            min-width: 280px; /* 카드 최소 너비 설정 */
+            max-width: 280px; /* 카드 최대 너비 설정 */
+            background: white;
+            border-radius: 12px; /* 둥근 모서리 */
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .recipe-card img {
+            width: 100%;
+            height: 180px; /* 이미지 높이 조정 */
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .card-content {
+            padding: 15px; /* 패딩 조정 */
+        }
+
+        .card-title {
+            font-size: 1.1rem; /* 폰트 크기 조정 */
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .no-recipe-message {
+            color: white;
+            padding: 30px;
+            text-align: center;
+            width: 100%;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* --- End New Hero Recipe Styles --- */
+
+        /* Section Title (General) */
         .section-title {
             text-align: center;
             font-size: 2rem;
@@ -159,112 +255,110 @@
             color: #2c3e50;
         }
 
-        /* Recipe Grid */
+        /* Recipe Grid (General, now used only for the part below hero) */
         .recipe-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
         }
 
-        .recipe-card {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .recipe-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .recipe-card img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .recipe-card:hover img {
-            transform: scale(1.05);
-        }
-
-        .card-content {
-            padding: 24px;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        .card-desc {
-            font-size: 0.95rem;
-            color: #7f8c8d;
-            line-height: 1.5;
-        }
-
 		/* Chef Grid */
-		        .chef-grid {
-		            display: grid;
-		            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-		            gap: 30px;
-		        }
+		.chef-grid {
+		    display: grid;
+		    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		    gap: 30px;
+		}
 
-		        .chef-card {
-		            background: white;
-		            border-radius: 16px;
-		            overflow: hidden;
-		            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-		            transition: all 0.3s ease;
-		            text-align: center;
-		        }
+		.chef-card {
+		    position: relative; /* 배지 위치 설정을 위해 추가 */
+		    background: white;
+		    border-radius: 16px;
+		    overflow: hidden;
+		    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 그림자를 조금 더 깊게 */
+		    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* 좀 더 부드러운 트랜지션 */
+		    text-align: center;
+		    border: 1px solid #eee; /* 은은한 테두리 추가 */
+		}
 
-		        .chef-card:hover {
-		            transform: translateY(-8px);
-		            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-		        }
+		.chef-card:hover {
+		    transform: translateY(-5px); /* 약간만 올라오도록 조정 */
+		    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+		    border-color: #ff6b6b; /* 호버 시 테두리 색상 강조 */
+		}
 
-		        .chef-image {
-		            width: 120px; /* Adjust size as needed */
-		            height: 120px; /* Adjust size as needed */
-		            margin: 20px auto 10px; /* Center the image and add space */
-		            overflow: hidden;
-		            background: #f0f0f0;
-		            border-radius: 50%; /* Make it circular */
-		            border: 3px solid #ff6b6b; /* Optional: add a border */
-		        }
+		/* 신규: 추천 배지 스타일 */
+		.chef-badge {
+		    position: absolute;
+		    top: 10px;
+		    right: 10px;
+		    background: linear-gradient(45deg, #ff6b6b 0%, #ff8e8e 100%); /* 그라데이션 배경 */
+		    color: white;
+		    padding: 4px 10px;
+		    border-radius: 20px;
+		    font-size: 0.75rem;
+		    font-weight: 700;
+		    letter-spacing: 0.5px;
+		    box-shadow: 0 2px 5px rgba(255, 107, 107, 0.4);
+		    display: flex;
+		    align-items: center;
+		    gap: 4px;
+		}
 
-		        .chef-image img {
-		            width: 100%;
-		            height: 100%;
-		            object-fit: cover;
-		            transition: transform 0.5s;
-		        }
+		.chef-image {
+		    width: 120px;
+		    height: 120px;
+		    margin: 30px auto 15px; /* 상단 마진 조정 */
+		    overflow: hidden;
+		    background: #f0f0f0;
+		    border-radius: 50%;
+		    /* 그라데이션 테두리 효과를 위한 복합 배경 설정 */
+		    border: 4px solid transparent; 
+		    background-image: linear-gradient(white, white), linear-gradient(to right, #667eea 0%, #ff6b6b 100%);
+		    background-origin: border-box;
+		    background-clip: padding-box, border-box;
+		    padding: 3px; /* 내부 공간 확보 */
+		}
 
-		        .chef-card:hover .chef-image img {
-		            transform: scale(1.1);
-		        }
+		.chef-image img {
+		    width: 100%;
+		    height: 100%;
+		    object-fit: cover;
+		    transition: transform 0.5s;
+		    border-radius: 50%; /* 이미지 자체도 둥글게 */
+		}
 
-		        .chef-info {
-		            padding: 0 20px 20px; /* Adjust padding for info */
-		        }
+		.chef-card:hover .chef-image img {
+		    transform: scale(1.05); /* 덜 과장된 호버 효과 */
+		}
 
-		        .chef-name {
-		            font-size: 1.1rem;
-		            font-weight: 600;
-		            color: #2c3e50;
-		            margin-bottom: 8px;
-		        }
+		.chef-info {
+		    padding: 0 20px 25px; /* 하단 패딩 조정 */
+		}
 
-		        .chef-recipes {
-		            font-size: 0.9rem;
-		            color: #7f8c8d;
-		        }
+		.chef-name {
+		    font-size: 1.2rem; /* 이름 폰트 크기 증가 */
+		    font-weight: 700;
+		    color: #2c3e50;
+		    margin-bottom: 5px;
+		}
 
+		.chef-recipes { /* 레시피 정보 스타일 개선 */
+		    font-size: 0.85rem;
+		    color: #7f8c8d;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    gap: 5px;
+		    font-weight: 500;
+		}
+		.chef-recipes i {
+		    color: #ff6b6b; /* 아이콘 색상을 포인트 색상으로 */
+		    font-size: 0.95rem;
+		}
+
+        /* Chat Button & Popup Styles (No change needed here) */
+        /* ... (Keep the rest of the existing chat/responsive styles) */
+        
         /* Chat Button */
         .chat-button {
             position: fixed;
@@ -542,20 +636,25 @@
             }
 
             .hero-section {
-                height: 60vh;
+                height: auto;
+                min-height: 500px;
             }
 
             .hero-content h2 {
                 font-size: 2rem;
             }
 
-            .recipe-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 20px;
+            .hero-recipe-scroller {
+                padding: 15px;
             }
 
-            .category-grid {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            .horizontal-recipe-grid {
+                gap: 15px;
+            }
+
+            .recipe-card {
+                min-width: 250px;
+                max-width: 250px;
             }
 
             .chef-grid {
@@ -567,6 +666,7 @@
                 width: calc(100% - 40px);
                 right: 20px;
                 left: 20px;
+                height: 450px;
             }
 
             .chat-button {
@@ -580,59 +680,58 @@
     <jsp:include page="/WEB-INF/views/common/header.jsp"/>
     
 	<main>
-	        <section class="hero-section">
-	            <div class="slider">
-	                <div class="slides">
-	                    <div class="slide">
-	                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200" alt="요리">
-	                    </div>
+	    <section class="hero-section">
+	        <div class="slider">
+	            <div class="slides">
+	                <div class="slide">
+	                    <img src="https://images.unsplash.com/photo-1543353071-10c8ba85a904?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8JUVDJTlEJThDJUVDJThCJTlEJTIwJUVCJUIwJUIwJUVBJUIyJUJEfGVufDB8fDB8fHww&fm=jpg&q=60&w=3000" alt="요리">
 	                </div>
 	            </div>
-	            <div class="hero-content">
-	                <h2>맛있는 레시피를 찾아보세요</h2>
-	                <form action="search_result" method="get" class="main-search">
-	                    <input type="text" name="query" placeholder="요리, 재료, 테마로 검색해보세요">
-	                    <button type="submit"><i class="bi bi-search"></i></button>
-	                </form>
+	        </div>
+	        <div class="hero-content">
+	            <h2>맛있는 레시피를 찾아보세요</h2>
+	            <FORM ACTION="SEARCH_RESULT" METHOD="GET" CLASS="MAIN-SEARCH">
+	                <BUTTON TYPE="SUBMIT"><I CLASS="BI BI-SEARCH"></I></BUTTON>
+	            </FORM>
+
+	            <div class="hero-recipe-scroller">
+	                <h3 class="hero-section-title">오늘의 추천 레시피</h3>
+	                <div class="horizontal-recipe-grid">
+	                    <c:forEach var="recipe" items="${randomRecipes}">
+	                        <a href="detail.do?recipe_Id=${recipe.recipeId}" class="recipe-card">
+	                            <img src="/images/${recipe.mainImage}" alt="${recipe.title}">
+	                            <div class="card-content">
+	                                <h4 class="card-title">${recipe.title}</h4>
+	                                <p class="card-desc">${recipe.description}</p>
+	                            </div>
+	                        </a>
+	                    </c:forEach>
+	                    <c:if test="${empty randomRecipes}">
+	                        <p class="no-recipe-message">
+	                            추천 레시피를 준비 중입니다. 🧑‍🍳
+	                        </p>
+	                    </c:if>
+	                </div>
 	            </div>
-	        </section>
+	        </div>
+	    </section>
 
-        <!-- 오늘의 추천 레시피 -->
-        <section class="container">
-            <h2 class="section-title">오늘의 추천 레시피</h2>
-            <div class="recipe-grid">
-                <c:forEach var="recipe" items="${randomRecipes}">
-                    <a href="detail.do?recipe_Id=${recipe.recipeId}" class="recipe-card">
-                        <img src="${recipe.mainImage}" alt="${recipe.title}">
-                        <div class="card-content">
-                            <h3 class="card-title">${recipe.title}</h3>
-                            <p class="card-desc">${recipe.description}</p>
-                        </div>
-                    </a>
-                </c:forEach>
-
-                <c:if test="${empty randomRecipes}">
-                    <p style="text-align: center; grid-column: 1 / -1; color: #999;">
-                        추천 레시피를 준비 중입니다. 🧑‍🍳
-                    </p>
-                </c:if>
-            </div>
-        </section>
-
-        <!-- 인기 회원 -->
         <section class="container">
             <h2 class="section-title">추천 회원</h2>
             <div class="chef-grid">
                 <c:forEach var="member" items="${randomMembers}">
                     <a href="member_profile?id=${member.memberId}" class="chef-card">
                         <div class="chef-image">
+							
                             <c:choose>
-                                <c:when test="${not empty member.profileImage}">
-                                    <img src="${member.profileImage}" alt="${member.nickname}">
-                                </c:when>
-                                <c:otherwise>
-                                    <img src="https://via.placeholder.com/200x200/667eea/ffffff?text=${member.nickname}" alt="${member.nickname}">
-                                </c:otherwise>
+								<c:when test="${not empty member.profileImage}"> 
+					                <img src="${pageContext.request.contextPath}/images/${member.profileImage}" 
+					                     alt="${member.nickname} 프로필 이미지" class="profile-img">
+					            </c:when>
+					            <c:otherwise>
+					                <img src="${pageContext.request.contextPath}/images/기본프로필.png" 
+					                     alt="기본 프로필 이미지" class="profile-img">
+					            </c:otherwise>
                             </c:choose>
                         </div>
                         <div class="chef-info">
@@ -650,13 +749,11 @@
         </section>
     </main>
 
-    <!-- Chat Button -->
     <div class="chat-button" id="chatButton" onclick="toggleChatPopup()">
         <i class="bi bi-chat-dots-fill"></i>
         <span class="chat-badge" id="chatBadge">N</span>
     </div>
 
-    <!-- Chat Popup -->
     <div class="chat-popup" id="chatPopup">
         <div class="chat-popup-header">
             <h3><i class="fa-solid fa-message"></i> 전체 채팅방</h3>

@@ -18,7 +18,7 @@
         <result property="memberName" column="member_name"/>
     </resultMap>
     
-    
+    <!-- 기존 쿼리들 -->
     <select id="list" resultMap="noticeResultMap">
         SELECT 
             n.notice_id, n.member_id, n.category, n.title, n.content,
@@ -47,7 +47,7 @@
             m.name AS member_name
         FROM notice_tb n
         LEFT JOIN member_tb m ON n.member_id = m.member_id
-        WHERE n.title LIKE '%' || #{keyword} || '%'  OR n.content LIKE '%' || #{keyword} || '%'
+        WHERE n.title LIKE '%' || #{keyword} || '%' OR n.content LIKE '%' || #{keyword} || '%'
         ORDER BY n.is_fixed DESC, n.created_at DESC
     </select>
     
@@ -61,13 +61,15 @@
         WHERE n.notice_id = #{noticeId}
     </select>
     
-    <insert id="write" parameterType="java.util.HashMap">
-        INSERT INTO notice_tb (
-            notice_id, member_id, category, title, content, is_fixed
-        ) VALUES (
-            notice_tb_seq.nextval,  #{member_id}, #{category}, #{title}, #{content}, 
-            NVL(#{is_fixed}, 0)     )
-    </insert>
+   <insert id="write" parameterType="java.util.HashMap">
+    INSERT INTO notice_tb (
+        notice_id, member_id, category, title, content, is_fixed
+    ) VALUES (
+        notice_tb_seq.nextval, #{member_id}, #{category}, #{title}, #{content}, 
+        <if test="is_fixed == null">0</if>
+        <if test="is_fixed != null">#{is_fixed}</if>
+    )
+</insert>
     
     <update id="modify" parameterType="java.util.HashMap">
         UPDATE notice_tb
@@ -75,7 +77,9 @@
             category = #{category},
             title = #{title},
             content = #{content},
-            is_fixed = NVL(#{is_fixed}, is_fixed), updated_at = SYSDATE                     WHERE notice_id = #{notice_id}
+            is_fixed = NVL(#{is_fixed}, is_fixed),
+            updated_at = SYSDATE
+        WHERE notice_id = #{notice_id}
     </update>
     
     <delete id="delete" parameterType="int">
@@ -89,7 +93,7 @@
         WHERE notice_id = #{noticeId}
     </update>
     
-  <select id="getFixedNotices" resultMap="noticeResultMap">
+    <select id="getFixedNotices" resultMap="noticeResultMap">
         SELECT *
         FROM (
             SELECT 
@@ -101,6 +105,90 @@
             WHERE n.is_fixed = 1
             ORDER BY n.created_at DESC
         )
-        WHERE ROWNUM &lt;= 5 
+        WHERE ROWNUM &lt;= 5
     </select>
+    
+    <!-- ========== 페이징 관련 추가 쿼리 ========== -->
+    
+    <!-- 공지사항 목록 조회 (페이징) - 고정 공지 제외 -->
+    <select id="listWithPaging" parameterType="java.util.HashMap" resultMap="noticeResultMap">
+        SELECT * FROM (
+            SELECT ROWNUM RN, A.* FROM (
+                SELECT 
+                    n.notice_id, n.member_id, n.category, n.title, n.content,
+                    n.view_count, n.is_fixed, n.created_at, n.updated_at,
+                    m.name AS member_name
+                FROM notice_tb n
+                LEFT JOIN member_tb m ON n.member_id = m.member_id
+                WHERE n.is_fixed = 0
+                ORDER BY n.created_at DESC
+            ) A
+            WHERE ROWNUM &lt;= #{startRow} + #{pageSize}
+        )
+        WHERE RN &gt; #{startRow}
+    </select>
+    
+    <!-- 공지사항 목록 조회 (카테고리별 + 페이징) -->
+    <select id="listByCategoryWithPaging" parameterType="java.util.HashMap" resultMap="noticeResultMap">
+        SELECT * FROM (
+            SELECT ROWNUM RN, A.* FROM (
+                SELECT 
+                    n.notice_id, n.member_id, n.category, n.title, n.content,
+                    n.view_count, n.is_fixed, n.created_at, n.updated_at,
+                    m.name AS member_name
+                FROM notice_tb n
+                LEFT JOIN member_tb m ON n.member_id = m.member_id
+                WHERE n.category = #{category}
+                AND n.is_fixed = 0
+                ORDER BY n.created_at DESC
+            ) A
+            WHERE ROWNUM &lt;= #{startRow} + #{pageSize}
+        )
+        WHERE RN &gt; #{startRow}
+    </select>
+    
+    <!-- 공지사항 검색 (페이징) -->
+    <select id="searchWithPaging" parameterType="java.util.HashMap" resultMap="noticeResultMap">
+        SELECT * FROM (
+            SELECT ROWNUM RN, A.* FROM (
+                SELECT 
+                    n.notice_id, n.member_id, n.category, n.title, n.content,
+                    n.view_count, n.is_fixed, n.created_at, n.updated_at,
+                    m.name AS member_name
+                FROM notice_tb n
+                LEFT JOIN member_tb m ON n.member_id = m.member_id
+                WHERE n.is_fixed = 0
+                AND (n.title LIKE '%' || #{keyword} || '%' 
+                     OR n.content LIKE '%' || #{keyword} || '%')
+                ORDER BY n.created_at DESC
+            ) A
+            WHERE ROWNUM &lt;= #{startRow} + #{pageSize}
+        )
+        WHERE RN &gt; #{startRow}
+    </select>
+    
+    <!-- 전체 공지사항 개수 (고정 공지 제외) -->
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*) 
+        FROM notice_tb
+        WHERE is_fixed = 0
+    </select>
+    
+    <!-- 카테고리별 공지사항 개수 (고정 공지 제외) -->
+    <select id="getCategoryCount" parameterType="String" resultType="int">
+        SELECT COUNT(*) 
+        FROM notice_tb
+        WHERE category = #{category}
+        AND is_fixed = 0
+    </select>
+    
+    <!-- 검색 결과 개수 (고정 공지 제외) -->
+    <select id="getSearchCount" parameterType="java.util.HashMap" resultType="int">
+        SELECT COUNT(*) 
+        FROM notice_tb
+        WHERE is_fixed = 0
+        AND (title LIKE '%' || #{keyword} || '%' 
+             OR content LIKE '%' || #{keyword} || '%')
+    </select>
+
 </mapper>

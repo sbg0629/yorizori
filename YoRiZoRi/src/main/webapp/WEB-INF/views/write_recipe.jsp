@@ -52,6 +52,11 @@
         .btn-submit { display: block; width: 100%; padding: 15px; font-size: 1.2rem; background-color: #ff6f61; color: white; margin-top: 20px; }
         .btn-submit:hover { background-color: #e65a50; }
         footer { text-align: center; padding: 20px 50px; margin-top: 20px; border-top: 1px solid #e0e0e0; color: #888; font-size: 14px; }
+        /* ✅ 이미지 미리보기 스타일 */
+        .image-preview-container { margin-top: 10px; margin-bottom: 10px; }
+        .image-preview { max-width: 100%; max-height: 200px; border-radius: 8px; display: none; object-fit: cover; }
+        .step-image-group { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .step-image-preview { max-width: 150px; max-height: 150px; border-radius: 8px; display: none; object-fit: cover; margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -87,7 +92,10 @@
                 </div>
                 <div class="form-group">
                     <label for="mainImageFile">메인 이미지</label>
-                    <input type="file" id="mainImageFile" name="mainImageFile">
+                    <input type="file" id="mainImageFile" name="mainImageFile" accept="image/*">
+                    <div class="image-preview-container">
+                    	<img id="mainImagePreview" class="image-preview" src="#" alt="메인 이미지 미리보기" style="display:none;">
+                    </div>
                 </div>
             </fieldset>
 
@@ -96,7 +104,7 @@
 	          <div class="form-group category-group">
 	              <c:forEach items="${categories}" var="category">
 	                  <label>
-	                      <%-- ✅ type="radio", name="categoryId"로 변경 --%>
+	                      <%-- type="radio", name="categoryId"로 변경 --%>
 	                      <input type="radio" name="categoryId" value="${category.categoryId}"> ${category.name}
 	                  </label>
 	              </c:forEach>
@@ -121,7 +129,10 @@
                     <div class="step dynamic-item">
                         <input type="text" name="steps[0].stepNumber" value="1" readonly size="3" style="flex-grow:0; text-align:center; background-color: #f8f9fa;">
                         <input type="text" name="steps[0].instruction" placeholder="설명" required>
-                        <input type="file" name="steps[0].imageFile" style="flex-grow:0;">
+                         <div class="step-image-group">
+                           <img class="step-image-preview" src="#" alt="순서 이미지 미리보기" style="display:none;">
+                           <input type="file" name="steps[0].imageFile" class="stepImageFile" style="flex-grow:0;" accept="image/*">
+                        </div>
                         <button type="button" class="removeStepBtn btn-remove">삭제</button>
                     </div>
                 </div>
@@ -146,18 +157,36 @@
     <div class="step dynamic-item">
         <input type="text" name="steps[__INDEX__].stepNumber" value="__STEP_NUMBER__" readonly size="3" style="flex-grow:0; text-align:center; background-color: #f8f9fa;">
         <input type="text" name="steps[__INDEX__].instruction" placeholder="설명" required>
-        <input type="file" name="steps[__INDEX__].imageFile" style="flex-grow:0;">
+         <div class="step-image-group">
+            <img class="step-image-preview" src="#" alt="순서 이미지 미리보기" style="display:none;">
+            <input type="file" name="steps[__INDEX__].imageFile" class="stepImageFile" style="flex-grow:0;" accept="image/*">
+         </div>
         <button type="button" class="removeStepBtn btn-remove">삭제</button>
     </div>
 </div>
 
 <script>
-    // ===========================================
-    // ✅ 재료/순서 로직은 jQuery를 사용하므로 $(document).ready() 안에 남겨둡니다.
-    // ===========================================
+    // ✅ 이미지 미리보기 공통 함수
+    function previewImage(input, previewElement) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewElement.attr('src', e.target.result).show();
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            previewElement.attr('src', '#').hide();
+        }
+    }
+
     $(document).ready(function() {
         
-        // 1. 재료 추가 로직 (기존과 동일)
+        // 1. 메인 이미지 미리보기 이벤트 핸들러
+        $('#mainImageFile').change(function() {
+            previewImage(this, $('#mainImagePreview'));
+        });
+
+        // 2. 재료 추가/삭제 로직 (생략 - 변경 없음)
         $('#addIngredientBtn').click(function () {
             const newIndex = $('#ingredients .ingredient').length;
             const template = $('#ingredient-template').html();
@@ -165,7 +194,6 @@
             $('#ingredients').append(newHtml);
         });
 
-        // 2. 재료 삭제 로직 (v7 - 순서 기반)
         $('#ingredients').on('click', '.removeIngredientBtn', function () {
             if ($('#ingredients .ingredient').length <= 1) {
                  alert("최소 1개의 재료는 필요합니다.");
@@ -181,9 +209,9 @@
                      console.error("[오류] 재료 " + index + ": 예상과 달리 input이 " + inputs.length + "개 발견됨");
                 }
             });
-        }); // 재료 삭제 로직 끝
+        });
 
-        // 3. 조리 순서 추가 로직 (기존과 동일)
+        // 3. 조리 순서 추가 로직
         $('#addStepBtn').click(function () {
             const newIndex = $('#steps .step').length;
             const newStepNumber = newIndex + 1;
@@ -193,7 +221,7 @@
             $('#steps').append(newHtml);
         });
 
-        // 4. 조리 순서 삭제 로직 (v7 - 순서 기반)
+        // 4. 조리 순서 삭제 로직
         $('#steps').on('click', '.removeStepBtn', function () {
             if ($('#steps .step').length <= 1) {
                 alert("최소 1개의 조리 순서는 필요합니다.");
@@ -201,18 +229,29 @@
             }
             $(this).closest('.step').remove();
             $('#steps .step').each(function (index) {
+                const step = $(this);
                 const stepNumber = index + 1;
-                const inputs = $(this).find('input');
-                if (inputs.length >= 3) {
+                const inputs = step.find('input'); // 모든 input
+                const imageFile = step.find('.stepImageFile'); // 파일 input
+
+                if (inputs.length >= 3 && imageFile.length === 1) {
                     inputs.eq(0).val(stepNumber);
                     inputs.eq(0).attr('name', 'steps[' + index + '].stepNumber');
                     inputs.eq(1).attr('name', 'steps[' + index + '].instruction');
-                    inputs.eq(2).attr('name', 'steps[' + index + '].imageFile');
+                    // imageFile은 class 셀렉터로 찾아서 name을 재설정
+                    imageFile.attr('name', 'steps[' + index + '].imageFile');
                 } else {
-                     console.error("[오류] 조리 순서 " + index + ": 예상과 달리 input이 " + inputs.length + "개 발견됨");
+                     console.error("[오류] 조리 순서 " + index + ": 예상과 달리 input이 " + inputs.length + "개, file이 " + imageFile.length + "개 발견됨");
                 }
             });
-        }); // 조리 순서 삭제 로직 끝
+        });
+
+        // 5. 동적 생성된 조리 순서 이미지 미리보기 이벤트 핸들러
+        // input[type=file] 중에서 class="stepImageFile"인 요소에 change 이벤트 바인딩
+        $('#steps').on('change', '.stepImageFile', function() {
+             const previewElement = $(this).closest('.step-image-group').find('.step-image-preview');
+             previewImage(this, previewElement);
+        });
 
     }); // $(document).ready 끝
 </script>

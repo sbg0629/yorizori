@@ -2,6 +2,7 @@ package com.boot.YoRiZoRi.Main_Page.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.boot.YoRiZoRi.Main_Page.dto.ItemDTO;
@@ -27,4 +28,7 @@ public interface ItemDAO {
 	
 	// 페이징 처리를 위한 레시피 개수 조회
 	int getRecipeCount(Map<String, Object> param);
+	
+//	//검색
+//	public List<ItemDTO> searchRecipesByQuery(String query);
 }

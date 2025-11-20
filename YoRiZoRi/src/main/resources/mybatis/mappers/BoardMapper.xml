@@ -43,48 +43,70 @@
     </select>
     
     <!-- 게시글 개수 (검색 포함) -->
-    <select id="getBoardCount" parameterType="map" resultType="int">
-        SELECT COUNT(*)
-        FROM board_tb b
-        LEFT JOIN member_tb m ON b.member_id = m.member_id
-        <trim prefix="WHERE" prefixOverrides="AND |OR ">
-            <if test="keyword != null and keyword != ''">
-                (
-                    b.title LIKE CONCAT('%', #{keyword}, '%')
-                    OR b.content LIKE CONCAT('%', #{keyword}, '%')
-                    OR m.nickname LIKE CONCAT('%', #{keyword}, '%')
-                )
-            </if>
-        </trim>
-    </select>
+   <select id="getBoardCount" parameterType="map" resultType="int">
+    SELECT COUNT(*)
+    FROM board_tb b
+    LEFT JOIN member_tb m ON b.member_id = m.member_id
+    <where>
+        <if test="keyword != null and keyword != '' and type != null and type != ''">
+            <trim prefix="(" suffix=")" prefixOverrides="OR">
+                <foreach item="t" collection="type.split('')">
+                    <choose>
+                        <when test="t == 'T'.toString()">
+                            OR b.title LIKE '%' || #{keyword} || '%'
+                        </when>
+                        <when test="t == 'C'.toString()">
+                            OR b.content LIKE '%' || #{keyword} || '%'
+                        </when>
+                        <when test="t == 'W'.toString()">
+                            OR m.nickname LIKE '%' || #{keyword} || '%'
+                        </when>
+                    </choose>
+                </foreach>
+            </trim>
+        </if>
+    </where>
+</select>
     
     <!-- 페이징 게시글 목록 -->
-    <select id="listPaged" parameterType="map" resultMap="boardResultMap">
-        SELECT *
+ <select id="listPaged" parameterType="map" resultMap="boardResultMap">
+    SELECT *
+    FROM (
+        SELECT inner_query.*, ROWNUM AS rn
         FROM (
-            SELECT inner_query.*, ROWNUM AS rn
-            FROM (
-                SELECT 
-                    b.board_id, b.member_id, b.title, b.content,
-                    b.view_count, b.created_at, b.updated_at,
-                    m.name AS member_name, m.nickname AS nickname
-                FROM board_tb b
-                LEFT JOIN member_tb m ON b.member_id = m.member_id
-                <trim prefix="WHERE" prefixOverrides="AND |OR ">
-                    <if test="keyword != null and keyword != ''">
-                        (
-                            b.title LIKE CONCAT('%', #{keyword}, '%')
-                            OR b.content LIKE CONCAT('%', #{keyword}, '%')
-                            OR m.nickname LIKE CONCAT('%', #{keyword}, '%')
-                        )
-                    </if>
-                </trim>
-                ORDER BY b.created_at DESC
-            ) inner_query
-            WHERE ROWNUM &lt;= #{endRow}
-        )
-        WHERE rn &gt;= #{startRow}
-    </select>
+            SELECT 
+                b.board_id, b.member_id, b.title, b.content,
+                b.view_count, b.created_at, b.updated_at,
+                m.name AS member_name, m.nickname AS nickname
+            FROM board_tb b
+            LEFT JOIN member_tb m ON b.member_id = m.member_id
+            
+            <where>
+                <if test="keyword != null and keyword != '' and type != null and type != ''">
+                    <trim prefix="(" suffix=")" prefixOverrides="OR">
+                        <foreach item="t" collection="type.split('')">
+                            <choose>
+                                <when test="t == 'T'.toString()">
+                                    OR b.title LIKE '%' || #{keyword} || '%'
+                                </when>
+                                <when test="t == 'C'.toString()">
+                                    OR b.content LIKE '%' || #{keyword} || '%'
+                                </when>
+                                <when test="t == 'W'.toString()">
+                                    OR m.nickname LIKE '%' || #{keyword} || '%'
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </where>
+            
+            ORDER BY b.created_at DESC
+        ) inner_query
+        WHERE ROWNUM &lt;= #{endRow}
+    )
+    WHERE rn &gt;= #{startRow}
+</select>
     
     <!-- 게시글 상세 조회 -->
     <select id="getBoard" parameterType="int" resultMap="boardResultMap">

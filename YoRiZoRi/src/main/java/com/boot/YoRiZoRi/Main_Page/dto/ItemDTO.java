@@ -24,7 +24,7 @@ public class ItemDTO {
 	private int difficulty;
 	private String cookingTime;
 	private int hit;
-	private int rating;
+	private double rating;
 	
     // [추가] 2. 조리 순서 목록(steps)을 담을 필드
     private String cookingSteps;

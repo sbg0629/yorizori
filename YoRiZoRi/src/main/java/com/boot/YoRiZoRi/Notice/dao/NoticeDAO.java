@@ -3,9 +3,12 @@ package com.boot.YoRiZoRi.Notice.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.boot.YoRiZoRi.Notice.dto.NoticeDTO;
 
 
+@Mapper
 public interface NoticeDAO {
     
     // 공지사항 목록 조회 (전체)
@@ -34,5 +37,13 @@ public interface NoticeDAO {
     
     // 고정 공지사항 조회
     List<NoticeDTO> getFixedNotices();
+    
+    // 페이징 관련 추가 메서드
+    List<NoticeDTO> listWithPaging(HashMap<String, Object> param);
+    List<NoticeDTO> listByCategoryWithPaging(HashMap<String, Object> param);
+    List<NoticeDTO> searchWithPaging(HashMap<String, Object> param);
+    int getTotalCount();
+    int getCategoryCount(String category);
+    int getSearchCount(HashMap<String, Object> param);
 }
 

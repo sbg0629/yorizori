@@ -17,6 +17,7 @@
 		<mapper resource="mybatis/mappers/BoardMapper.xml"/>
 		<mapper resource="mybatis/mappers/BoardCommentMapper.xml"/>
 		<mapper resource="mybatis/mappers/ChatMessageMapper.xml"/>
+		<mapper resource="mybatis/mappers/MessageMapper.xml"/>
 	</mappers>
 	
 	

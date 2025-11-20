@@ -400,6 +400,16 @@
 		    text-decoration: underline; /* 4. 밑줄을 표시합니다. */
 		    color: #ff6f61;             /* 5. (선택) 사이트 테마 색상으로 변경합니다. */
 		}
+        
+        /* ✅ 리뷰 이미지 미리보기 스타일 */
+        .review-img-preview {
+            max-width: 200px; 
+            max-height: 150px; 
+            border-radius: 5px; 
+            margin-bottom: 10px; 
+            border: 1px solid #ddd;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
@@ -414,7 +424,6 @@
         </div>
     </c:if>
     
-    <!-- 모든 로그인 사용자용 북마크 버튼 -->
     <c:if test="${not empty sessionScope.id}">
         <div style="text-align: right; margin-bottom: 20px;">
             <button id="bookmarkBtn" class="action-btn" onclick="toggleBookmark()" 
@@ -428,20 +437,45 @@
     <h1 class="recipe-title">${recipe.title}</h1>
     
     <div class="recipe-meta">
-        <span class="meta-item"><i class="bi bi-person-fill meta-icon"></i> 작성자: <a href="member_profile?id=${recipe.memberId}"><strong>${recipe.memberId}</strong></a></span>
+        <span class="meta-item"><i class="bi bi-person-fill meta-icon"></i> 작성자: <a href="member_profile?id=${recipe.memberId}"><strong>${recipe.nickname}</strong></a></span>
         <span class="meta-item"><i class="bi bi-eye-fill meta-icon"></i> 조회수: <strong>${recipe.hit}</strong></span>
-        <span class="meta-item"><i class="bi bi-star-fill meta-icon"></i> 평균 별점: <strong><c:out value="${recipe.average_rating}" default="0.0"/>점</strong></span>
+        <span class="meta-item"><i class="bi bi-star-fill meta-icon"></i> 평균 별점: 
+            <strong>
+                <c:choose>
+                    <%-- 1. 값이 null이 아니거나 0보다 클 때, 소수점 1자리까지 반올림
+                        (예: 3.666... -> 3.7 / 3.0 -> 3.0) 
+                    --%>
+                    <c:when test="${not empty recipe.average_rating && recipe.average_rating > 0}">
+                        <fmt:formatNumber value="${recipe.average_rating}" pattern="0.0" />점
+                    </c:when>
+                    <%-- 2. 값이 null이거나 0일 때 (기존 default="0.0" 역할) --%>
+                    <c:otherwise>
+                        0.0점
+                    </c:otherwise>
+                </c:choose>
+            </strong>
+        </span>
         <span class="meta-item"><i class="bi bi-chat-dots-fill meta-icon"></i> 댓글: <strong>${recipe.commentList.size()}개</strong></span>
         <span class="meta-item"><i class="bi bi-calendar-check meta-icon"></i> 작성일: <strong><fmt:formatDate value="${recipe.createdat}" pattern="yyyy.MM.dd"/></strong></span>
     </div>
     
-    <img src="${recipe.mainImage}" alt="${recipe.title}" class="main-image">
+    <img src="/images/${recipe.mainImage}" alt="${recipe.title}" class="main-image">
 
     <h2 class="section-header"><i class="bi bi-book"></i> 레시피 요약</h2>
     <p class="recipe-description">${recipe.description}</p>
     
     <div class="recipe-meta" style="justify-content: space-evenly; background-color: #f5fcf5; border-color: #d8f5d8;">
-        <span class="meta-item"><i class="bi bi-speedometer2 meta-icon"></i> 난이도: <strong>${recipe.difficulty}</strong></span>
+		<span class="meta-item">
+		    <i class="bi bi-speedometer2 meta-icon"></i> 난이도: 
+		    <strong>
+		        <c:choose>
+		            <c:when test="${recipe.difficulty == 1}">하</c:when>
+		            <c:when test="${recipe.difficulty == 2}">중</c:when>
+		            <c:when test="${recipe.difficulty == 3}">상</c:when>
+		            <c:otherwise>${recipe.difficulty}</c:otherwise>
+		        </c:choose>
+		    </strong>
+		</span>
         <span class="meta-item"><i class="bi bi-alarm-fill meta-icon"></i> 조리 시간: <strong>${recipe.cookingTime}</strong></span>
         <span class="meta-item"><i class="bi bi-person-badge-fill meta-icon"></i> 요리 양: <strong>${recipe.servingSize}인분</strong></span>
     </div>
@@ -474,14 +508,13 @@
                     <h3>STEP ${loop.count}</h3> 
                     <p>${step.instruction}</p>
                     <c:if test="${not empty step.imageUrl}">
-                        <img src="<c:url value='/${step.imageUrl}'/>" alt="조리 단계 이미지" class="step-img">
+                        <img src="<c:url value='/images/${step.imageUrl}'/>" alt="조리 단계 이미지" class="step-img">
                     </c:if>
                 </div>
             </c:forEach>
         </c:otherwise>
     </c:choose>
     
-    <!-- 후기 섹션 -->
     <div class="comment-review-box">
         <h2 class="section-header" style="margin-top: 0;"><i class="bi bi-pencil-square"></i> 사용자 후기 및 평점 (${recipe.reviewList.size()}개)</h2>
         
@@ -493,7 +526,7 @@
                 <c:forEach var="rvw" items="${recipe.reviewList}">
                     <div class="review-item">
                         <div class="review-header">
-                            <a href="member_profile?id=${rvw.memberId}"><strong>${rvw.memberId}</strong></a> 
+                            <a href="member_profile?id=${rvw.memberId}"><strong>${rvw.nickname}</strong></a> 
                             <span class="review-rating">
                                 <c:forEach begin="1" end="${rvw.rating}">★</c:forEach>
                                 <c:forEach begin="${rvw.rating + 1}" end="5">☆</c:forEach>
@@ -506,7 +539,8 @@
                         </p>
                         <p class="review-content">${rvw.content}</p>
                         <c:if test="${not empty rvw.image}">
-                            <img src="${rvw.image}" alt="후기 이미지" style="max-width: 200px; border-radius: 5px; margin-top: 10px;">
+                            <%-- 후기 이미지 로딩 경로 수정 필요 시 (DB에 파일명 저장 시) src="/images/${rvw.image}" --%>
+                            <img src="/images/${rvw.image}" alt="후기 이미지" style="max-width: 200px; border-radius: 5px; margin-top: 10px;">
                         </c:if>
 
                         <div class="delete-button-container">
@@ -522,16 +556,18 @@
             </c:otherwise>
         </c:choose>
         
-        <!-- 후기 작성 폼 -->
         <c:if test="${not empty sessionScope.id}">
             <div class="write-form" style="background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;">
                 <h4 style="margin-top: 0; color: #2e7d32;">후기 작성</h4>
-                <form id="reviewForm">
-                    <input type="hidden" name="recipeId" value="${recipe.recipeId}">
+                
+                <%-- ✅ [수정 핵심] action/method 명시 및 enctype="multipart/form-data" 추가 --%>
+				<form id="reviewForm" action="${pageContext.request.contextPath}/review/writeFile" method="post" enctype="multipart/form-data">
+				    <input type="hidden" name="recipeId" value="${recipe.recipeId}">
+                    
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">평점:</label>
                         <div class="rating-input">
-                            <input type="radio" name="rating" value="5" id="star5">
+                            <input type="radio" name="rating" value="5" id="star5" required>
                             <label for="star5">★</label>
                             <input type="radio" name="rating" value="4" id="star4">
                             <label for="star4">★</label>
@@ -545,19 +581,26 @@
                     </div>
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">후기 내용:</label>
-                        <textarea name="content" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; resize: vertical;" placeholder="후기를 작성해주세요..."></textarea>
+                        <textarea name="content" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; resize: vertical;" placeholder="후기를 작성해주세요..." required></textarea>
                     </div>
+                    
+                    <%-- ✅ [수정 핵심] 이미지 URL -> 파일 첨부 및 미리보기 --%>
                     <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">이미지 URL (선택사항):</label>
-                        <input type="text" name="image" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" placeholder="이미지 URL을 입력해주세요...">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">이미지 첨부 (선택사항):</label>
+                        
+                        <img id="reviewImagePreview" src="#" alt="미리보기" 
+                             class="review-img-preview" style="display: none;">
+                             
+                        <input type="file" id="reviewImageFile" name="imageFile" accept="image/*" 
+                               style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
                     </div>
+                    
                     <button type="submit" style="background-color: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">후기 작성</button>
                 </form>
             </div>
         </c:if>
     </div>
 
-    <!-- 댓글 섹션 -->
     <div class="comment-review-box">
         <h2 class="section-header" style="margin-top: 0;"><i class="bi bi-chat-left-text-fill"></i> 댓글 (${recipe.commentList.size()}개)</h2>
         
@@ -570,7 +613,7 @@
                 <c:forEach var="cmt" items="${recipe.commentList}">
                     <div class="comment-item">
                         <div class="comment-header">
-                            <a href="member_profile?id=${cmt.memberId}"><strong>${cmt.memberId}</strong></a> 
+                            <a href="member_profile?id=${cmt.memberId}"><strong>${cmt.nickname}</strong></a> 
                             <span style="font-size: 0.8rem; color: #999;"><fmt:formatDate value="${cmt.createdat}" pattern="yy.MM.dd HH:mm"/></span>
                         </div>
                         <p class="comment-content" style="margin-top: 5px;">${cmt.content}</p>
@@ -591,7 +634,6 @@
         </c:choose>
         </div>
         
-        <!-- 댓글 작성 폼 -->
         <c:if test="${not empty sessionScope.id}">
             <div class="write-form" style="background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;">
                 <h4 style="margin-top: 0; color: #2e7d32;">댓글 작성</h4>
@@ -599,7 +641,7 @@
                     <input type="hidden" name="recipeId" value="${recipe.recipeId}">
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">댓글 내용:</label>
-                        <textarea name="content" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; resize: vertical;" placeholder="댓글을 작성해주세요..."></textarea>
+                        <textarea name="content" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; resize: vertical;" placeholder="댓글을 작성해주세요..." required></textarea>
                     </div>
                     <button type="submit" style="background-color: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">댓글 작성</button>
                 </form>
@@ -609,7 +651,6 @@
 
 </div>
 
-<!-- 북마크 버튼 (로그인한 사용자만) -->
 <c:if test="${not empty sessionScope.id}">
     <button id="bookmarkBtn" class="btn-bookmark" onclick="toggleBookmark()" title="즐겨찾기">
         <i class="bi bi-bookmark" id="bookmarkIcon"></i>
@@ -654,49 +695,52 @@
         });
     });
 
-    // 후기 작성
+    // 후기 작성 (✅ [수정 핵심]: 일반 폼 제출로 변경했으므로, JS 검증 후 서버로 바로 제출)
     document.getElementById('reviewForm').addEventListener('submit', function(e) {
-        e.preventDefault();
         
         const formData = new FormData(this);
-        const recipeId = formData.get('recipeId');
         const content = formData.get('content');
         const rating = formData.get('rating');
-        const image = formData.get('image');
+        const imageFile = formData.get('imageFile'); // 파일 객체
         
         if (!content.trim()) {
             alert('후기 내용을 입력해주세요.');
+            e.preventDefault(); // 제출 중단
             return;
         }
         
         if (!rating) {
             alert('평점을 선택해주세요.');
+            e.preventDefault(); // 제출 중단
             return;
         }
         
-        fetch('${pageContext.request.contextPath}/review/write', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'recipeId=' + recipeId + '&content=' + encodeURIComponent(content) + '&rating=' + rating + '&image=' + encodeURIComponent(image)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                location.reload();
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('후기 작성 중 오류가 발생했습니다.');
-        });
+        // 서버로의 제출은 JS에서 직접 막지 않고 폼의 action으로 이동합니다.
     });
 
-    // 댓글 수정 폼 표시
+    // ✅ [추가 핵심] 이미지 미리보기 로직
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('reviewImageFile');
+        const previewImg = document.getElementById('reviewImagePreview');
+        
+        if (fileInput) {
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImg.src = e.target.result;
+                        previewImg.style.display = 'block';
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                } else {
+                    previewImg.src = '#';
+                    previewImg.style.display = 'none';
+                }
+            });
+        }
+    });
+
+    // 댓글 수정 폼 표시 (기존 코드 유지)
     function showEditCommentForm(commentId, content) {
         const commentDiv = document.getElementById('comment-' + commentId);
         const contentWrapper = commentDiv.querySelector('.comment-content-wrapper');
@@ -719,7 +763,7 @@
         contentWrapper.appendChild(editForm);
     }
 
-    // 댓글 수정 취소
+    // 댓글 수정 취소 (기존 코드 유지)
     function cancelEdit(commentId) {
         const commentDiv = document.getElementById('comment-' + commentId);
         const editForm = commentDiv.querySelector('.edit-form');
@@ -728,7 +772,7 @@
         }
     }
 
-    // 댓글 수정 저장
+    // 댓글 수정 저장 (기존 코드 유지)
     function updateComment(commentId) {
         const content = document.getElementById('edit-content-' + commentId).value;
         
@@ -759,7 +803,7 @@
         });
     }
 
-    // 댓글 삭제
+    // 댓글 삭제 (기존 코드 유지)
     function deleteComment(commentId) {
         if (!confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
             return;
@@ -787,7 +831,7 @@
         });
     }
 
-    // 대댓글 작성 폼 표시
+    // 대댓글 작성 폼 표시 (기존 코드 유지)
     function showReplyForm(parentCommentId) {
         const commentDiv = document.getElementById('comment-' + parentCommentId);
         
@@ -810,7 +854,7 @@
         commentDiv.appendChild(replyForm);
     }
 
-    // 대댓글 작성 취소
+    // 대댓글 작성 취소 (기존 코드 유지)
     function cancelReply(parentCommentId) {
         const commentDiv = document.getElementById('comment-' + parentCommentId);
         const replyForm = commentDiv.querySelector('.reply-form');
@@ -819,7 +863,7 @@
         }
     }
 
-    // 대댓글 제출
+    // 대댓글 제출 (기존 코드 유지)
     function submitReply(parentCommentId) {
         const content = document.getElementById('reply-content-' + parentCommentId).value;
         
@@ -850,7 +894,7 @@
         });
     }
 
-    // 후기 수정 폼 표시
+    // 후기 수정 폼 표시 (기존 코드 유지)
     function showEditReviewForm(reviewId, content, rating) {
         const reviewDiv = document.getElementById('review-' + reviewId);
         const contentWrapper = reviewDiv.querySelector('.review-content-wrapper');
@@ -886,7 +930,7 @@
         contentWrapper.appendChild(editForm);
     }
 
-    // 후기 수정 취소
+    // 후기 수정 취소 (기존 코드 유지)
     function cancelEditReview(reviewId) {
         const reviewDiv = document.getElementById('review-' + reviewId);
         const editForm = reviewDiv.querySelector('.edit-form');
@@ -895,7 +939,7 @@
         }
     }
 
-    // 후기 수정 저장
+    // 후기 수정 저장 (기존 코드 유지)
     function updateReview(reviewId) {
         const content = document.getElementById('edit-review-content-' + reviewId).value;
         const rating = document.querySelector('input[name="edit-rating-' + reviewId + '"]:checked');
@@ -932,7 +976,7 @@
         });
     }
 
-    // 후기 삭제
+    // 후기 삭제 (기존 코드 유지)
     function deleteReview(reviewId) {
         if (!confirm('정말로 이 후기를 삭제하시겠습니까?')) {
             return;
@@ -960,7 +1004,7 @@
         });
     }
 
-    // 재료 구매 링크
+    // 재료 구매 링크 (기존 코드 유지)
     function buyIngredient(button) {
         const ingredientName = button.dataset.name;
         console.log("가져온 재료 이름:", ingredientName);
@@ -976,7 +1020,7 @@
         }
     }
 
-    // ==================== 북마크 기능 ====================
+    // ==================== 북마크 기능 (기존 코드 유지) ====================
     
     // 페이지 로드 시 북마크 상태 확인
     window.addEventListener('DOMContentLoaded', function() {

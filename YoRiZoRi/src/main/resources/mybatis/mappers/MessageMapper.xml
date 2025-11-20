@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.YoRiZoRi.MY_Page.dao.MessageDAO">
+
+    <insert id="insertMessage" parameterType="com.boot.YoRiZoRi.MY_Page.dto.MessageDTO">
+        INSERT INTO private_message (
+            message_id, sender_id, receiver_id, content, sent_at, read_status
+        ) VALUES (
+            private_message_seq.NEXTVAL,
+            #{senderId},
+            #{receiverId},
+            #{content},
+            SYSDATE,
+            0 
+        )
+    </insert>
+
+    <select id="selectReceivedMessages" parameterType="String" resultType="com.boot.YoRiZoRi.MY_Page.dto.MessageDTO">
+        SELECT 
+            pm.message_id AS msgId,
+            pm.sender_id AS senderId,
+            m.nickname AS senderNickname,
+            pm.content,
+            pm.sent_at AS sentDate,
+            pm.read_status AS readStatus,    pm.receiver_delete_ck, 
+       		pm.sender_delete_ck     
+        FROM private_message pm
+        JOIN member_tb m ON pm.sender_id = m.member_id
+        WHERE pm.receiver_id = #{receiverId}
+        AND pm.receiver_delete_ck = 0  ORDER BY pm.sent_at DESC
+    </select>
+
+    <select id="selectSentMessages" resultType="com.boot.YoRiZoRi.MY_Page.dto.MessageDTO">
+	    SELECT 
+	        M.MESSAGE_ID AS msgId,
+	        M.SENDER_ID AS senderId,
+	        M.RECEIVER_ID AS receiverId,
+	        M.CONTENT AS content,
+	        M.SENT_AT AS sentDate,
+	        M.READ_STATUS AS readStatus,    R.NICKNAME AS receiverNickname,
+	        M.receiver_delete_ck, 
+       		M.sender_delete_ck     
+	    FROM 
+	        PRIVATE_MESSAGE M
+	    JOIN 
+	        MEMBER_TB R ON M.RECEIVER_ID = R.MEMBER_ID  
+     	WHERE 
+	        M.SENDER_ID = #{senderId}
+	    AND M.sender_delete_ck = 0     ORDER BY 
+	        M.SENT_AT DESC
+	</select>
+    
+    <select id="selectMessageById" parameterType="int" resultType="com.boot.YoRiZoRi.MY_Page.dto.MessageDTO">
+	    SELECT 
+	        pm.message_id AS msgId,         pm.sender_id AS senderId,
+	        pm.receiver_id AS receiverId,
+	        pm.content AS content,
+	        pm.sent_at AS sentDate,
+	        pm.read_status AS readStatus,
+	        
+	        pm.sender_delete_ck AS senderDeleteCk,    pm.receiver_delete_ck AS receiverDeleteCk,  m_sender.nickname AS senderNickname
+	    FROM private_message pm
+	    LEFT JOIN member_tb m_sender ON pm.sender_id = m_sender.member_id
+	    WHERE pm.message_id = #{msgId}
+	</select>
+    
+    <delete id="hardDeleteMessage" parameterType="int">
+	    DELETE FROM private_message
+	    WHERE message_id = #{msgId}
+	</delete>
+    
+    <update id="updateMessageReadStatus" parameterType="int">
+        UPDATE private_message
+        SET read_status = 1
+        WHERE message_id = #{msgId} AND read_status = 0
+    </update>
+    
+    <select id="getUnreadMessageCount" resultType="int">
+	    SELECT 
+	        COUNT(message_id)
+	    FROM 
+	        private_message 
+	    WHERE 
+	        RECEIVER_ID = #{receiverId} 
+	        AND READ_STATUS = 0
+	</select>
+	
+	<update id="updateSenderDeleteCk">
+	    UPDATE PRIVATE_MESSAGE SET sender_delete_ck = 1
+	    WHERE message_id = #{msgId}
+	</update>
+	
+	<update id="updateReceiverDeleteCk">
+	    UPDATE PRIVATE_MESSAGE SET receiver_delete_ck = 1
+	    WHERE message_id = #{msgId}
+	</update>
+
+</mapper>

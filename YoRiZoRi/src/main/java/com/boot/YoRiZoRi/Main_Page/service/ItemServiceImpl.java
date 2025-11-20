@@ -2,6 +2,7 @@ package com.boot.YoRiZoRi.Main_Page.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -93,4 +94,11 @@ public class ItemServiceImpl implements ItemService {
 		ItemDAO dao = sqlSession.getMapper(ItemDAO.class);
 		return dao.getRecipeCount(param);
 	}
+
+//	@Override
+//	public List<ItemDTO> searchRecipesByQuery(String query) {
+//		ItemDAO dao = sqlSession.getMapper(ItemDAO.class);
+//		// ItemDAO를 통해 데이터베이스 검색 메서드를 호출하고 결과를 반환합니다.
+//		return dao.searchRecipesByQuery(query);
+//	}
 }

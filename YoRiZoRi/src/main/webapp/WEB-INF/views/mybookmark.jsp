@@ -209,13 +209,12 @@
                             <i class="bi bi-bookmark-fill"></i>
                         </button>
                         
-                        <img src="${bookmark.mainImage}" alt="${bookmark.title}" 
-                             onclick="location.href='detail.do?recipe_Id=${bookmark.recipeId}'">
-                        
-                        <div class="card-content">
-                            <div class="card-title" onclick="location.href='detail.do?recipe_Id=${bookmark.recipeId}'">
-                                ${bookmark.title}
-                            </div>
+						<img src="/images/${bookmark.mainImage}" alt="${bookmark.title}"
+						 onclick="location.href='detail.do?recipe_Id=${bookmark.recipeId}'">
+						     <div class="card-content">
+						    <div class="card-title" onclick="location.href='detail.do?recipe_Id=${bookmark.recipeId}'">
+						           ${bookmark.title}
+						      </div>
                             
                             <div class="card-info">
                                 <i class="bi bi-star-fill"></i>

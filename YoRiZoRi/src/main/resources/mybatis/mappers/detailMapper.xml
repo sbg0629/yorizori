@@ -12,6 +12,7 @@
         <result property="rating"      column="RATING" />
         <result property="image"       column="IMAGE" />
         <result property="createdat"   column="CREATED_AT" />
+        <result property="nickname"    column="NICKNAME" />
     </resultMap>
     
     <resultMap id="CommentDTOMap" type="com.boot.YoRiZoRi.Detailed_Page.dto.CommentDTO">
@@ -24,12 +25,24 @@
         <result property="createdat"  column="CREATED_AT" />
     </resultMap>
 
-    <select id="getRecipeBaseInfo" parameterType="int" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.DetailDTO">
-        SELECT RECIPE_ID, MEMBER_ID, TITLE, DESCRIPTION, SERVING_SIZE, 
-               MAIN_IMAGE, CREATED_AT, DIFFICULTY, COOKING_TIME, HIT, COMMENT_COUNT
-        FROM RECIPE
-        WHERE RECIPE_ID = #{recipeId}
-    </select>
+   
+<select id="getRecipeBaseInfo" parameterType="int" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.DetailDTO">
+    SELECT 
+        R.RECIPE_ID, 
+        R.MEMBER_ID, 
+        R.TITLE, 
+        R.DESCRIPTION, 
+        R.SERVING_SIZE, 
+        R.MAIN_IMAGE, 
+        R.CREATED_AT, 
+        R.DIFFICULTY, 
+        R.COOKING_TIME, 
+        R.HIT, 
+        R.COMMENT_COUNT,
+        M.NICKNAME  FROM RECIPE R
+    JOIN MEMBER_TB M ON R.MEMBER_ID = M.MEMBER_ID  WHERE R.RECIPE_ID = #{recipeId}
+</select>
+
 
     <select id="getIngredientList" parameterType="int" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.IngredientDTO">
         SELECT RI.QUANTITY, I.NAME, I.INGREDIENT_ID
@@ -54,11 +67,14 @@
 <!--        ORDER BY REF_ID ASC, CMT_STEP ASC-->
 <!--    </select>-->
 	<select id="getCommentList" parameterType="int" resultMap="CommentDTOMap">
-        SELECT COMMENT_ID, REF_ID, CMT_STEP, CMT_DEPTH, RECIPE_ID, MEMBER_ID, CONTENT, CREATED_AT
-        FROM COMMENT_TB
-        WHERE RECIPE_ID = #{recipeId}
-        ORDER BY REF_ID ASC, CMT_STEP ASC
-    </select>
+    SELECT 
+        C.COMMENT_ID, C.REF_ID, C.CMT_STEP, C.CMT_DEPTH, C.RECIPE_ID, C.MEMBER_ID, C.CONTENT, C.CREATED_AT,
+        M.NICKNAME
+    FROM COMMENT_TB C
+    JOIN MEMBER_TB M ON C.MEMBER_ID = M.MEMBER_ID
+    WHERE C.RECIPE_ID = #{recipeId}
+    ORDER BY C.REF_ID ASC, C.CMT_STEP ASC
+</select>
 
 <!--    <select id="getReviewList" parameterType="int" resultType="com.boot.YoRiZoRi.Detailed_Page.dto.ReviewDTO">-->
 <!--        SELECT REVIEW_ID, RECIPE_ID, MEMBER_ID, CONTENT, RATING, IMAGE, CREATED_AT-->
@@ -67,12 +83,15 @@
 <!--        ORDER BY CREATED_AT DESC-->
 <!--    </select>-->
 	<select id="getReviewList" parameterType="int" resultMap="ReviewDTOMap">
-        SELECT 
-            REVIEW_ID, RECIPE_ID, MEMBER_ID, CONTENT, RATING, IMAGE, CREATED_AT
-        FROM REVIEW
-        WHERE RECIPE_ID = #{recipeId}
-        ORDER BY CREATED_AT DESC
-    </select>
+    SELECT 
+        R.REVIEW_ID, R.RECIPE_ID, R.MEMBER_ID, R.CONTENT, R.RATING, R.IMAGE, R.CREATED_AT,
+        M.NICKNAME
+    FROM REVIEW R
+    JOIN MEMBER_TB M ON R.MEMBER_ID = M.MEMBER_ID 
+    WHERE R.RECIPE_ID = #{recipeId}
+    ORDER BY R.CREATED_AT DESC
+</select>
+
 
 
     <update id="incrementHit" parameterType="int">
@@ -218,7 +237,6 @@
 	
 	<!-- ## 후기 관련 쿼리 ## -->
 	
-	<!-- 후기 작성 -->
 	<insert id="insertReview" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.ReviewDTO">
 	    INSERT INTO review (
 	        recipe_id, 
@@ -232,17 +250,16 @@
 	        #{memberId}, 
 	        #{content}, 
 	        #{rating}, 
-	        #{image}, 
+	        #{image, jdbcType=VARCHAR}, 
 	        SYSDATE
 	    )
 	</insert>
 	
-	<!-- 후기 수정 -->
 	<update id="updateReview" parameterType="com.boot.YoRiZoRi.Detailed_Page.dto.ReviewDTO">
 	    UPDATE review 
 	    SET content = #{content}, 
 	        rating = #{rating}, 
-	        image = #{image}
+	        image = #{image, jdbcType=VARCHAR}
 	    WHERE review_id = #{review_Id}
 	</update>
 	

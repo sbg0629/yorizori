@@ -49,6 +49,19 @@
                     </foreach>
                 )
             </if>
+
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    r.title LIKE '%' || #{keyword} || '%'
+                    OR r.description LIKE '%' || #{keyword} || '%'
+                    OR r.recipe_id IN (
+                        SELECT ri.recipe_id 
+                        FROM recipe_ingredient ri
+                        JOIN ingredient i ON ri.ingredient_id = i.ingredient_id
+                        WHERE i.name LIKE '%' || #{keyword} || '%'
+                    )
+                )
+            </if>
         </where>
         
         GROUP BY 
@@ -126,7 +139,7 @@
     LEFT OUTER JOIN review r2 ON r.recipe_id = r2.recipe_id
     <where>
         <if test="categoryList != null and categoryList.size() > 0">
-            r.recipe_id IN (
+            AND r.recipe_id IN (
                 SELECT recipe_id 
                 FROM recipe_category
                 WHERE category_id IN 
@@ -135,10 +148,22 @@
                 </foreach>
             )
         </if>
+        
+        <if test="keyword != null and keyword != ''">
+            AND (
+                r.title LIKE '%' || #{keyword} || '%'
+                OR r.description LIKE '%' || #{keyword} || '%'
+                OR r.recipe_id IN (
+                    SELECT ri.recipe_id 
+                    FROM recipe_ingredient ri
+                    JOIN ingredient i ON ri.ingredient_id = i.ingredient_id
+                    WHERE i.name LIKE '%' || #{keyword} || '%'
+                )
+            )
+        </if>
     </where>
 </select>
 
-<!-- 페이징 처리를 위한 레시피 목록 조회 -->
 <select id="list_rating_paged" parameterType="map" resultType="com.boot.YoRiZoRi.Main_Page.dto.ItemDTO">
     SELECT * FROM (
         SELECT 
@@ -164,13 +189,26 @@
             
             <where>
                 <if test="categoryList != null and categoryList.size() > 0">
-                    r.recipe_id IN (
+                    AND r.recipe_id IN (
                         SELECT recipe_id 
                         FROM recipe_category
                         WHERE category_id IN 
                         <foreach item="cat" collection="categoryList" open="(" separator="," close=")">
                             #{cat}
                         </foreach>
+                    )
+                </if>
+
+                <if test="keyword != null and keyword != ''">
+                    AND (
+                        r.title LIKE '%' || #{keyword} || '%'
+                        OR r.description LIKE '%' || #{keyword} || '%'
+                        OR r.recipe_id IN (
+                            SELECT ri.recipe_id 
+                            FROM recipe_ingredient ri
+                            JOIN ingredient i ON ri.ingredient_id = i.ingredient_id
+                            WHERE i.name LIKE '%' || #{keyword} || '%'
+                        )
                     )
                 </if>
             </where>
@@ -194,5 +232,96 @@
     )
     WHERE rn BETWEEN #{startRow} AND #{endRow}
 </select>
-	
+
+<!--<select id="searchRecipesByQuery" resultType="com.boot.YoRiZoRi.Main_Page.dto.ItemDTO">-->
+<!--    SELECT -->
+<!--        r.recipe_id AS recipeId, -->
+<!--        r.member_id AS memberId, -->
+<!--        r.title, -->
+<!--        r.description, -->
+<!--        r.serving_size AS servingSize,-->
+<!--        TO_CHAR(r.main_image) AS mainImage, -->
+<!--        r.created_at, -->
+<!--        r.difficulty,-->
+<!--        r.cooking_time AS cookingTime, -->
+<!--        r.hit, -->
+<!--        NVL(AVG(r2.rating), 0) AS rating-->
+<!--    FROM -->
+<!--        recipe r  LEFT OUTER JOIN -->
+<!--        review r2 ON r.recipe_id = r2.recipe_id  WHERE -->
+<!--         제목에서 검색-->
+<!--        r.title LIKE '%' || #{query} || '%' -->
+<!--        내용/설명(CONTENT)에서 검색 (여기는 description으로 통일)-->
+<!--        OR r.description LIKE '%' || #{query} || '%'-->
+<!--    GROUP BY -->
+<!--        r.recipe_id, r.member_id, r.title, r.description, r.serving_size, -->
+<!--        TO_CHAR(r.main_image), r.created_at, r.difficulty, r.cooking_time, r.hit-->
+<!--    ORDER BY -->
+<!--        r.hit DESC, r.created_at DESC -->
+<!--</select>-->
+
+
+<select id="findRecipeByName" parameterType="String" resultType="com.boot.YoRiZoRi.Main_Page.dto.ItemDTO">
+        
+        WITH 
+        /* 1-1. 레시피별 고유한 조리 순서 (중복 제거) */
+        distinct_steps AS (
+            SELECT DISTINCT
+                recipe_id,
+                step_number,
+                instruction
+            FROM recipe_step
+        ),
+        /* 1-2. 레시피별 고유한 재료 (중복 제거) */
+        distinct_ingredients AS (
+            SELECT DISTINCT
+                ri.recipe_id,
+                i.name,
+                ri.quantity
+            FROM recipe_ingredient ri
+            LEFT JOIN ingredient i ON ri.ingredient_id = i.ingredient_id
+        )
+        
+        <![CDATA[
+            SELECT * FROM (
+                SELECT 
+                    r.recipe_id, 
+                    r.title, 
+                    r.description, 
+                    r.difficulty, 
+                    r.cooking_time,
+                    r.hit,
+                    r.serving_size,
+                    
+                    /* 평균 별점 (AVG는 DISTINCT 허용) */
+                    NVL(AVG(DISTINCT rev.rating), 0) AS rating,
+                    
+                    /* 조리 순서 (이제 DISTINCT 키워드 불필요) */
+                    LISTAGG(rs.instruction, ' | ') 
+                        WITHIN GROUP (ORDER BY rs.step_number) 
+                        AS cookingSteps,
+                        
+                    /* 재료 목록 (이제 DISTINCT 키워드 불필요) */
+                    LISTAGG(di.name || ' ' || di.quantity, ' | ')
+                        WITHIN GROUP (ORDER BY di.name)
+                        AS ingredients
+
+                FROM recipe r
+                
+                /* [수정] JOIN 대상을 미리 준비한 WITH 절로 변경 */
+                LEFT JOIN review rev ON r.recipe_id = rev.recipe_id
+                LEFT JOIN distinct_steps rs ON r.recipe_id = rs.recipe_id
+                LEFT JOIN distinct_ingredients di ON r.recipe_id = di.recipe_id
+                
+                WHERE #{keyword} LIKE '%' || r.title || '%'
+                
+                GROUP BY 
+                    r.recipe_id, r.title, r.description, r.difficulty, 
+                    r.cooking_time, r.hit, r.serving_size
+                
+                ORDER BY LENGTH(r.title) DESC 
+            )
+            WHERE ROWNUM = 1
+        ]]>
+    </select>
 </mapper>

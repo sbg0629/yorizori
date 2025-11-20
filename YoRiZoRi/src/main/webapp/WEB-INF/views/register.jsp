@@ -9,13 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입 | 요리조리</title>
     <!-- Bootstrap Icons -->
-		    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-		    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 			<link href="${pageContext.request.contextPath}/css/header.css" rel="stylesheet" type="text/css">
 			<link href="${pageContext.request.contextPath}/css/footer.css" rel="stylesheet" type="text/css">
-			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
@@ -204,17 +200,17 @@
                 </div>
                 <div class="validation-msg"></div> <!-- Placeholder for spacing -->
                 
-                <div class="input-group">
-                    <i class="bi bi-image-fill"></i>
-                    <input type="file" class="form-control" name="PROFILE_IMAGE" accept="image/*">
-                </div>
+<!--                <div class="input-group">-->
+<!--                    <i class="bi bi-image-fill"></i>-->
+<!--                    <input type="file" class="form-control" name="PROFILE_IMAGE" accept="image/*">-->
+<!--                </div>-->
                 <div class="validation-msg"></div> <!-- Placeholder for spacing -->
                 
-                <div class="gender-group">
-                    <strong>성별*</strong>&nbsp;&nbsp;&nbsp;
-                    <label><input type="radio" name="GENDER" value="1" required> 남성</label>
-                    <label><input type="radio" name="GENDER" value="2"> 여성</label>
-                </div>
+<!--                <div class="gender-group">-->
+<!--                    <strong>성별*</strong>&nbsp;&nbsp;&nbsp;-->
+<!--                    <label><input type="radio" name="GENDER" value="1" required> 남성</label>-->
+<!--                    <label><input type="radio" name="GENDER" value="2"> 여성</label>-->
+<!--                </div>-->
 
                 <button type="submit" class="btn-register">가입하기</button>
                 
@@ -231,9 +227,7 @@
     // [수정] DOM(HTML)이 모두 로드된 후 스크립트를 실행하도록 변경
     document.addEventListener('DOMContentLoaded', function() {
 
-        // ===================================================
         //            Real-time Duplicate & Email Script
-        // ===================================================
         // (헤더 관련 코드는 모두 삭제)
 
         // --- 검증 상태 객체 ---

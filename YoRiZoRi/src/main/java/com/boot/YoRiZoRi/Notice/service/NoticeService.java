@@ -33,5 +33,13 @@ public interface NoticeService {
     List<NoticeDTO> getFixedNotices();
     
     NoticeDTO notgetNotice(int noticeId);
+    
+    // 페이징 관련 추가 메서드
+    List<NoticeDTO> listWithPaging(HashMap<String, Object> param);
+    List<NoticeDTO> listByCategoryWithPaging(HashMap<String, Object> param);
+    List<NoticeDTO> searchWithPaging(HashMap<String, Object> param);
+    int getTotalCount();
+    int getCategoryCount(String category);
+    int getSearchCount(HashMap<String, Object> param);
 }
 

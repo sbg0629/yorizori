@@ -74,5 +74,41 @@ public class NoticeServiceImpl implements NoticeService {
         // 조회수 증가
         return noticeDAO.getNotice(noticeId);
     }
+ // 페이징 관련 메서드 구현 추가
+    @Override
+    public List<NoticeDTO> listWithPaging(HashMap<String, Object> param) {
+        log.info("@# NoticeServiceImpl.listWithPaging() param={}", param);
+        return noticeDAO.listWithPaging(param);
+    }
+    
+    @Override
+    public List<NoticeDTO> listByCategoryWithPaging(HashMap<String, Object> param) {
+        log.info("@# NoticeServiceImpl.listByCategoryWithPaging() param={}", param);
+        return noticeDAO.listByCategoryWithPaging(param);
+    }
+    
+    @Override
+    public List<NoticeDTO> searchWithPaging(HashMap<String, Object> param) {
+        log.info("@# NoticeServiceImpl.searchWithPaging() param={}", param);
+        return noticeDAO.searchWithPaging(param);
+    }
+    
+    @Override
+    public int getTotalCount() {
+        log.info("@# NoticeServiceImpl.getTotalCount()");
+        return noticeDAO.getTotalCount();
+    }
+    
+    @Override
+    public int getCategoryCount(String category) {
+        log.info("@# NoticeServiceImpl.getCategoryCount() category={}", category);
+        return noticeDAO.getCategoryCount(category);
+    }
+    
+    @Override
+    public int getSearchCount(HashMap<String, Object> param) {
+        log.info("@# NoticeServiceImpl.getSearchCount() param={}", param);
+        return noticeDAO.getSearchCount(param);
+    }
 }
 

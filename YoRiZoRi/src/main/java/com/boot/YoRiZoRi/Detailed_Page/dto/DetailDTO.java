@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.boot.YoRiZoRi.Recipe.dto.CategoryDTO;
 
 import lombok.Data;
@@ -30,10 +32,12 @@ public class DetailDTO {
     private int comment_count;
     private double average_rating;
     private Date bookmarked_at;	
+    private String nickname;
 
     // 추가: 폼에서 전송되는 카테고리 ID 목록을 받기 위한 필드
     private List<Integer> categoryIds;
     private Integer categoryId;
+    private MultipartFile mainImageFile;
 
     // 2. 부가 정보 (목록)
     private List<CategoryDTO> categoryList = new ArrayList<>();

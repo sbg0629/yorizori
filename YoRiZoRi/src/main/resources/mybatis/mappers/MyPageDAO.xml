@@ -13,7 +13,7 @@
         <result property="profileImage" column="PROFILE_IMAGE"/>
         <result property="phoneNumber"  column="PHONE_NUMBER"/>
         <result property="birthdate"    column="BIRTHDATE"/>
-        <result property="gender"       column="GENDER"/>
+      
     </resultMap>
     
     <resultMap id="myRecipeResultMap" type="com.boot.YoRiZoRi.MY_Page.dto.MyRecipeDTO">
@@ -31,14 +31,14 @@
     </resultMap>
 
     <select id="list" resultMap="myPageResultMap">
-        SELECT member_Id, name, password, nickname, email, profile_image, phone_number, birthDate, gender
+        SELECT member_Id, name, password, nickname, email, profile_image, phone_number, birthDate
         FROM member_tb
         where not admin_ck = 1
         ORDER BY member_Id
     </select>
     
     <select id="getUserById" parameterType="string" resultMap="myPageResultMap">
-        SELECT member_Id, name, password, nickname, email, profile_image, phone_number, birthDate, gender
+        SELECT member_Id, name, password, nickname, email, profile_image, phone_number, birthDate
         FROM member_tb
         WHERE member_Id = #{memberId}
     </select>
@@ -55,8 +55,8 @@
             email = #{email},
             profile_image = #{profileImage, jdbcType=CLOB}, -- CLOB 타입 명시
             phone_number = #{phoneNumber}, 
-            birthDate = TO_DATE(#{birthdate}, 'YYYY-MM-DD'), 
-            gender = #{gender}
+            birthDate = TO_DATE(#{birthdate}, 'YYYY-MM-DD')
+            
         WHERE 
             member_Id = #{memberId}
     </update>
