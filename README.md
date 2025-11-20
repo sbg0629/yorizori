@@ -35,10 +35,11 @@ sts3 ->  https://github.com/kh2yorizori/kh2_yorizori
   <img src="https://github.com/user-attachments/assets/e28d85b0-2158-4f78-8869-3a88241671b7" width="47%" />
 </p>
 
+
 <!-- 2 -->
 ### 🥘 레시피 목록 / 🍳 레시피 상세 페이지
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/1f24b8c3-0a7b-4b04-8e7c-00190cdcb368" width="47%" />
+  <img src=""https://github.com/user-attachments/assets/75b13823-3b4b-47cf-b6b5-bcd884ed7705" width="47%" />
   <img src="https://github.com/user-attachments/assets/a608aaad-3331-47f4-9e9e-d42bd2b11d65" width="47%" />
 </p>
 
