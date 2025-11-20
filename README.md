@@ -47,7 +47,7 @@ sts3 ->  https://github.com/kh2yorizori/kh2_yorizori
 <!-- 3 -->
 ### 💬 실시간 채팅 / 🤖 AI 요리 챗봇(Gemini)
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/6b655a6a-0255-4945-9d9f-f700d75ebd7a" width="47%" />
+  <img src="https://github.com/user-attachments/assets/52f4a590-475f-40e8-92b2-6d4a841f3f20" width="47%" />
   <img src="https://github.com/user-attachments/assets/1d43cb23-df41-4dda-a2f3-f7adbf9a04bc" width="47%" />
 </p>
 
