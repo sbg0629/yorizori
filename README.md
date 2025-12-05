@@ -203,25 +203,14 @@ Git / GitHub
 <h2>🧬 테이블 명세서 및 ERD </h2>
 
 <h3> Entity-Relationship Diagram </h3>
-<img src="images/ERD.png" alt="ERD" width="100%"/>
+<img src="https://github.com/user-attachments/assets/519e5360-1b49-4bac-8bb7-7b4f71cf3d99"  alt="ERD" width="100%"/>
+
 <details>
   <summary><h4> 🔍테이블 세부 명세서🔍 </h4></summary>
-  <img src="images/ERD_desc1.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc2.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc3.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc4.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc5.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc6.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc7.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc8.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc9.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc10.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc11.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc12.webp" alt="ERD" width="100%"/>
-  <img src="images/ERD_desc13.webp" alt="ERD" width="100%"/>
+  <img src="https://github.com/user-attachments/assets/3ba12a73-6402-49c8-9ca4-e648aa00d0bd" alt="ERD" width="100%"/>
+  <img src="https://github.com/user-attachments/assets/f56308c9-9c19-45f0-bfd9-8c47b381c051" alt="ERD" width="100%"/>
+  <img src="https://github.com/user-attachments/assets/d0938b3e-ad3c-4410-8e96-77a5b7fec048" alt="ERD" width="100%"/>
+  <img src="https://github.com/user-attachments/assets/248ddbef-010c-4d4c-9ce3-6b93c9f048c7" width="100%"/>
 </details>
 
 ---
-
-## 🗂️ 시스템 구조도
- <img src="images/system_structure.webp" alt="system_structure" width="100%"/>
