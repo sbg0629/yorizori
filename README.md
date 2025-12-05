@@ -173,7 +173,7 @@ Git / GitHub
   </details>
   
   <h3>◈ 관리자 페이지 </h3>
-  <img src="https://github.com/user-attachments/assets/db19e16b-07f8-4071-82f0-b2eacc449962" alt="mypage_week" width="100%"/>
+  <img src= alt="mypage_week" width="100%"/>
 
 </details>
 
@@ -203,17 +203,18 @@ Git / GitHub
 
 <details>
   <summary>✨관리자페이지 보기</summary>
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/영상ID" frameborder="0" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://github.com/user-attachments/assets/db19e16b-07f8-4071-82f0-b2eacc449962"" frameborder="0" allowfullscreen></iframe>
 </details>
 
 <details>
-  <summary>✨문의하기 보기</summary>
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/영상ID" frameborder="0" allowfullscreen></iframe>
+  <summary>✨자유 게시판</summary>
+  <iframe width="560" height="315" src="https://github.com/user-attachments/assets/8d859b7f-cfe1-4b1b-a1da-2811eb684c35" frameborder="0" allowfullscreen></iframe>
 </details>
 
+
 <details>
-  <summary>✨피드백 보기</summary>
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/영상ID" frameborder="0" allowfullscreen></iframe>
+  <summary>✨공지사항 게시판</summary>
+  <iframe width="560" height="315" src="https://github.com/user-attachments/assets/187bfbbd-f60d-4876-83ef-5380774c5e48" frameborder="0" allowfullscreen></iframe>
 </details>
 
 ---
