@@ -72,144 +72,139 @@ Git / GitHub
 
 ---
 
-## 🎬 전체 보기(자세히)
-
-<details>
-  <summary>✨UI/UX 테마 보기</summary>
-
-  <h3>◈ 메인 페이지 구성</h3>
-  <img src="https://github.com/user-attachments/assets/bbc0df63-cdcd-44ac-a023-d1b8ef18aaca" alt="main_page" width="100%"/>
-
-
-  <h3>◈ 로그인/회원가입 UI</h3>
-  <img src="https://github.com/user-attachments/assets/c657fd0a-79ab-43ff-a014-2414467e1c7c" alt="main_join" width="100%"/>
-  <img src="https://github.com/user-attachments/assets/27ca88c6-f79d-4caf-991a-f50d5219b07c" alt="main_join" width="100%"/>
-
-  <h3>◈ Footer</h3>
-  <img src="https://github.com/user-attachments/assets/4b221701-1cb2-4051-9d5c-15c4b2c42145" alt="footer_info" width="100%"/>
-   <details>
-  <summary><h4>회사 소개 </h4></summary>
-  <img src="https://github.com/user-attachments/assets/44cf52de-cd4e-46c6-a5be-00b700c961c6?raw=1" 
-       alt="footer_info_rule" width="100%"/>
-</details>
-
-<details>
-  <summary><h4>이용약관</h4></summary>
-  <img src="https://github.com/user-attachments/assets/54026804-2c28-4421-b895-e901d4578dca?raw=1" 
-       alt="footer_info_using" width="100%"/>
-</details>
-
-<details>
-  <summary><h4>개인정보처리방침</h4></summary>
-  <img src="https://github.com/user-attachments/assets/fe592fd4-e45b-4484-84f9-82334b92675a?raw=1" 
-       alt="footer_info_company" width="100%"/>
-</details>
-
-<details>
-  <summary><h4>고객센터</h4></summary>
-  <img src="https://github.com/user-attachments/assets/22d91316-ac3e-4e6a-bad6-a429c1690384?raw=1" 
-       alt="footer_help" width="100%"/>
-</details>
-
-    
-
-
-  <p>이 이외의 UI/UX에 대해서는 다른 기능설명에서 제공하도록 하겠습니다!</p>
-</details>
-
-<details>
-  <summary>✨레시피 정보 보기</summary>
-  <h3>◈ 레시피 관련</h3>
-  <h4>레시피 종류</h4>
-  <img src="https://github.com/user-attachments/assets/01759bee-bb30-42ec-94c3-c6fce1bc4aae" alt="emotion_select_UI" width="100%"/>
-
-  <h4>레시피 카테고리 검색</h4>
-  <img src="https://github.com/user-attachments/assets/f9e585b3-90d4-4f6a-99dd-fde09cd87160"  alt="emotion_selected_tab" width="100%"/>
-  <img src="https://github.com/user-attachments/assets/9c0dd841-63ea-4249-a33a-558bbe6478a0"  alt="emotion_selected_tab" width="100%"/>
-
-  <h3>◈ 레시피 상세 보기 : SliderCard</h3>
-  <img src="https://github.com/user-attachments/assets/47aaced9-4c59-4bbd-a5bf-f6b936ac04ee" alt="emotion_select_slider" width="100%"/>
-
-  <h3>◈ 레시피 추가 </h3>
-  <img src="https://github.com/user-attachments/assets/aef2661b-e995-4642-9f3d-c203ce38093d" alt="emotion_face2" width="100%"/>
-  
-
-  <h3>◈ 레시피 AI</h3>
-  <img src="https://github.com/user-attachments/assets/3436519d-919e-4394-9c54-e04141309110" alt="emotion_face2" width="100%"/>
-
-
-  <h3>◈ 즐겨찾기 </h3>
-  <details>
-    <summary><h4>즐겨찾기 UI</h4></summary>
-    <img src="https://github.com/user-attachments/assets/c57bbe42-3198-4e2d-9344-e88f3526db12" alt="recom_music" width="100%"/>
-  </details>
-  <details>
-    <summary><h4>즐겨찾기 항목</h4></summary>
-    <img src="https://github.com/user-attachments/assets/97c6b09e-7849-41e2-92d0-485bb94b58f5" alt="recom_act" width="100%"/>
-  </details>
-  <details>
-
-</details>
-
-<details>
-  <summary>✨마이페이지 보기</summary>
-  <h3>◈ 마이페이지 UI</h3>
-  <img src="https://github.com/user-attachments/assets/d28ae196-7344-42a3-91af-172b1f343aed" alt="mypage_UI2" width="100%"/>
-  <img src="https://github.com/user-attachments/assets/59e8b7b1-dd0e-460a-b56b-e18cf8e06a1d"alt="mypage_UI1" width="100%"/>
-
-  <h3>◈ 추천 회원 표시 </h3>
-  <details>
-    <summary><h4>추천 회원 표시</h4></summary>
-    <img src="https://github.com/user-attachments/assets/10e46c4a-61d3-4a87-99a8-7498105428a5" alt="mypage_daily1" width="100%"/>
-
-  </details>
-  <details>
-    <summary><h4>추천 회원 프로필 사진</h4></summary>
-    <img src="https://github.com/user-attachments/assets/b85a65a1-b20f-4371-a459-16beeaf719bd" width="100%"/>
-  </details>
-</details>
-
-<details>
-  <summary>✨쪽지 보내기</summary>
-  <h3>◈ 쪽지 UI</h3>
-  <h4>받은 쪽지함</h4>
-  <img src="https://github.com/user-attachments/assets/75776f89-26f3-4252-bbf6-5956e8c544c5"  alt="collection_open_UI" width="100%"/>
-
-  <h4>보낸 쪽지함</h4>
-  <img src="https://github.com/user-attachments/assets/75965025-4bbd-4b20-a87b-1a18b0f1affa" alt="collection_my_UI" width="100%"/>
-  
-  <h3>◈ 쪽지 UI</h3>
-  <h4>쪽지 보내기 </h4>
-  <img src="https://github.com/user-attachments/assets/70189db2-2e5c-4769-813e-2c48069cfbf0" alt="collection_content" width="100%"/>
-
-  <h4>쪽지 상세 내용</h4>
-  <img src="https://github.com/user-attachments/assets/e039eb98-b178-4bea-ba88-2f28a9ffbbf6" alt="collection_new" width="100%"/>
-  
-</details>
-
-<details>
-  <summary>✨게시판 보기</summary>
-    <img src="https://github.com/user-attachments/assets/91759f8c-dd86-4887-8f8d-6bcb66dfb672" alt="collection_new" width="100%"/>
-</details>
-
-
-<details>
-  <summary>✨공지사항 보기</summary>
- <img src="https://github.com/user-attachments/assets/0a9bb460-ede1-4226-821d-b2320baa5471" alt="collection_new" alt="collection_new" width="100%"/>
+# ✨ UI / 기능 상세
 
 ---
 
-<h2>🧬 테이블 명세서 및 ERD </h2>
+<details>
+<summary><strong>✨ UI/UX 테마 보기</strong></summary>
 
-<h3> Entity-Relationship Diagram </h3>
-<img src="https://github.com/user-attachments/assets/519e5360-1b49-4bac-8bb7-7b4f71cf3d99"  alt="ERD" width="100%"/>
+### ◈ 메인 페이지 구성
+<img src="https://github.com/user-attachments/assets/bbc0df63-cdcd-44ac-a023-d1b8ef18aaca" width="100%"/>
+
+### ◈ 로그인/회원가입
+<img src="https://github.com/user-attachments/assets/c657fd0a-79ab-43ff-a014-2414467e1c7c" width="100%"/>
+<img src="https://github.com/user-attachments/assets/27ca88c6-f79d-4caf-991a-f50d5219b07c" width="100%"/>
+
+### ◈ Footer
+<img src="https://github.com/user-attachments/assets/4b221701-1cb2-4051-9d5c-15c4b2c42145" width="100%"/>
+
+<details><summary>회사 소개</summary>
+<img src="https://github.com/user-attachments/assets/44cf52de-cd4e-46c6-a5be-00b700c961c6" width="100%"/>
+</details>
+
+<details><summary>이용약관</summary>
+<img src="https://github.com/user-attachments/assets/54026804-2c28-4421-b895-e901d4578dca" width="100%"/>
+</details>
+
+<details><summary>개인정보 처리방침</summary>
+<img src="https://github.com/user-attachments/assets/fe592fd4-e45b-4484-84f9-82334b92675a" width="100%"/>
+</details>
+
+<details><summary>고객센터</summary>
+<img src="https://github.com/user-attachments/assets/22d91316-ac3e-4e6a-bad6-a429c1690384" width="100%"/>
+</details>
+
+</details>
+
+---
 
 <details>
-  <summary><h4> 🔍테이블 세부 명세서🔍 </h4></summary>
-  <img src="https://github.com/user-attachments/assets/3ba12a73-6402-49c8-9ca4-e648aa00d0bd" alt="ERD" width="100%"/>
-  <img src="https://github.com/user-attachments/assets/f56308c9-9c19-45f0-bfd9-8c47b381c051" alt="ERD" width="100%"/>
-  <img src="https://github.com/user-attachments/assets/d0938b3e-ad3c-4410-8e96-77a5b7fec048" alt="ERD" width="100%"/>
-  <img src="https://github.com/user-attachments/assets/248ddbef-010c-4d4c-9ce3-6b93c9f048c7" width="100%"/>
+<summary><strong>✨ 레시피 정보 보기</strong></summary>
+
+### ◈ 레시피 종류
+<img src="https://github.com/user-attachments/assets/01759bee-bb30-42ec-94c3-c6fce1bc4aae" width="100%"/>
+
+### ◈ 카테고리 검색
+<img src="https://github.com/user-attachments/assets/f9e585b3-90d4-4f6a-99dd-fde09cd87160" width="100%"/>
+<img src="https://github.com/user-attachments/assets/9c0dd841-63ea-4249-a33a-558bbe6478a0" width="100%"/>
+
+### ◈ 상세 보기 (슬라이더)
+<img src="https://github.com/user-attachments/assets/47aaced9-4c59-4bbd-a5bf-f6b936ac04ee" width="100%"/>
+
+### ◈ 레시피 추가
+<img src="https://github.com/user-attachments/assets/aef2661b-e995-4642-9f3d-c203ce38093d" width="100%"/>
+
+### ◈ 레시피 AI
+<img src="https://github.com/user-attachments/assets/3436519d-919e-4394-9c54-e04141309110" width="100%"/>
+
+### ◈ 즐겨찾기
+<details><summary>즐겨찾기 UI</summary>
+<img src="https://github.com/user-attachments/assets/c57bbe42-3198-4e2d-9344-e88f3526db12" width="100%"/>
+</details>
+
+<details><summary>즐겨찾기 항목</summary>
+<img src="https://github.com/user-attachments/assets/97c6b09e-7849-41e2-92d0-485bb94b58f5" width="100%"/>
+</details>
+
+</details>
+
+---
+
+<details>
+<summary><strong>✨ 마이페이지 보기</strong></summary>
+
+<img src="https://github.com/user-attachments/assets/d28ae196-7344-42a3-91af-172b1f343aed" width="100%"/>
+<img src="https://github.com/user-attachments/assets/59e8b7b1-dd0e-460a-b56b-e18cf8e06a1d" width="100%"/>
+
+<details><summary>추천 회원 표시</summary>
+<img src="https://github.com/user-attachments/assets/10e46c4a-61d3-4a87-99a8-7498105428a5" width="100%"/>
+</details>
+
+<details><summary>추천 회원 프로필 사진</summary>
+<img src="https://github.com/user-attachments/assets/b85a65a1-b20f-4371-a459-16beeaf719bd" width="100%"/>
+</details>
+
+</details>
+
+---
+
+<details>
+<summary><strong>✨ 쪽지 보내기</strong></summary>
+
+### 받은 쪽지함
+<img src="https://github.com/user-attachments/assets/75776f89-26f3-4252-bbf6-5956e8c544c5" width="100%"/>
+
+### 보낸 쪽지함
+<img src="https://github.com/user-attachments/assets/75965025-4bbd-4b20-a87b-1a18b0f1affa" width="100%"/>
+
+### 쪽지 보내기
+<img src="https://github.com/user-attachments/assets/70189db2-2e5c-4769-813e-2c48069cfbf0" width="100%"/>
+
+### 쪽지 상세
+<img src="https://github.com/user-attachments/assets/e039eb98-b178-4bea-ba88-2f28a9ffbbf6" width="100%"/>
+
+</details>
+
+---
+
+<details>
+<summary><strong>✨ 게시판 보기</strong></summary>
+<img src="https://github.com/user-attachments/assets/91759f8c-dd86-4887-8f8d-6bcb66dfb672" width="100%"/>
+</details>
+
+---
+
+<details>
+<summary><strong>✨ 공지사항 보기</strong></summary>
+<img src="https://github.com/user-attachments/assets/0a9bb460-ede1-4226-821d-b2320baa5471" width="100%"/>
+</details>
+
+---
+
+## 🧬 ERD & 테이블 명세서
+
+### ERD
+<img src="https://github.com/user-attachments/assets/519e5360-1b49-4bac-8bb7-7b4f71cf3d99" width="100%"/>
+
+<details>
+<summary><strong>테이블 세부 명세서</strong></summary>
+
+<img src="https://github.com/user-attachments/assets/3ba12a73-6402-49c8-9ca4-e648aa00d0bd" width="100%"/>
+<img src="https://github.com/user-attachments/assets/f56308c9-9c19-45f0-bfd9-8c47b381c051" width="100%"/>
+<img src="https://github.com/user-attachments/assets/d0938b3e-ad3c-4410-8e96-77a5b7fec048" width="100%"/>
+<img src="https://github.com/user-attachments/assets/248ddbef-010c-4d4c-9ce3-6b93c9f048c7" width="100%"/>
+
 </details>
 
 ---
