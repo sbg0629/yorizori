@@ -1,9 +1,8 @@
-# 🧠 MoodSync
-## Emotion-based Recommendation System
+# YoRIZORi
+## Cooking business information system
 
-**MoodSync**는 사용자의 감정 데이터를 기반으로 맞춤형 활동, 책, 음악을 추천하는 통합 감정 분석 플랫폼입니다.  
-사용자의 감정 상태를 정량화하고, AI 모델을 통해 분석하며, 정서적 웰빙을 위한 맞춤형 콘텐츠를 제공합니다.
-
+**YoRIZORi**는 사용자의 레시피 정보를 기반으로 레시피를 공유하고, 취향에 맞는 새로운 요리를 추천하는 플랫폼입니다. 
+사용자들끼리 실시간 채팅을 통해 레시피를 공유하고 요리 팁을 나눌 수 있습니다. 
 ---
 
 <img src="images/MoodSync_desc.png" alt="포스터" width="100%"/> 
@@ -14,46 +13,40 @@
 
 | 기능명 | 설명 | 기여도 |
 |--------|------|--------|
-| **이미지 프로세싱/슬라이더를 통한 감정입력** | Face-API를 이용한 얼굴인식 / Slider를 이용한 6개 감정 조절 | 중 ★ |
-| **활동, 도서, 음악 추천 (감정별 100개씩)** | tensorflow.js를 활용한 ML 기반 추천시스템 구현 | 상 ⭐ |
-| **사용자 추천 컬렉션 기능** | 추천받은 항목들을 그룹화 할 수 있는 컬렉션 CRUD 구현 | 하 ☆ |
-| **사용자 추천 내기록 기능** | 추천받은 이력 View 및 일자별 감정차트 구현 | 하 ☆ |
-| **관리자페이지 구현** | 문의하기, 피드백을 통한 소통공간 창출 및 학습갱신 구현 | 중 ★ |
-| **사용자 문의하기 시계열 분석 <br>(Time Series)** | 일자별/시간대별 문의하기 분석차트 구현 | 상 ⭐ |
-| **감정 기반 사용자 군집화 <br>(Clustering & Cohesion)** | 일자별 전체 유저의 감정지수 군집화 및 사이트 테마감정 제공 | 중 ★ |
-| **사용자 이탈 가능성 예측 <br>(Churn Prediction)** | 이탈지표를 이용한 웹사이트 이탈 가능성 예측 | 상 ⭐ |
+| **챗봇 레시피 Q&A** | Gemini RAG로 DB 레시피 정보만 답변 | 중 ★ |
+| **실시간 단체 채팅** |  WebSocket 그룹 채팅, 최근 메시지 조회 | 상 ⭐ |
+| **레시피 등록/카테고리** | WebSocket 그룹 채팅, 최근 메시지 조회 |  중 ★ |
+| **추천/검색 뷰** | 메인·리스트·상세 JSP로 레시피 탐색 |  중 ★ |
+| **게시판/공지** | 커뮤니티 글, 댓글, 공지 CRUD | 중 ★ |
+| **마이페이지/쪽지** | 북마크·내 레시피·쪽지함 관리 | 상 ⭐ |
+| **문의/피드백 처리** | 게시판/공지로 수집(현 구조 활용) | 하 ☆ |
 
 ---
 
 <h2>🛠️ 기술 스택</h2>
 
-### 📌 Frontend
-- **Next.js**
-- **TypeScript**
-- **Tailwind CSS**
-- **TensorFlow.js (감정 예측)**
-  
-<p align="left">
-  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"/>
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"/>
-  <img src="https://img.shields.io/badge/TensorFlow.js-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white"/>
-</p>
+📌 Backend
 
-### 📌 Backend
+Java 17
+Spring Framework / Spring MVC
+Spring Security
+MyBatis
+Tomcat
+Oracle Database
+Google(Gmail) API 연동
 
-- **Spring Boot**
-- **MyBatis + Oracle DB**
-- **RESTful API**
-- **JWT 인증 시스템**
+<p align="left"> <img src="https://img.shields.io/badge/Java 17-007396?style=for-the-badge&logo=openjdk&logoColor=white"/> <img src="https://img.shields.io/badge/Spring MVC-6DB33F?style=for-the-badge&logo=spring&logoColor=white"/> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white"/> <img src="https://img.shields.io/badge/MyBatis-14274E?style=for-the-badge&logo=databricks&logoColor=white"/> <img src="https://img.shields.io/badge/Tomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=black"/> <img src="https://img.shields.io/badge/Oracle DB-F80000?style=for-the-badge&logo=oracle&logoColor=white"/> <img src="https://img.shields.io/badge/Google API-4285F4?style=for-the-badge&logo=google&logoColor=white"/> </p>
+📌 Frontend
+JSP
+HTML5 / CSS3
+JavaScript
+jQuery
 
-<p align="left">
-  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"/>
-  <img src="https://img.shields.io/badge/MyBatis-35495E?style=for-the-badge&logo=databricks&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Oracle DB-F80000?style=for-the-badge&logo=oracle&logoColor=white"/>
-  <img src="https://img.shields.io/badge/REST API-000000?style=for-the-badge&logo=flask&logoColor=white"/>
-  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white"/>
-</p>
+<p align="left"> <img src="https://img.shields.io/badge/JSP-007396?style=for-the-badge&logo=java&logoColor=white"/> <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white"/> <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white"/> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/> <img src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"/> </p>
+📌 Version Control
+Git / GitHub
+<p align="left"> <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"/> <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/> </p>
+
 
 ### 📌 데이터 및 모델링
 - 사용자 감정 입력값 (행복, 슬픔, 스트레스, 차분함, 흥분, 피곤함)
