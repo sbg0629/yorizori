@@ -127,8 +127,13 @@ Git / GitHub
   <h3>◈ 레시피 상세 보기 : SliderCard</h3>
   <img src="https://github.com/user-attachments/assets/47aaced9-4c59-4bbd-a5bf-f6b936ac04ee" alt="emotion_select_slider" width="100%"/>
 
+  <h3>◈ 레시피 추가 </h3>
+  <img src="https://github.com/user-attachments/assets/aef2661b-e995-4642-9f3d-c203ce38093d" alt="emotion_face2" width="100%"/>
+  
+
   <h3>◈ 레시피 AI</h3>
   <img src="https://github.com/user-attachments/assets/3436519d-919e-4394-9c54-e04141309110" alt="emotion_face2" width="100%"/>
+
 
   <h3>◈ Recommendation</h3>
   <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
@@ -153,17 +158,18 @@ Git / GitHub
 <details>
   <summary>✨마이페이지 보기</summary>
   <h3>◈ 마이페이지 UI</h3>
-  <img src="images/mypage/mypage_UI2.png" alt="mypage_UI2" width="100%"/>
-  <img src="images/mypage/mypage_UI1.png" alt="mypage_UI1" width="100%"/>
-  
-  <h3>◈ 일자별 감정 차트 및 컨텐트 목록</h3>
+  <img src="https://github.com/user-attachments/assets/d28ae196-7344-42a3-91af-172b1f343aed" alt="mypage_UI2" width="100%"/>
+  <img src="https://github.com/user-attachments/assets/59e8b7b1-dd0e-460a-b56b-e18cf8e06a1d"alt="mypage_UI1" width="100%"/>
+
+  <h3>◈ 추천 회원 표시 </h3>
   <details>
-    <summary><h4>감정 분포 차트</h4></summary>
-    <img src="images/mypage/mypage_daily1.png" alt="mypage_daily1" width="100%"/>
+    <summary><h4>추천 회원 표시</h4></summary>
+    <img src="https://github.com/user-attachments/assets/10e46c4a-61d3-4a87-99a8-7498105428a5" alt="mypage_daily1" width="100%"/>
+
   </details>
   <details>
-    <summary><h4>RecommendationList : Music</h4></summary>
-    <img src="images/mypage/mypage_daily2.png" alt="mypage_daily2" width="100%"/>
+    <summary><h4>추천 회원 프로필 사진</h4></summary>
+    <img src="https://github.com/user-attachments/assets/b85a65a1-b20f-4371-a459-16beeaf719bd" width="100%"/>
   </details>
   <details>
     <summary><h4>RecommendationList : Activity & Book</h4></summary>
