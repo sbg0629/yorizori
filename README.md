@@ -1,4 +1,4 @@
-# YoRIZORi
+<img width="1330" height="1087" alt="image" src="https://github.com/user-attachments/assets/6471b37e-9ae6-44bf-85bd-8b8ad654ce3c" /># YoRIZORi
 ## Cooking business information system
 
 **YoRIZORi**는 사용자의 레시피 정보를 기반으로 레시피를 공유하고, 취향에 맞는 새로운 요리를 추천하는 플랫폼입니다. 
@@ -87,7 +87,7 @@ Git / GitHub
   <img src="https://github.com/user-attachments/assets/27ca88c6-f79d-4caf-991a-f50d5219b07c" alt="main_join" width="100%"/>
 
   <h3>◈ Footer</h3>
-  <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
+  <img src="https://github.com/user-attachments/assets/4b221701-1cb2-4051-9d5c-15c4b2c42145" alt="footer_info" width="100%"/>
     <details>
       <summary><h4>회사 소개 </h4></summary>
       <img src="https://github.com/user-attachments/assets/44cf52de-cd4e-46c6-a5be-00b700c961c6" alt="footer_info_rule" width="100%"/>
@@ -111,26 +111,24 @@ Git / GitHub
     
 
 
-  <h3>◈ 다크 모드</h3>
-  <img src="images/total/main_dark.png" alt="main_dark" width="100%"/>
-
   <p>이 이외의 UI/UX에 대해서는 다른 기능설명에서 제공하도록 하겠습니다!</p>
 </details>
 
 <details>
-  <summary>✨추천 요청하기 보기</summary>
-  <h3>◈ 사용자 감정 입력 UI</h3>
-  <h4>감정 컨텐트</h4>
-  <img src="images/recommendation/emotion_select_UI.png" alt="emotion_select_UI" width="100%"/>
-  <h4>입력 결과 사이드 탭</h4>
-  <img src="images/recommendation/emotion_selected_tab.png" alt="emotion_selected_tab" width="100%"/>
+  <summary>✨레시피 정보 보기</summary>
+  <h3>◈ 레시피 관련</h3>
+  <h4>레시피 종류</h4>
+  <img src="https://github.com/user-attachments/assets/01759bee-bb30-42ec-94c3-c6fce1bc4aae" alt="emotion_select_UI" width="100%"/>
 
-  <h3>◈ 감정 입력 : SliderCard</h3>
-  <img src="images/recommendation/emotion_select_slider.png" alt="emotion_select_slider" width="100%"/>
+  <h4>레시피 카테고리 검색</h4>
+  <img src="https://github.com/user-attachments/assets/f9e585b3-90d4-4f6a-99dd-fde09cd87160"  alt="emotion_selected_tab" width="100%"/>
+  <img src="https://github.com/user-attachments/assets/9c0dd841-63ea-4249-a33a-558bbe6478a0"  alt="emotion_selected_tab" width="100%"/>
 
-  <h3>◈ 감정 입력 : Face-API</h3>
-  <img src="images/recommendation/emotion_face2.png" alt="emotion_face2" width="100%"/>
-  <img src="images/recommendation/emotion_face1.png" alt="emotion_face1" width="100%"/>
+  <h3>◈ 레시피 상세 보기 : SliderCard</h3>
+  <img src="https://github.com/user-attachments/assets/47aaced9-4c59-4bbd-a5bf-f6b936ac04ee" alt="emotion_select_slider" width="100%"/>
+
+  <h3>◈ 레시피 AI</h3>
+  <img src="https://github.com/user-attachments/assets/3436519d-919e-4394-9c54-e04141309110" alt="emotion_face2" width="100%"/>
 
   <h3>◈ Recommendation</h3>
   <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
