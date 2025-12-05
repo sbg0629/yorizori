@@ -135,23 +135,13 @@ Git / GitHub
   <img src="https://github.com/user-attachments/assets/3436519d-919e-4394-9c54-e04141309110" alt="emotion_face2" width="100%"/>
 
 
-  <h3>◈ Recommendation</h3>
-  <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
+  <h3>◈ 북마크 기능</h3>
+  <img src=""https://github.com/user-attachments/assets/5f986fe0-32e7-4478-90f5-9535ae8f29e2" alt="footer_info" width="100%"/>
+  
   <details>
-    <summary><h4>Music</h4></summary>
-    <img src="images/recommendation/recom_music.png" alt="recom_music" width="100%"/>
-    <img src="images/recommendation/music_content.png" alt="music_content" width="100%"/>
-    <img src="images/recommendation/music_content2.png" alt="music_content2" width="100%"/>
-  </details>
-  <details>
-    <summary><h4>Activity</h4></summary>
-    <img src="images/recommendation/recom_act.png" alt="recom_act" width="100%"/>
-  </details>
-  <details>
-    <summary><h4>Book</h4></summary>
-    <img src="images/recommendation/recom_book.png" alt="recom_book" width="100%"/>
-    <img src="images/recommendation/book_content.png" alt="book_content" width="100%"/>
-    <img src="images/recommendation/book_content2.png" alt="book_content2" width="100%"/>
+    <summary><h4>북마크</h4></summary>
+    <img src="https://github.com/user-attachments/assets/534fd1ec-7178-405d-ac4f-76f9a757ed2d" alt="recom_music" width="100%"/>
+
   </details>
 </details>
 
@@ -160,12 +150,18 @@ Git / GitHub
   <h3>◈ 마이페이지 UI</h3>
   <img src="https://github.com/user-attachments/assets/d28ae196-7344-42a3-91af-172b1f343aed" alt="mypage_UI2" width="100%"/>
   <img src="https://github.com/user-attachments/assets/59e8b7b1-dd0e-460a-b56b-e18cf8e06a1d"alt="mypage_UI1" width="100%"/>
+  
+ <h3>◈ 내 게시물 보기  </h3>
+  <details>
+    <summary><h4>내가 작성한 게시글</h4></summary>
+    <img src="https://github.com/user-attachments/assets/8cb0dd79-fd43-4fe5-999b-0baf189434bf" alt="mypage_daily1" width="100%"/>
+  </details>
+ 
 
   <h3>◈ 추천 회원 표시 </h3>
   <details>
     <summary><h4>추천 회원 표시</h4></summary>
     <img src="https://github.com/user-attachments/assets/10e46c4a-61d3-4a87-99a8-7498105428a5" alt="mypage_daily1" width="100%"/>
-
   </details>
   <details>
     <summary><h4>추천 회원 프로필 사진</h4></summary>
@@ -176,11 +172,9 @@ Git / GitHub
     <img src="images/mypage/mypage_daily3.png" alt="mypage_daily3" width="100%"/>
   </details>
   
-  <h3>◈ 주간 감정 추세</h3>
-  <img src="images/mypage/mypage_week.png" alt="mypage_week" width="100%"/>
+  <h3>◈ 관리자 페이지 </h3>
+  <img src="https://github.com/user-attachments/assets/db19e16b-07f8-4071-82f0-b2eacc449962" alt="mypage_week" width="100%"/>
 
-  <h3>◈ 주간 추천 기록</h3>
-  <img src="images/mypage/mypage_week_using.png" alt="mypage_week_using" width="100%"/>  
 </details>
 
 <details>
