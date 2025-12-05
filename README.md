@@ -1,4 +1,3 @@
-<img width="1330" height="1087" alt="image" src="https://github.com/user-attachments/assets/6471b37e-9ae6-44bf-85bd-8b8ad654ce3c" /># YoRIZORi
 ## Cooking business information system
 
 **YoRIZORi**는 사용자의 레시피 정보를 기반으로 레시피를 공유하고, 취향에 맞는 새로운 요리를 추천하는 플랫폼입니다. 
