@@ -32,9 +32,8 @@ sts3 ->  https://github.com/kh2yorizori/kh2_yorizori
 ### 🔐 로그인 / 🧾 메인 페이지
 <p align="center">
   <img src="https://github.com/user-attachments/assets/f7193ac1-6d4f-4f84-9dc9-e1f67d233842" width="47%" />
-  <img src="https://github.com/user-attachments/assets/e28d85b0-2158-4f78-8869-3a88241671b7" width="47%" />
+  <img src="https://github.com/user-attachments/assets/9d0cfaeb-dc61-48d4-8ccf-84bd8a7c661d" width="47%" />
 </p>
-
 
 <!-- 2 -->
 ### 🥘 레시피 목록 / 🍳 레시피 상세 페이지
