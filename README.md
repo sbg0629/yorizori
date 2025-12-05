@@ -1,240 +1,246 @@
-# 🍳 YoriZori — 요리 정보 제공 & 레시피 커뮤니티 플랫폼
+# 🧠 MoodSync
+## Emotion-based Recommendation System
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/3f5231f5-e368-4875-9b5e-bcb8ff08f52e" alt="재미나이 이미지 YoriZori Project Banner" />
-</p>
-
-
-
-
-## 📌 프로젝트 소개
-**YoriZori**는 사용자가 다양한 레시피를 공유하고, 북마크하며,  
-실시간 채팅과 1:1 쪽지를 통해 소통할 수 있는 **요리 정보 플랫폼**입니다.  
-STS3 → STS4 기반으로 전체 기술 스택을 안정적으로 리빌드했으며,  
-Spring 기반의 서버, JSP 화면, Oracle DB, MyBatis, Spring Security 등  
-최신 기술을 활용해 CRUD, 인증/인가, 커뮤니티 기능을 제공합니다.
-
-sts3 ->  https://github.com/kh2yorizori/kh2_yorizori
----
-
-## ✨ 주요 기능
-
-- **회원 관리**: 회원가입, 로그인/로그아웃, 마이페이지, 회원 정보 수정, Spring Security 기반 인증/권한 관리
-- **레시피 관리**: 레시피 등록/수정/삭제, 전체/카테고리별/내 레시피 조회, 북마크(즐겨찾기)
-- **게시판**: 공지사항 게시판, 게시글 작성/수정/삭제
-- **커뮤니티**: 실시간 채팅(WebSocket), AI 요리 챗봇(Gemini), 1:1 쪽지 기능
+**MoodSync**는 사용자의 감정 데이터를 기반으로 맞춤형 활동, 책, 음악을 추천하는 통합 감정 분석 플랫폼입니다.  
+사용자의 감정 상태를 정량화하고, AI 모델을 통해 분석하며, 정서적 웰빙을 위한 맞춤형 콘텐츠를 제공합니다.
 
 ---
 
-## 📸 서비스 화면
-
-<!-- 1 -->
-### 🔐 로그인 / 🧾 메인 페이지
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/f7193ac1-6d4f-4f84-9dc9-e1f67d233842" width="47%" />
-  <img src="https://github.com/user-attachments/assets/9d0cfaeb-dc61-48d4-8ccf-84bd8a7c661d" width="47%" />
-</p>
-
-<!-- 2 -->
-### 🥘 레시피 목록 / 🍳 레시피 상세 페이지
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/75b13823-3b4b-47cf-b6b5-bcd884ed7705" width="47%" />
-  <img src="https://github.com/user-attachments/assets/a608aaad-3331-47f4-9e9e-d42bd2b11d65" width="47%" />
-</p>
-
-
-<!-- 3 -->
-### 💬 실시간 채팅 / 🤖 AI 요리 챗봇(Gemini)
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/52f4a590-475f-40e8-92b2-6d4a841f3f20" width="47%" />
-  <img src="https://github.com/user-attachments/assets/1d43cb23-df41-4dda-a2f3-f7adbf9a04bc" width="47%" />
-</p>
-
-
-<!-- 4 -->
-### 🔐 공지사항 / 🔐 게시판 페이지
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/b1603884-e6ef-4af8-9f92-0b7292793e69" width="47%" />
-  <img src="https://github.com/user-attachments/assets/fdd8a51f-6b18-4134-8bc3-c04dd7ae5da1" width="47%" />
-</p>
-
-<!-- 5 -->
-### 🔐 쪽지 목록 / 🔐 쪽지 상세 페이지
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/0535efa8-5177-4df5-b391-fcde6d0c22a4" width="47%" />
-  <img src="https://github.com/user-attachments/assets/3ab112f6-6d08-4837-b0ca-eb1bca8f1fb2" width="47%" />
-</p>
-
-<!-- 6 -->
-### 🔐 쪽지 작성 / 🔐 쪽지함 페이지
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/10347bda-a261-4207-ba53-e0e06a193df3" width="47%" />
-  <img src="https://github.com/user-attachments/assets/90216f2f-c64f-4105-822e-0b46679117b3" width="47%" />
-</p>
-
-<!-- 7 -->
-### 🔐 마이페이지 / 🔐 추천회원 프로필
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/16673cd2-7173-4dc2-ace4-789d2cc05088" width="47%" />
-  <img src="https://github.com/user-attachments/assets/50fb4226-1330-4bbf-be35-2e121e33e345" width="47%" />
-</p>
-
-<!-- 8 -->
-### 🔐 북마크 페이지 / 🔐 관리자 페이지
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/5a9bb62a-e41e-4022-9e26-2aed53107415" width="47%" />
-  <img src="https://github.com/user-attachments/assets/8f9a8e66-f531-42d9-b3a7-a57229d65ec2" width="47%" />
-</p>
-
-
-
-
-
-
-## 🛠 기술 스택
-
-### Backend
-- Java 17
-- Spring Framework / MVC / Security
-- MyBatis
-- Tomcat
-- Oracle Database
-
-### Frontend
-- JSP
-- HTML5, CSS3, JavaScript
-- jQuery
-
-### DevOps & Tools
-- Git / GitHub
-- STS3 → STS4
-- Gradle
-- Postman
-
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=java,spring,mysql,html,css,js,git,github" />
-</p>
+<img src="images/MoodSync_desc.png" alt="포스터" width="100%"/> 
 
 ---
 
-## 📁 프로젝트 구조
+<h2>🌟프로젝트 기능개요(기여도: 상: ⭐/ 중: ★/ 하: ☆)</h2>
 
-```bash
-YoRiZoRi/
-├─ src/main/java/com.boot/
-│  ├─ Board/               # 게시판 기능
-│  ├─ Chat/                # 실시간 채팅/챗봇
-│  ├─ ChatBot.controller/  # 챗봇 컨트롤러
-│  ├─ common.dto/          # 공통 DTO
-│  ├─ Detailed_Page/       # 레시피 상세페이지
-│  ├─ login/               # 로그인/회원 기능
-│  ├─ Main_Page/           # 메인 페이지
-│  ├─ MY_Page/             # 마이페이지
-│  ├─ Notice/              # 공지사항
-│  ├─ Recipe/              # 레시피 CRUD
-│  ├─ config/
-│  │  ├─ WebMvcConfig.java
-│  │  └─ UnreadMessageInterceptor.java
-│  └─ YoRiZoRiApplication.java
-│
-├─ src/main/resources/
-│  ├─ mybatis.mappers/     # MyBatis 매퍼 XML
-│  ├─ templates/           # (필요시) Thymeleaf 템플릿
-│  ├─ static/              # 정적 파일(CSS/JS)
-│  ├─ application.properties
-│  └─ mybatis-config.xml
-│
-├─ src/main/webapp/
-│  ├─ WEB-INF/
-│  │  ├─ lib/
-│  │  └─ views/
-│  │     ├─ board/
-│  │     ├─ common/
-│  │     ├─ notice/
-│  │     ├─ recipe/
-│  │     ├─ login.jsp
-│  │     ├─ home.jsp
-│  │     ├─ mypage_edit.jsp
-│  │     ├─ myrecipe.jsp
-│  │     ├─ recipe_list.jsp
-│  │     ├─ recipeDetail.jsp
-│  │     └─ write_recipe.jsp
-│  └─ web.xml
-│
-├─ build.gradle
-├─ gradlew
-├─ gradlew.bat
-└─ README.md
-```
+| 기능명 | 설명 | 기여도 |
+|--------|------|--------|
+| **이미지 프로세싱/슬라이더를 통한 감정입력** | Face-API를 이용한 얼굴인식 / Slider를 이용한 6개 감정 조절 | 중 ★ |
+| **활동, 도서, 음악 추천 (감정별 100개씩)** | tensorflow.js를 활용한 ML 기반 추천시스템 구현 | 상 ⭐ |
+| **사용자 추천 컬렉션 기능** | 추천받은 항목들을 그룹화 할 수 있는 컬렉션 CRUD 구현 | 하 ☆ |
+| **사용자 추천 내기록 기능** | 추천받은 이력 View 및 일자별 감정차트 구현 | 하 ☆ |
+| **관리자페이지 구현** | 문의하기, 피드백을 통한 소통공간 창출 및 학습갱신 구현 | 중 ★ |
+| **사용자 문의하기 시계열 분석 <br>(Time Series)** | 일자별/시간대별 문의하기 분석차트 구현 | 상 ⭐ |
+| **감정 기반 사용자 군집화 <br>(Clustering & Cohesion)** | 일자별 전체 유저의 감정지수 군집화 및 사이트 테마감정 제공 | 중 ★ |
+| **사용자 이탈 가능성 예측 <br>(Churn Prediction)** | 이탈지표를 이용한 웹사이트 이탈 가능성 예측 | 상 ⭐ |
 
 ---
 
-## 👥 팀원 소개
+<h2>🛠️ 기술 스택</h2>
 
-<br>
+### 📌 Frontend
+- **Next.js**
+- **TypeScript**
+- **Tailwind CSS**
+- **TensorFlow.js (감정 예측)**
+  
+<p align="left">
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"/>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"/>
+  <img src="https://img.shields.io/badge/TensorFlow.js-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white"/>
+</p>
 
-<h3 align="center">YORIZORI Team</h3>
+### 📌 Backend
 
-<br>
+- **Spring Boot**
+- **MyBatis + Oracle DB**
+- **RESTful API**
+- **JWT 인증 시스템**
 
-<div align="center">
+<p align="left">
+  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"/>
+  <img src="https://img.shields.io/badge/MyBatis-35495E?style=for-the-badge&logo=databricks&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Oracle DB-F80000?style=for-the-badge&logo=oracle&logoColor=white"/>
+  <img src="https://img.shields.io/badge/REST API-000000?style=for-the-badge&logo=flask&logoColor=white"/>
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white"/>
+</p>
 
-<table>
-  <tr>
-    <!-- 팀원 1(팀장) -->
-    <td align="center">
-      <a href="https://github.com/sbg0629">
-        <img src="https://github.com/sbg0629.png" width="130" height="130" style="border-radius: 10px;">
-        <br><br>
-        <b>손봉균 (팀장)</b>
-      </a>
-      <br>
-      <sub>풀스택 - 로그인, 회원가입, 추천 회원, 실시간 채팅, 구글 소셜로그인, 페이징 처리, 게시판, 즐겨찾기</sub>
-    </td>
-    <!-- 팀원 2 -->
-    <td align="center">
-       <a href="https://github.com/LeeHyunJin323">
-      <img src="https://github.com/LeeHyunJin323.png" width="130" height="130" style="border-radius: 10px;">
-      <br><br>
-      <b>이현진</b>
-          </a>
-      <br>
-      <sub>백엔드 - 마이페이지, 시큐리티, 네이버·카카오 소셜로그인, 댓글/대댓글, 공지 사항</sub>
-    </td>
-    <!-- 팀원 3 -->
-    <td align="center">
-       <a href="https://github.com/RollingSoap">
-      <img src="https://github.com/RollingSoap.png" width="130" height="130" style="border-radius: 10px;">
-      <br><br>
-      <b>박동영</b>
-          </a>
-      <br>
-      <sub>백엔드 - 레시피 페이지, 카테고리 구현, Gemini 챗봇, 이메일 인증</sub>
-    </td>
-    <!-- 팀원 4 -->
-    <td align="center">
-       <a href="https://github.com/Rootplant">
-      <img src="https://github.com/Rootplant.png" width="130" height="130" style="border-radius: 10px;">
-      <br><br>
-      <b>정찬호</b>
-          </a>
-      <br>
-      <sub>백엔드 - 레시피 상세페이지, 쪽지 기능, 이미지 처리</sub>
-    </td>
-  </tr>
-</table>
+### 📌 데이터 및 모델링
+- 사용자 감정 입력값 (행복, 슬픔, 스트레스, 차분함, 흥분, 피곤함)
+- 예측 모델: TensorFlow.js 기반의 Multi-class Classification
+- 이탈 분석 모델: 사용자 활동 수, 피드백, 최근 활동 기반 Churn 예측
 
-</div>
-
-<br>
 
 ---
 
-## 🧩 기타 특장점
+<h2>📊 핵심 세부기능 설명</h2>
 
-- **JWT + Spring Security 기반 인증/인가**
-- **WebSocket 기반 실시간 채팅**
-- **REST API 기반 통신 구성**
-- **컴포넌트 기반 UI 구조 채택**
+### ✅ 감정 기반 추천 시스템
+- 6가지 감정에 따라 콘텐츠 추천
+- DB에 저장된 100개의 추천 활동/책/음악 리스트 제공
+
+### ✅ 감정 예측 모델
+- 감정 입력(6차원 벡터) → 대표 감정 클래스 예측
+- Express + TensorFlow.js 서버 구성
+
+### ✅ 사용자 분석 기능
+- 감정 이력 시계열 분석  
+- 감정 유형별 사용자 군집화 (K-means 활용)
+- 최근 활동 및 피드백 기반 이탈 가능성 예측
 
 ---
+
+## 🎬 전체 보기(자세히)
+
+<details>
+  <summary>✨UI/UX 테마 보기</summary>
+
+  <h3>◈ 메인 페이지 구성</h3>
+  <img src="images/total/main_page.png" alt="main_page" width="100%"/>
+
+  <h3>◈ 로그인/회원가입 UI</h3>
+  <img src="images/total/main_join.png" alt="main_join" width="100%"/>
+
+  <h3>◈ Footer</h3>
+  <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
+    <details>
+      <summary><h4>개인정보 처리방침</h4></summary>
+      <img src="images/total/footer_info_rule.png" alt="footer_info_rule" width="100%"/>
+    </details>
+    <details>
+      <summary><h4>이용약관</h4></summary>
+      <img src="images/total/footer_info_using.png" alt="footer_info_using" width="100%"/>
+    </details>
+    <details>
+      <summary><h4>회사소개</h4></summary>
+      <img src="images/total/footer_info_company.png" alt="footer_info_company" width="100%"/>
+    </details>
+    <details>
+      <summary><h4>도움말</h4></summary>
+      <img src="images/total/footer_help.png" alt="footer_help" width="100%"/>
+    </details>
+
+  <h3>◈ 다크 모드</h3>
+  <img src="images/total/main_dark.png" alt="main_dark" width="100%"/>
+
+  <p>이 이외의 UI/UX에 대해서는 다른 기능설명에서 제공하도록 하겠습니다!</p>
+</details>
+
+<details>
+  <summary>✨추천 요청하기 보기</summary>
+  <h3>◈ 사용자 감정 입력 UI</h3>
+  <h4>감정 컨텐트</h4>
+  <img src="images/recommendation/emotion_select_UI.png" alt="emotion_select_UI" width="100%"/>
+  <h4>입력 결과 사이드 탭</h4>
+  <img src="images/recommendation/emotion_selected_tab.png" alt="emotion_selected_tab" width="100%"/>
+
+  <h3>◈ 감정 입력 : SliderCard</h3>
+  <img src="images/recommendation/emotion_select_slider.png" alt="emotion_select_slider" width="100%"/>
+
+  <h3>◈ 감정 입력 : Face-API</h3>
+  <img src="images/recommendation/emotion_face2.png" alt="emotion_face2" width="100%"/>
+  <img src="images/recommendation/emotion_face1.png" alt="emotion_face1" width="100%"/>
+
+  <h3>◈ Recommendation</h3>
+  <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
+  <details>
+    <summary><h4>Music</h4></summary>
+    <img src="images/recommendation/recom_music.png" alt="recom_music" width="100%"/>
+    <img src="images/recommendation/music_content.png" alt="music_content" width="100%"/>
+    <img src="images/recommendation/music_content2.png" alt="music_content2" width="100%"/>
+  </details>
+  <details>
+    <summary><h4>Activity</h4></summary>
+    <img src="images/recommendation/recom_act.png" alt="recom_act" width="100%"/>
+  </details>
+  <details>
+    <summary><h4>Book</h4></summary>
+    <img src="images/recommendation/recom_book.png" alt="recom_book" width="100%"/>
+    <img src="images/recommendation/book_content.png" alt="book_content" width="100%"/>
+    <img src="images/recommendation/book_content2.png" alt="book_content2" width="100%"/>
+  </details>
+</details>
+
+<details>
+  <summary>✨마이페이지 보기</summary>
+  <h3>◈ 마이페이지 UI</h3>
+  <img src="images/mypage/mypage_UI2.png" alt="mypage_UI2" width="100%"/>
+  <img src="images/mypage/mypage_UI1.png" alt="mypage_UI1" width="100%"/>
+  
+  <h3>◈ 일자별 감정 차트 및 컨텐트 목록</h3>
+  <details>
+    <summary><h4>감정 분포 차트</h4></summary>
+    <img src="images/mypage/mypage_daily1.png" alt="mypage_daily1" width="100%"/>
+  </details>
+  <details>
+    <summary><h4>RecommendationList : Music</h4></summary>
+    <img src="images/mypage/mypage_daily2.png" alt="mypage_daily2" width="100%"/>
+  </details>
+  <details>
+    <summary><h4>RecommendationList : Activity & Book</h4></summary>
+    <img src="images/mypage/mypage_daily3.png" alt="mypage_daily3" width="100%"/>
+  </details>
+  
+  <h3>◈ 주간 감정 추세</h3>
+  <img src="images/mypage/mypage_week.png" alt="mypage_week" width="100%"/>
+
+  <h3>◈ 주간 추천 기록</h3>
+  <img src="images/mypage/mypage_week_using.png" alt="mypage_week_using" width="100%"/>  
+</details>
+
+<details>
+  <summary>✨컬렉션 보기</summary>
+  <h3>◈ 컬렉션페이지 UI</h3>
+  <h4>공개 컬렉션</h4>
+  <img src="images/collection/collection_open_UI.png" alt="collection_open_UI" width="100%"/>
+
+  <h4>나의 컬렉션</h4>
+  <img src="images/collection/collection_my_UI.png" alt="collection_my_UI" width="100%"/>
+  
+  <h3>◈ 컬렉션 CRUD</h3>
+  <h4>컬렉션 content</h4>
+  <img src="images/collection/collection_content.png" alt="collection_content" width="100%"/>
+
+  <h4>새 컬렉션 생성</h4>
+  <img src="images/collection/collection_new.png" alt="collection_new" width="100%"/>
+
+  <h4>컬렉션 상세보기</h4>
+  <img src="images/collection/collection_desc.png" alt="collection_desc" width="100%"/>
+
+  <h4>컬렉션 수정모드</h4>
+  <img src="images/collection/collection_modify.png" alt="collection_modify" width="100%"/>
+  
+</details>
+
+<details>
+  <summary>✨관리자페이지 보기</summary>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/영상ID" frameborder="0" allowfullscreen></iframe>
+</details>
+
+<details>
+  <summary>✨문의하기 보기</summary>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/영상ID" frameborder="0" allowfullscreen></iframe>
+</details>
+
+<details>
+  <summary>✨피드백 보기</summary>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/영상ID" frameborder="0" allowfullscreen></iframe>
+</details>
+
+---
+
+<h2>🧬 테이블 명세서 및 ERD </h2>
+
+<h3> Entity-Relationship Diagram </h3>
+<img src="images/ERD.png" alt="ERD" width="100%"/>
+<details>
+  <summary><h4> 🔍테이블 세부 명세서🔍 </h4></summary>
+  <img src="images/ERD_desc1.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc2.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc3.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc4.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc5.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc6.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc7.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc8.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc9.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc10.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc11.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc12.webp" alt="ERD" width="100%"/>
+  <img src="images/ERD_desc13.webp" alt="ERD" width="100%"/>
+</details>
+
+---
+
+## 🗂️ 시스템 구조도
+ <img src="images/system_structure.webp" alt="system_structure" width="100%"/>
