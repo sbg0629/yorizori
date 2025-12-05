@@ -46,29 +46,14 @@ jQuery
 Git / GitHub
 <p align="left"> <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"/> <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/> </p>
 
-
-### 📌 데이터 및 모델링
-- 사용자 감정 입력값 (행복, 슬픔, 스트레스, 차분함, 흥분, 피곤함)
-- 예측 모델: TensorFlow.js 기반의 Multi-class Classification
-- 이탈 분석 모델: 사용자 활동 수, 피드백, 최근 활동 기반 Churn 예측
-
-
 ---
 
-<h2>📊 핵심 세부기능 설명</h2>
+## ✨ 주요 기능
 
-### ✅ 감정 기반 추천 시스템
-- 6가지 감정에 따라 콘텐츠 추천
-- DB에 저장된 100개의 추천 활동/책/음악 리스트 제공
-
-### ✅ 감정 예측 모델
-- 감정 입력(6차원 벡터) → 대표 감정 클래스 예측
-- Express + TensorFlow.js 서버 구성
-
-### ✅ 사용자 분석 기능
-- 감정 이력 시계열 분석  
-- 감정 유형별 사용자 군집화 (K-means 활용)
-- 최근 활동 및 피드백 기반 이탈 가능성 예측
+- **회원 관리**: 회원가입, 로그인/로그아웃, 마이페이지, 회원 정보 수정, Spring Security 기반 인증/권한 관리
+- **레시피 관리**: 레시피 등록/수정/삭제, 전체/카테고리별/내 레시피 조회, 북마크(즐겨찾기)
+- **게시판**: 공지사항 게시판, 게시글 작성/수정/삭제
+- **커뮤니티**: 실시간 채팅(WebSocket), AI 요리 챗봇(Gemini), 1:1 쪽지 기능
 
 ---
 
@@ -209,7 +194,6 @@ Git / GitHub
 
 ---
 
----
 
 ## 👥 팀원 소개
 
