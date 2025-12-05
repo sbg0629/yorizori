@@ -79,10 +79,12 @@ Git / GitHub
   <summary>✨UI/UX 테마 보기</summary>
 
   <h3>◈ 메인 페이지 구성</h3>
-  <img src="images/total/main_page.png" alt="main_page" width="100%"/>
+  <img src="https://github.com/user-attachments/assets/bbc0df63-cdcd-44ac-a023-d1b8ef18aaca" alt="main_page" width="100%"/>
+
 
   <h3>◈ 로그인/회원가입 UI</h3>
-  <img src="images/total/main_join.png" alt="main_join" width="100%"/>
+  <img src="https://github.com/user-attachments/assets/c657fd0a-79ab-43ff-a014-2414467e1c7c" alt="main_join" width="100%"/>
+  <img src="https://github.com/user-attachments/assets/27ca88c6-f79d-4caf-991a-f50d5219b07c" alt="main_join" width="100%"/>
 
   <h3>◈ Footer</h3>
   <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
