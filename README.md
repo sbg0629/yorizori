@@ -208,3 +208,75 @@ Git / GitHub
 </details>
 
 ---
+
+---
+
+## 👥 팀원 소개
+
+<br>
+
+<h3 align="center">YORIZORI Team</h3>
+
+<br>
+
+<div align="center">
+
+<table>
+  <tr>
+    <!-- 팀원 1(팀장) -->
+    <td align="center">
+      <a href="https://github.com/sbg0629">
+        <img src="https://github.com/sbg0629.png" width="130" height="130" style="border-radius: 10px;">
+        <br><br>
+        <b>손봉균 (팀장)</b>
+      </a>
+      <br>
+      <sub>풀스택 - 로그인, 회원가입, 추천 회원, 실시간 채팅, 구글 소셜로그인, 페이징 처리, 게시판</sub>
+    </td>
+    <!-- 팀원 2 -->
+    <td align="center">
+       <a href="https://github.com/LeeHyunJin323">
+      <img src="https://github.com/LeeHyunJin323.png" width="130" height="130" style="border-radius: 10px;">
+      <br><br>
+      <b>이현진</b>
+          </a>
+      <br>
+      <sub>백엔드 - 마이페이지, 시큐리티, 네이버·카카오 소셜로그인, 댓글/대댓글, 공지 사항</sub>
+    </td>
+    <!-- 팀원 3 -->
+    <td align="center">
+       <a href="https://github.com/RollingSoap">
+      <img src="https://github.com/RollingSoap.png" width="130" height="130" style="border-radius: 10px;">
+      <br><br>
+      <b>박동영</b>
+          </a>
+      <br>
+      <sub>백엔드 - 레시피 페이지, 카테고리 구현, Gemini 챗봇, 이메일 인증</sub>
+    </td>
+    <!-- 팀원 4 -->
+    <td align="center">
+       <a href="https://github.com/Rootplant">
+      <img src="https://github.com/Rootplant.png" width="130" height="130" style="border-radius: 10px;">
+      <br><br>
+      <b>정찬호</b>
+          </a>
+      <br>
+      <sub>백엔드 - 레시피 상세페이지, 쪽지 기능, 이미지 처리</sub>
+    </td>
+  </tr>
+</table>
+
+</div>
+
+<br>
+
+---
+
+## 🧩 기타 특장점
+
+- **JWT + Spring Security 기반 인증/인가**
+- **WebSocket 기반 실시간 채팅**
+- **REST API 기반 통신 구성**
+- **컴포넌트 기반 UI 구조 채택**
+
+---
