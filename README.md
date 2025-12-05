@@ -191,15 +191,13 @@ Git / GitHub
 
 <details>
   <summary>✨게시판 보기</summary>
-  <iframe width="560" height="315" src="https://github.com/user-attachments/assets/91759f8c-dd86-4887-8f8d-6bcb66dfb672" alt="collection_new" width="100%"/>
+    <img src="https://github.com/user-attachments/assets/91759f8c-dd86-4887-8f8d-6bcb66dfb672" alt="collection_new" width="100%"/>
 </details>
 
 
 <details>
   <summary>✨공지사항 보기</summary>
-  <iframe width="560" height="315" src="https://github.com/user-attachments/assets/0a9bb460-ede1-4226-821d-b2320baa5471" alt="collection_new" width="100%"/>
-</details>
-
+ <img src="https://github.com/user-attachments/assets/0a9bb460-ede1-4226-821d-b2320baa5471" alt="collection_new" alt="collection_new" width="100%"/>
 
 ---
 
