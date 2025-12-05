@@ -140,7 +140,6 @@ Git / GitHub
 
 
   <h3>◈ 즐겨찾기 </h3>
-  <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
   <details>
     <summary><h4>즐겨찾기 UI</h4></summary>
     <img src="https://github.com/user-attachments/assets/c57bbe42-3198-4e2d-9344-e88f3526db12" alt="recom_music" width="100%"/>
