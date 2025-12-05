@@ -88,23 +88,30 @@ Git / GitHub
 
   <h3>◈ Footer</h3>
   <img src="https://github.com/user-attachments/assets/4b221701-1cb2-4051-9d5c-15c4b2c42145" alt="footer_info" width="100%"/>
-    <details>
-      <summary><h4>회사 소개 </h4></summary>
-      <img src="https://github.com/user-attachments/assets/44cf52de-cd4e-46c6-a5be-00b700c961c6" alt="footer_info_rule" width="100%"/>
+   <details>
+  <summary><h4>회사 소개 </h4></summary>
+  <img src="https://github.com/user-attachments/assets/44cf52de-cd4e-46c6-a5be-00b700c961c6?raw=1" 
+       alt="footer_info_rule" width="100%"/>
+</details>
 
-    </details>
-    <details>
-      <summary><h4>이용약관</h4></summary>
-      <img src="https://github.com/user-attachments/assets/54026804-2c28-4421-b895-e901d4578dca" alt="footer_info_using" width="100%"/>
-    </details>
-    <details>
-      <summary><h4>개인정보처리방침</h4></summary>
-      <img src="https://github.com/user-attachments/assets/fe592fd4-e45b-4484-84f9-82334b92675a" alt="footer_info_company" width="100%"/>
-    </details>
-    <details>
-      <summary><h4>고객센터</h4></summary>
-      <img src="https://github.com/user-attachments/assets/22d91316-ac3e-4e6a-bad6-a429c1690384" alt="footer_help" width="100%"/>
-    </details>
+<details>
+  <summary><h4>이용약관</h4></summary>
+  <img src="https://github.com/user-attachments/assets/54026804-2c28-4421-b895-e901d4578dca?raw=1" 
+       alt="footer_info_using" width="100%"/>
+</details>
+
+<details>
+  <summary><h4>개인정보처리방침</h4></summary>
+  <img src="https://github.com/user-attachments/assets/fe592fd4-e45b-4484-84f9-82334b92675a?raw=1" 
+       alt="footer_info_company" width="100%"/>
+</details>
+
+<details>
+  <summary><h4>고객센터</h4></summary>
+  <img src="https://github.com/user-attachments/assets/22d91316-ac3e-4e6a-bad6-a429c1690384?raw=1" 
+       alt="footer_help" width="100%"/>
+</details>
+
     
 
 
@@ -132,15 +139,23 @@ Git / GitHub
   <img src="https://github.com/user-attachments/assets/3436519d-919e-4394-9c54-e04141309110" alt="emotion_face2" width="100%"/>
 
 
-  <h3>◈ 레시피 즐겨 찾기</h3>
+  <h3>◈ Recommendation</h3>
   <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
   <details>
-    <summary><h4>레시피 즐겨찾기</h4></summary>
-    <img src="https://github.com/user-attachments/assets/9adbbc9a-1acd-4599-ab81-ac1a00cd72b9" alt="recom_music" width="100%"/>
+    <summary><h4>Music</h4></summary>
+    <img src="images/recommendation/recom_music.png" alt="recom_music" width="100%"/>
+    <img src="images/recommendation/music_content.png" alt="music_content" width="100%"/>
+    <img src="images/recommendation/music_content2.png" alt="music_content2" width="100%"/>
   </details>
   <details>
-    <summary><h4>레시피 즐겨찾기 보기</h4></summary>
-    <img src="https://github.com/user-attachments/assets/812ca49e-bcde-40ee-b117-80f581e94e87" alt="recom_act" width="100%"/>
+    <summary><h4>Activity</h4></summary>
+    <img src="images/recommendation/recom_act.png" alt="recom_act" width="100%"/>
+  </details>
+  <details>
+    <summary><h4>Book</h4></summary>
+    <img src="images/recommendation/recom_book.png" alt="recom_book" width="100%"/>
+    <img src="images/recommendation/book_content.png" alt="book_content" width="100%"/>
+    <img src="images/recommendation/book_content2.png" alt="book_content2" width="100%"/>
   </details>
 </details>
 
