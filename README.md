@@ -89,21 +89,27 @@ Git / GitHub
   <h3>◈ Footer</h3>
   <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
     <details>
-      <summary><h4>개인정보 처리방침</h4></summary>
-      <img src="images/total/footer_info_rule.png" alt="footer_info_rule" width="100%"/>
+      <summary><h4>회사 소개 </h4></summary>
+      <img src="https://github.com/user-attachments/assets/44cf52de-cd4e-46c6-a5be-00b700c961c6" alt="footer_info_rule" width="100%"/>
+
     </details>
     <details>
       <summary><h4>이용약관</h4></summary>
-      <img src="images/total/footer_info_using.png" alt="footer_info_using" width="100%"/>
+      <img src="https://github.com/user-attachments/assets/54026804-2c28-4421-b895-e901d4578dca" alt="footer_info_using" width="100%"/>
+
+
     </details>
     <details>
-      <summary><h4>회사소개</h4></summary>
-      <img src="images/total/footer_info_company.png" alt="footer_info_company" width="100%"/>
+      <summary><h4>개인정보처리방침</h4></summary>
+      <img src="https://github.com/user-attachments/assets/fe592fd4-e45b-4484-84f9-82334b92675a" alt="footer_info_company" width="100%"/>
+
     </details>
     <details>
-      <summary><h4>도움말</h4></summary>
-      <img src="images/total/footer_help.png" alt="footer_help" width="100%"/>
+      <summary><h4>고객센터</h4></summary>
+      <img src="https://github.com/user-attachments/assets/22d91316-ac3e-4e6a-bad6-a429c1690384" alt="footer_help" width="100%"/>
     </details>
+    
+
 
   <h3>◈ 다크 모드</h3>
   <img src="images/total/main_dark.png" alt="main_dark" width="100%"/>
