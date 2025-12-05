@@ -139,24 +139,18 @@ Git / GitHub
   <img src="https://github.com/user-attachments/assets/3436519d-919e-4394-9c54-e04141309110" alt="emotion_face2" width="100%"/>
 
 
-  <h3>◈ Recommendation</h3>
+  <h3>◈ 즐겨찾기 </h3>
   <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
   <details>
-    <summary><h4>Music</h4></summary>
-    <img src="images/recommendation/recom_music.png" alt="recom_music" width="100%"/>
-    <img src="images/recommendation/music_content.png" alt="music_content" width="100%"/>
-    <img src="images/recommendation/music_content2.png" alt="music_content2" width="100%"/>
+    <summary><h4>즐겨찾기 UI</h4></summary>
+    <img src="https://github.com/user-attachments/assets/c57bbe42-3198-4e2d-9344-e88f3526db12" alt="recom_music" width="100%"/>
   </details>
   <details>
-    <summary><h4>Activity</h4></summary>
-    <img src="images/recommendation/recom_act.png" alt="recom_act" width="100%"/>
+    <summary><h4>즐겨찾기 항목</h4></summary>
+    <img src="https://github.com/user-attachments/assets/97c6b09e-7849-41e2-92d0-485bb94b58f5" alt="recom_act" width="100%"/>
   </details>
   <details>
-    <summary><h4>Book</h4></summary>
-    <img src="images/recommendation/recom_book.png" alt="recom_book" width="100%"/>
-    <img src="images/recommendation/book_content.png" alt="book_content" width="100%"/>
-    <img src="images/recommendation/book_content2.png" alt="book_content2" width="100%"/>
-  </details>
+
 </details>
 
 <details>
