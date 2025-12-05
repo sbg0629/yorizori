@@ -135,13 +135,23 @@ Git / GitHub
   <img src="https://github.com/user-attachments/assets/3436519d-919e-4394-9c54-e04141309110" alt="emotion_face2" width="100%"/>
 
 
-  <h3>◈ 북마크 기능</h3>
-  <img src=""https://github.com/user-attachments/assets/5f986fe0-32e7-4478-90f5-9535ae8f29e2" alt="footer_info" width="100%"/>
-  
+  <h3>◈ Recommendation</h3>
+  <img src="images/total/footer_info.png" alt="footer_info" width="100%"/>
   <details>
-    <summary><h4>북마크</h4></summary>
-    <img src="https://github.com/user-attachments/assets/534fd1ec-7178-405d-ac4f-76f9a757ed2d" alt="recom_music" width="100%"/>
-
+    <summary><h4>Music</h4></summary>
+    <img src="images/recommendation/recom_music.png" alt="recom_music" width="100%"/>
+    <img src="images/recommendation/music_content.png" alt="music_content" width="100%"/>
+    <img src="images/recommendation/music_content2.png" alt="music_content2" width="100%"/>
+  </details>
+  <details>
+    <summary><h4>Activity</h4></summary>
+    <img src="images/recommendation/recom_act.png" alt="recom_act" width="100%"/>
+  </details>
+  <details>
+    <summary><h4>Book</h4></summary>
+    <img src="images/recommendation/recom_book.png" alt="recom_book" width="100%"/>
+    <img src="images/recommendation/book_content.png" alt="book_content" width="100%"/>
+    <img src="images/recommendation/book_content2.png" alt="book_content2" width="100%"/>
   </details>
 </details>
 
@@ -150,72 +160,49 @@ Git / GitHub
   <h3>◈ 마이페이지 UI</h3>
   <img src="https://github.com/user-attachments/assets/d28ae196-7344-42a3-91af-172b1f343aed" alt="mypage_UI2" width="100%"/>
   <img src="https://github.com/user-attachments/assets/59e8b7b1-dd0e-460a-b56b-e18cf8e06a1d"alt="mypage_UI1" width="100%"/>
-  
- <h3>◈ 내 게시물 보기  </h3>
-  <details>
-    <summary><h4>내가 작성한 게시글</h4></summary>
-    <img src="https://github.com/user-attachments/assets/8cb0dd79-fd43-4fe5-999b-0baf189434bf" alt="mypage_daily1" width="100%"/>
-  </details>
- 
 
   <h3>◈ 추천 회원 표시 </h3>
   <details>
     <summary><h4>추천 회원 표시</h4></summary>
     <img src="https://github.com/user-attachments/assets/10e46c4a-61d3-4a87-99a8-7498105428a5" alt="mypage_daily1" width="100%"/>
+
   </details>
   <details>
     <summary><h4>추천 회원 프로필 사진</h4></summary>
     <img src="https://github.com/user-attachments/assets/b85a65a1-b20f-4371-a459-16beeaf719bd" width="100%"/>
   </details>
-  <details>
-    <summary><h4>RecommendationList : Activity & Book</h4></summary>
-    <img src="images/mypage/mypage_daily3.png" alt="mypage_daily3" width="100%"/>
-  </details>
-  
-  <h3>◈ 관리자 페이지 </h3>
-  <img src= alt="mypage_week" width="100%"/>
-
 </details>
 
 <details>
-  <summary>✨컬렉션 보기</summary>
-  <h3>◈ 컬렉션페이지 UI</h3>
-  <h4>공개 컬렉션</h4>
-  <img src="images/collection/collection_open_UI.png" alt="collection_open_UI" width="100%"/>
+  <summary>✨쪽지 보내기</summary>
+  <h3>◈ 쪽지 UI</h3>
+  <h4>받은 쪽지함</h4>
+  <img src="https://github.com/user-attachments/assets/75776f89-26f3-4252-bbf6-5956e8c544c5"  alt="collection_open_UI" width="100%"/>
 
-  <h4>나의 컬렉션</h4>
-  <img src="images/collection/collection_my_UI.png" alt="collection_my_UI" width="100%"/>
+  <h4>보낸 쪽지함</h4>
+  <img src="https://github.com/user-attachments/assets/75965025-4bbd-4b20-a87b-1a18b0f1affa" alt="collection_my_UI" width="100%"/>
   
-  <h3>◈ 컬렉션 CRUD</h3>
-  <h4>컬렉션 content</h4>
-  <img src="images/collection/collection_content.png" alt="collection_content" width="100%"/>
+  <h3>◈ 쪽지 UI</h3>
+  <h4>쪽지 보내기 </h4>
+  <img src="https://github.com/user-attachments/assets/70189db2-2e5c-4769-813e-2c48069cfbf0" alt="collection_content" width="100%"/>
 
-  <h4>새 컬렉션 생성</h4>
-  <img src="images/collection/collection_new.png" alt="collection_new" width="100%"/>
-
-  <h4>컬렉션 상세보기</h4>
-  <img src="images/collection/collection_desc.png" alt="collection_desc" width="100%"/>
-
-  <h4>컬렉션 수정모드</h4>
-  <img src="images/collection/collection_modify.png" alt="collection_modify" width="100%"/>
+  <h4>쪽지 상세 내용</h4>
+  <img src="https://github.com/user-attachments/assets/e039eb98-b178-4bea-ba88-2f28a9ffbbf6" alt="collection_new" width="100%"/>
+dify" width="100%"/>
   
 </details>
 
 <details>
-  <summary>✨관리자페이지 보기</summary>
-  <iframe width="560" height="315" src="https://github.com/user-attachments/assets/db19e16b-07f8-4071-82f0-b2eacc449962"" frameborder="0" allowfullscreen></iframe>
-</details>
-
-<details>
-  <summary>✨자유 게시판</summary>
-  <iframe width="560" height="315" src="https://github.com/user-attachments/assets/8d859b7f-cfe1-4b1b-a1da-2811eb684c35" frameborder="0" allowfullscreen></iframe>
+  <summary>✨게시판 보기</summary>
+  <iframe width="560" height="315" src="https://github.com/user-attachments/assets/91759f8c-dd86-4887-8f8d-6bcb66dfb672" frameborder="0" allowfullscreen></iframe>
 </details>
 
 
 <details>
-  <summary>✨공지사항 게시판</summary>
-  <iframe width="560" height="315" src="https://github.com/user-attachments/assets/187bfbbd-f60d-4876-83ef-5380774c5e48" frameborder="0" allowfullscreen></iframe>
+  <summary>✨공지사항 보기</summary>
+  <iframe width="560" height="315" src="https://github.com/user-attachments/assets/0a9bb460-ede1-4226-821d-b2320baa5471" frameborder="0" allowfullscreen></iframe>
 </details>
+
 
 ---
 
